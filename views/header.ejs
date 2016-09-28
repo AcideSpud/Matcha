@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>NODE jS TUTO</title>
+	<link rel="stylesheet" href="/assets/semantic/semantic.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	<style>
+		.main.container{
+			margin-top: 7em;
+		}
+	</style>
+</head>
+<body>
+	<div class="ui fixed inverted menu">
+		<a href="/" class="header item">Accueil</a>
+	</div>
+<div class="ui main container">
+
+	<% if (locals.flash && locals.flash.error) { %>
+<div class="ui negative message">
+	<%=  flash.error %>
+</div>
+	<% } %>
+<% if (locals.flash && locals.flash.success) { %>
+<div class="ui positive message">
+	<%=  flash.success %>
+</div>
+	<% } %>
+
