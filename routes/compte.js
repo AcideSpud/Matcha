@@ -12,6 +12,7 @@ function requireLogin (req, res, next) {
   }
 };
 
+
 /* GET home page. */
 router.get('/', requireLogin, function(req, res, next) {
 	  res.render('compte');

@@ -45,7 +45,8 @@ static findUsers3(username, callback){
 		db.collection("users").updateOne({"name": username}, {$set: {"email": user.email, "pwd": user.pwd,
 											"nom": user.nom, "prenom": user.prenom, "like": user.like,
 											"popularite": user.popularite, "genre": user.genre,
-											"orientation": user.orientation, "age": user.age}}, (err, res)=>{
+											"orientation": user.orientation, "age": user.age,
+											"bio": user.bio}}, (err, res)=>{
 			if (err) console.log("----/!/----ERROR UPDATE",err)
 			console.log("fin update")
 			callback()
@@ -65,6 +66,9 @@ static findUsers3(username, callback){
 
 	static modifUser(request, callback){
 		let mongo = require('mongodb').MongoClient;
+		var path = require('path'),
+    		fs = require('fs');
+
 
 
 
@@ -88,12 +92,13 @@ static findUsers3(username, callback){
 			if (err){
 				throw err
 			} else{
-				console.log('-----MODIF USER: ', request.body.genre)
+			//	console.log('-----MODIF USER: ', request.files.photos.path)
 				var user = {email: request.body.email, pwd: request.body.pwd, nom: request.body.nom,
 								prenom: request.body.prenom,
 								age: request.body.age,
 								genre: request.body.genre,
 								orientation: request.body.orientation,
+								bio: request.body.bio,
 								 like: 0, popularite: 0}
 				console.log('---New User: ', user)
 				this.updateUser(user, db, request.user.name, (res)=>{
