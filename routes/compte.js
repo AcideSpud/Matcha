@@ -3,8 +3,17 @@ let bodyParser = require('body-parser');
 var express = require('express');
 var router = express.Router();
 
+function requireLogin (req, res, next) {
+  if (!req.user) {
+    req.flash('error', "il faut s'autentifier")
+    res.redirect('/login');
+  } else {
+    next();
+  }
+};
+
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', requireLogin, function(req, res, next) {
 	  res.render('compte');
 });
 //request body parser
@@ -28,4 +37,3 @@ router.post('/form_compte', (request, response)=>{
 
 
 module.exports = router;
-

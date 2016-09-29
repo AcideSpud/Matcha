@@ -53,6 +53,51 @@ app.use(session({
 	cookie: { secure: false }
 }))
 
+app.use(function (req, res, next) {
+  console.log('Time:', Date.now());
+  next();
+});
+
+app.use(function(req, res, next){
+  if (req.session && req.session.user){
+    let Utilisateur = require('./models/utilisateur')
+    Utilisateur.findUsers3(req.session.user.name, (result, err)=>{
+      console.log('BIEN CONNECTE')
+      if (err){
+        console.log(err)
+      }else{
+        if (result[0])
+        {
+          req.user = result[0];
+          console.log("-----REQUEST-USER:", req.user)
+          delete req.user.pwd;
+          req.session.user = result[0];
+          res.locals.user = result[0];
+
+        } else{
+
+        }
+        next();
+      }
+    })
+  } else{
+    console.log('non log')
+    next();
+  }
+})
+
+function requireLogin (req, res, next) {
+  if (!req.user) {
+    req.flash('error', "il faut s'autentifier")
+    res.redirect('/login');
+  } else {
+    next();
+  }
+};
+
+
+
+
 //ROUTAGE
 app.use(require('./middlewares/flash'));
 app.use('/inscription', inscription);
@@ -62,6 +107,12 @@ app.use('/users', users);
 app.use('/login', login);
 app.use('/dashboard', dashboard);
 app.use('/compte', compte);
+
+
+
+
+
+
 
 //port
 app.listen(3000, function () {
