@@ -5,8 +5,25 @@
 <div class="col-sm-6 col-sm-offset-3">
 
     <h1><span class="fa fa-sign-in"></span>Votre Profile</h1>
+
+    <table id="GeoResults">
+
+    </table>
+
+    <script>
+     /*  $.getJSON("http://ip-api.com/json/?callback=?", function(data) {
+            var table_body = "";
+            $.each(data, function(k, v) {
+                table_body += "<tr><td>" + k + "</td><td><b>" + v + "</b></td></tr>";
+            });
+            $("#GeoResults").html(table_body);
+        });
+        </script>
+
     <!-- LOGIN FORM -->
     <form action="compte/form_compte" method="post">
+
+        <input type=
         <div class="form-group">
             <label>Email</label>
             <input type="text" class="form-control" name="email">

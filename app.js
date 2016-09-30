@@ -58,6 +58,7 @@ app.use(function (req, res, next) {
   next();
 });
 
+
 app.use(function(req, res, next){
   if (req.session && req.session.user){
     let Utilisateur = require('./models/utilisateur')
@@ -97,23 +98,6 @@ function requireLogin (req, res, next) {
 
 
 
-app.use(function(req, res, next){
-
-var geocoder = require('geocoder')
-
-if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-    } else { 
-        console.log("Geolocation is not supported by this browser.")
-    }
-}
-
-geocoder.reverseGeocode( 33.7489, -84.3789, function ( err, data ) {
-  console.log(data) 
-});
-
-  next()
-})
 
 //ROUTAGE
 app.use(require('./middlewares/flash'));
