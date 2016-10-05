@@ -35,8 +35,7 @@ router.post('/form_inscription', (req, res, next)=>{
     else {
         let mongo = require('mongodb').MongoClient
         let bcrypt = require('bcryptjs')
-       let Utilisateur = require('./models/utilisateur')
-        var deffered = Q.defer()
+       let Utilisateur = require('../models/utilisateur')
 
         Utilisateur.create(req, res, function () {
             req.flash('sucess', "Merci!")
