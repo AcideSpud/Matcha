@@ -69,14 +69,14 @@ static findUsers3(username, callback){
 		var path = require('path'),
     		fs = require('fs');
 
-    	$.getJSON("http://ip-api.com/json/?callback=?", function(data) {
-            var table_body = "";
-            $.each(data, function(k, v) {
-                table_body += "<tr><td>" + k + "</td><td><b>" + v + "</b></td></tr>";
-            });
-         //   $("#GeoResults").html(table_body);
-         console.log(table_body)
-        });
+    //	$.getJSON("http://ip-api.com/json/?callback=?", function(data) {
+    //        var table_body = "";
+    //        $.each(data, function(k, v) {
+    //            table_body += "<tr><td>" + k + "</td><td><b>" + v + "</b></td></tr>";
+    //        });
+    //     //   $("#GeoResults").html(table_body);
+    //     console.log(table_body)
+    //    });
 
 
 		//var ip_info = get_ip(request)

@@ -11,7 +11,7 @@ class Get_user {
             let MongoC = require('mongodb').MongoClient;
             let assert = require('assert');
 
-            var url = 'mongodb://localhost:27017/MySuperDb';
+            var url = 'mongodb://localhost:27017/matcha';
 
             MongoC.connect(url, function (err, db) {
                 if (err)
@@ -19,10 +19,10 @@ class Get_user {
 
                 console.log("Connecté à la base de données");
                     // Get the documents collection
-                db.collection('user').find().toArray((error, results) =>{
+                db.collection('users').find().toArray((error, results) =>{
                     if (error) throw error;
                     console.log(results);
-                    results.forEach((i, obj)=>{
+                    results.forEach((i)=>{
                       console.log(
                           "ID :" + i._id.toString() + "\n" +
                           "nom :" + i.nom + "\n" +
