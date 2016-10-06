@@ -9,6 +9,7 @@ let users = require('./routes/users');
 let inscription = require('./routes/inscription');
 let compte = require('./routes/compte');
 let dashboard = require('./routes/dashboard');
+let profile = require('./routes/profile');
 let login = require('./routes/login');
 let session = require('express-session');
 let app = express();
@@ -108,6 +109,7 @@ app.use('/users', users);
 app.use('/login', login);
 app.use('/dashboard', dashboard);
 app.use('/compte', compte);
+app.use('/profile', profile);
 
 
 
