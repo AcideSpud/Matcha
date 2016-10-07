@@ -7,7 +7,8 @@ var router = express.Router();
 router.get('/:userID', (req, res)=>{
     let Profile = require('../models/utilisateur');
     console.log(req.params.userID + "hahahah!!!");
-    Profile.findUsers3(req.params.userID.substring(1), (ret)=>{
+    console.log("PROFILLE---" + req.params.userID);
+    Profile.findUsers3(req.params.userID, (ret)=>{
 
         res.render('profile', {ret : ret[0]});
     })
