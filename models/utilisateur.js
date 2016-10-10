@@ -46,7 +46,7 @@ static findUsers3(username, callback){
 											"nom": user.nom, "prenom": user.prenom, "like": user.like,
 											"popularite": user.popularite, "genre": user.genre,
 											"orientation": user.orientation, "age": user.age,
-											"bio": user.bio}}, (err, res)=>{
+											"bio": user.bio, "tag": user.tag}}, (err, res)=>{
 			if (err) console.log("----/!/----ERROR UPDATE",err)
 			console.log("fin update")
 			callback()
@@ -99,19 +99,18 @@ static findUsers3(username, callback){
 			if (err){
 				throw err
 			} else{
-			//	console.log('-----MODIF USER: ', request.files.photos.path)
+				console.log('-----MODIF USER: ', request.body.tag)
 				var user = {email: request.body.email, pwd: request.body.pwd, nom: request.body.nom,
 								prenom: request.body.prenom,
 								age: request.body.age,
 								genre: request.body.genre,
 								orientation: request.body.orientation,
 								bio: request.body.bio,
-								 like: 0, popularite: 0}
+								 like: 0, popularite: 0, tag: request.body.tag}
 				console.log('---New User: ', user)
 				this.updateUser(user, db, request.user.name, (res)=>{
 					console.log('-----FIN MODIF USER')
 				})
-
 			}
 		})
 	}

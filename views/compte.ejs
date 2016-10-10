@@ -68,6 +68,7 @@
 			</label>
         </div>
 
+
         <div class="form-group">
             <label>Orientation</label>
             <br>
@@ -82,15 +83,19 @@
             </label>
         </div>
 
+        <div class = "form-group">
+            <label>What do you like</label>
+            <select name="tag" class="selectpicker" multiple>
+            <option value="art">Art</option>
+            <option value="sport">Sport</option>
+            <option value="sport"></option>
+            </select>
+        </div>
+
         <hr>
         <div class="form-group">
   			<label for="comment">Biographie (200c)</label>
   				<textarea class="form-control" rows="5" id="comment" name="bio" maxlength="200"></textarea>
-		</div>
-		<hr>
-		<div class="form-group">
-			<label>Partager vos photos</label>
-			<input type='file' name='photos'/>
 		</div>
 		<hr>
         <button type="submit" class="btn btn-warning btn-lg">Enregistrer</button>
