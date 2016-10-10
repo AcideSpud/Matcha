@@ -46,7 +46,8 @@ static findUsers3(username, callback){
 											"nom": user.nom, "prenom": user.prenom, "like": user.like,
 											"popularite": user.popularite, "genre": user.genre,
 											"orientation": user.orientation, "age": user.age,
-											"bio": user.bio, "tag": user.tag}}, (err, res)=>{
+											"bio": user.bio, "tag": user.tag,
+											"geo": user.geo}}, (err, res)=>{
 			if (err) console.log("----/!/----ERROR UPDATE",err)
 			console.log("fin update")
 			callback()
@@ -69,44 +70,20 @@ static findUsers3(username, callback){
 		var path = require('path'),
     		fs = require('fs');
 
-    //	$.getJSON("http://ip-api.com/json/?callback=?", function(data) {
-    //        var table_body = "";
-    //        $.each(data, function(k, v) {
-    //            table_body += "<tr><td>" + k + "</td><td><b>" + v + "</b></td></tr>";
-    //        });
-    //     //   $("#GeoResults").html(table_body);
-    //     console.log(table_body)
-    //    });
-
-
-		//var ip_info = get_ip(request)
-
-	/*	var ip = request.headers['x-forwarded-for'] || 
-     request.connection.remoteAddress || 
-     request.socket.remoteAddress ||
-     request.connection.socket.remoteAddress;
-
-     var ipp = '127.0.0.1';
-
-		console.log("----IPPP INFOOO", ip)
-
-		var geo= geoip.lookup(ipp)
-
-		console.log("---GEOOOO", geo)
-*/
 		mongo.connect("mongodb://localhost/matcha", (err, db)=>{
 			console.log("MODIF INFORMATION USER-----")
 			if (err){
 				throw err
 			} else{
-				console.log('-----MODIF USER: ', request.body.tag)
+				console.log('-----MODIF USER: ', request.body.geo)
 				var user = {email: request.body.email, pwd: request.body.pwd, nom: request.body.nom,
 								prenom: request.body.prenom,
 								age: request.body.age,
 								genre: request.body.genre,
 								orientation: request.body.orientation,
 								bio: request.body.bio,
-								 like: 0, popularite: 0, tag: request.body.tag}
+								 like: 0, popularite: 0, tag: request.body.tag,
+								 geo: request.body.geo}
 				console.log('---New User: ', user)
 				this.updateUser(user, db, request.user.name, (res)=>{
 					console.log('-----FIN MODIF USER')
