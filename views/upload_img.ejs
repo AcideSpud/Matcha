@@ -1,0 +1,39 @@
+<% include header2 %>
+
+<div class="container">
+	<div class="col-sm-6 col-sm-offset-3">
+    <h1><span class="fa fa-sign-in"></span>Uploadez vos photos</h1>
+
+    <form id="uploadImgForm" enctype="multipart/form-data" action="/upload_img/upload_img" method="post">
+    <div class="form-group">
+    	<label> Partagez vos photos!</label>
+    	<input type="file" name="userImg" multiple/>
+    	<input type="submit" value="Upload Image" name="submit">
+    	<span id="status"></span>
+    </div>
+   </form>
+
+     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+  <script>
+  $(document).ready(function() {
+     $('#uploadImgForm').submit(function() {
+        $("#status").empty().text("File is uploading...");
+        $(this).ajaxSubmit({
+            error: function(xhr) {
+          status('Error: ' + xhr.status);
+            },
+            success: function(response) {
+        console.log(response)
+            $("#status").empty().text(response);
+            }
+    });
+    return false;
+    });    
+});
+</script>
+
+    </div>
+  </div>
+
+<% include footer %>

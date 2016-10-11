@@ -54,6 +54,17 @@ static findUsers3(username, callback){
 		})
 	}
 
+	static updateImg(username, db, imgpath, callback){
+		console.log('-----UPLOAD IMAGE', imgpath)
+		db.collection("users").updateOne({"name:": username}, {$set: {"img": imgpath}}, (err, res)=>{
+			console.log('-__---__-___ca passe ou pas?')
+			if (err) console.log("--/!/----ERROR UPDATE IMG", err)
+			
+			callback()
+		})
+		callback()
+	}
+
 	static insertUser(db, user, callback){
 		db.collection("users").insert(user, null, (err, res)=>{
 			if (err) throw err
@@ -87,6 +98,21 @@ static findUsers3(username, callback){
 				console.log('---New User: ', user)
 				this.updateUser(user, db, request.user.name, (res)=>{
 					console.log('-----FIN MODIF USER')
+				})
+			}
+		})
+	}
+
+	static uploadImg(username, imgpath, callback){
+		let mongo = require('mongodb').MongoClient;
+		var path = require('path');
+
+		console.log('-----PATH', imgpath)
+		mongo.connect("mongodb://localhost/matcha", (err, db)=>{
+			if (err) throw err
+			else{
+				this.updateImg(username, db, imgpath, (res)=>{
+					console.log('--UPLOAD IMG')
 				})
 			}
 		})
