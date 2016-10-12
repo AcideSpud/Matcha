@@ -37,7 +37,7 @@ function requireLogin (req, res, next) {
 
 router.get('/', requireLogin, (req, res, next)=>{
 	console.log('IMG a bien ete upload');
-	res.render('upload_img');
+	res.render('upload_img', {ret : ret});
 })
 
 router.use(bodyParser.urlencoded({extended: false}));

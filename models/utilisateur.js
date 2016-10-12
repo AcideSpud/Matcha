@@ -1,5 +1,6 @@
 class Utilisateur {
 
+
 	static findUsers(db, username, callback){
 
 		let assert = require('assert')
