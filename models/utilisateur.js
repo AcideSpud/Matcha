@@ -1,6 +1,7 @@
 class Utilisateur {
 
 
+
 	static findUsers(db, username, callback){
 
 		let assert = require('assert')
@@ -11,7 +12,7 @@ class Utilisateur {
 			if (doc){
 				callback(doc)
 			} else{
-				callback()
+				callback(undefined)
 			}
 		})
 	}
@@ -39,6 +40,22 @@ static findUsers3(username, callback){
    		 		});
 			}
 		})
+	}
+
+	static modifPwd(username, pwd, callback){
+		let mongo = require('mongodb').MongoClient;
+
+		mongo.connect("mongodb://localhost/matcha", (err, db)=>{
+			console.log('-------MODIFPWD', pwd);
+			console.log('-----MODIFPWD USERNAME', username)
+			db.collection("users").updateOne({"name": username}, {$set: {"pwd": pwd}}, (err, res)=>{
+				if (err) callback(err)
+				else{
+					callback()
+				}
+			})
+		})
+
 	}
 
 	static updateUser(user, db, username, callback){
@@ -87,6 +104,26 @@ static findUsers3(username, callback){
 				this.updateUser(user, db, request.user.name, (res)=>{
 				})
 			}
+		})
+	}
+
+
+	static queryUserByMail(mail, callback){
+		let mongo = require('mongodb').MongoClient;
+
+		mongo.connect("mongodb://localhost/matcha", (err, db)=>{
+			console.log('-----QUERY USER BY MAIL', mail)
+			db.collection("users").find({email: mail}).toArray((err, result)=>{
+				if (err)
+					callback(err);
+				else if (result.length) {
+    		  	} else {
+
+      		  		console.log('No document(s) found with defined "find" criteria!');
+      		  		result = undefined
+     		 	}
+     		 	callback(result);
+   		 	});
 		})
 	}
 

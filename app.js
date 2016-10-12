@@ -12,6 +12,7 @@ let dashboard = require('./routes/dashboard');
 let profile = require('./routes/profile');
 let login = require('./routes/login');
 let upload_img = require('./routes/upload_img');
+let forgot_mail = require('./routes/forgot_mail');
 let session = require('express-session');
 let app = express();
 
@@ -111,7 +112,8 @@ app.use('/login', login);
 app.use('/dashboard', dashboard);
 app.use('/compte', compte);
 app.use('/profile', profile);
-app.use('/upload_img', upload_img)
+app.use('/upload_img', upload_img);
+app.use('/forgot_mail', forgot_mail);
 
 
 
