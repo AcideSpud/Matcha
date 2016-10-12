@@ -8,25 +8,19 @@ router.use(require('../middlewares/flash'))
 
 var storage = multer.diskStorage({
 	destination: function (req, file, callback){
-
-		console.log('DESTINATION UPLOAD IMG')
 		callback(null, './public/img');
 	},
 	filename: function (req, file, callback){
-		console.log('FILENAME UPLOAD IMG')
 		let Utilisateur = require('../models/utilisateur');
 		var path = file.fieldname + '-' + Date.now();
 
-		Utilisateur.uploadImg(req.user.name, path, (res, err)=>{
-			console.log('POURQUOI ca rebtre PAADSss-----')
+		Utilisateur.uploadImg2(req.user.name, path, (res, err)=>{
 			if (err) {throw err}
 			else{
-				console.log('-----UTILISATEUR UPLOADIMG')
-				request.flash('success', "Image(s) Upload")
+			//flash message
 			}
 		})
 		callback(null, file.fieldname + '-' + Date.now());
-		console.log('-------FIN storage')
 	}
 });
 

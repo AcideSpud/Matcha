@@ -54,16 +54,6 @@ static findUsers3(username, callback){
 		})
 	}
 
-	static updateImg(username, db, imgpath, callback){
-		console.log('-----UPLOAD IMAGE', imgpath)
-		db.collection("users").updateOne({"name:": username}, {$set: {"img": imgpath}}, (err, res)=>{
-			console.log('-__---__-___ca passe ou pas?')
-			if (err) console.log("--/!/----ERROR UPDATE IMG", err)
-			
-			callback()
-		})
-		callback()
-	}
 
 	static insertUser(db, user, callback){
 		db.collection("users").insert(user, null, (err, res)=>{
@@ -82,11 +72,9 @@ static findUsers3(username, callback){
     		fs = require('fs');
 
 		mongo.connect("mongodb://localhost/matcha", (err, db)=>{
-			console.log("MODIF INFORMATION USER-----")
 			if (err){
 				throw err
 			} else{
-				console.log('-----MODIF USER: ', request.body.geo)
 				var user = {email: request.body.email, pwd: request.body.pwd, nom: request.body.nom,
 								prenom: request.body.prenom,
 								age: request.body.age,
@@ -95,26 +83,21 @@ static findUsers3(username, callback){
 								bio: request.body.bio,
 								 like: 0, popularite: 0, tag: request.body.tag,
 								 geo: request.body.geo}
-				console.log('---New User: ', user)
 				this.updateUser(user, db, request.user.name, (res)=>{
-					console.log('-----FIN MODIF USER')
 				})
 			}
 		})
 	}
 
-	static uploadImg(username, imgpath, callback){
+	static uploadImg2(username, imgpath, callback){
 		let mongo = require('mongodb').MongoClient;
-		var path = require('path');
 
-		console.log('-----PATH', imgpath)
-		mongo.connect("mongodb://localhost/matcha", (err, db)=>{
-			if (err) throw err
-			else{
-				this.updateImg(username, db, imgpath, (res)=>{
-					console.log('--UPLOAD IMG')
-				})
-			}
+		mongo.connect('mongodb://localhost/matcha', (err, db)=>{
+			db.collection("users").updateOne({"name": username}, {$push: {"img": imgpath}}, (err, res)=>{
+				if (err) throw err
+				else
+					callback()
+			})
 		})
 	}
 
