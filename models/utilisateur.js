@@ -1,5 +1,16 @@
 class Utilisateur {
 
+	static GetDB(callback) {
+		let mongo = require('mongodb').MongoClient;
+
+		mongo.connect("mongodb://localhost/matcha", (err, db) =>{
+			if (err)
+				throw err
+			else{
+				callback(db);
+			}
+		})
+	}
 
 
 	static findUsers(db, username, callback){
@@ -85,6 +96,37 @@ static findUsers3(username, callback){
 		})
 	}
 
+	static updateLikeUser(user, db, key){
+		console.log('-----UPDATE ARRAY USER' + user + '[' + key + ']');
+
+		db.collection("users").updateOne({"name" : user.name}, {$push:{"like": key }}, (err)=>{
+			if (err)
+				throw err;
+			else
+				console.log ("Update like OK !");
+		})
+		db.collection("users").updateOne({"name" : key}, {$push : {"liker" : user.name}}, (err)=>{
+			if (err)
+				throw err;
+			else
+				console.log("Update liker OK!");
+		})
+	}
+
+	static updateUnlikeUser(user, db, key){
+		db.collection("users").updateOne({"name" : user.name}, {$pull : {"like" : key }}, (err)=>{
+			if (err)
+				throw err;
+			else
+				console.log("remove like OK !");
+		});
+		db.collection("users").updateOne({"name" : key}, {$pull : {"liker" : user.name}}, (err)=>{
+			if (err)
+				throw err;
+			else
+				console.log("remove liker OK ! ");
+		})
+	}
 	static modifUser(request, callback){
 		let mongo = require('mongodb').MongoClient;
 		var path = require('path'),
@@ -100,8 +142,9 @@ static findUsers3(username, callback){
 								genre: request.body.genre,
 								orientation: request.body.orientation,
 								bio: request.body.bio,
-								 like: 0, popularite: 0, tag: request.body.tag,
-								 geo: request.body.geo}
+								like: "", liker : "",  popularite: 0,
+								tag: request.body.tag,
+								geo: request.body.geo}
 				this.updateUser(user, db, request.user.name, (res)=>{
 				})
 			}
