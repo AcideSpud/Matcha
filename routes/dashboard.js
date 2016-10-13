@@ -22,4 +22,3 @@ router.get('/', requireLogin, function(req, res, next) {
 });
 
 module.exports = router;
-

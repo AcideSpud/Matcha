@@ -6,6 +6,7 @@ var router = express.Router();
 let Profile = require('../models/getDataUser');
 let User = require('../models/utilisateur');
 
+
 function requireLogin (req, res, next) {
     if (!req.user) {
         req.flash('error', "il faut s'autentifier")
@@ -14,8 +15,6 @@ function requireLogin (req, res, next) {
         next();
     }
 };
-
-
 
 router.get('/:userID', requireLogin, (req, res, next)=>{
     Profile.findUsers4(req.params.userID, (ret)=> {

@@ -2,6 +2,8 @@ let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 var express = require('express');
 var router = express.Router();
+var multer = require('multer')
+var upload = multer({dest: "../public/img/"})
 
 function requireLogin (req, res, next) {
   if (!req.user) {
@@ -11,7 +13,6 @@ function requireLogin (req, res, next) {
     next();
   }
 };
-
 
 /* GET home page. */
 router.get('/', requireLogin, function(req, res, next) {
@@ -23,7 +24,9 @@ router.use(bodyParser.urlencoded({ extended: false }));
 //request message flash module
 router.use(require('../middlewares/flash'));
 
-router.post('/form_compte', (request, response)=>{
+router.post('/form_compte', upload.single('userFile'), (request, response)=>{
+
+  //console.log("UPLOAD FILE: " + JSON.stringify(request.body.file));
 
   let Utilisateur = require('../models/utilisateur')
   Utilisateur.modifUser(request, (res, err)=>{
@@ -33,7 +36,7 @@ router.post('/form_compte', (request, response)=>{
       request.flash('success', "informations bien enregistrées")
     }
   })
-  response.redirect('/')
+  response.redirect('/upload_img')
 })
 
 
