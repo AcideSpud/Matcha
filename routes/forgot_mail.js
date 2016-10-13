@@ -1,6 +1,8 @@
 let express = require('express');
 let bodyParser = require('body-parser');
 let router = express.Router()
+let nodemailer = require('nodemailer')
+let prompt = require('prompt');
 
 
 String.prototype.shuffle = function (){
@@ -31,9 +33,34 @@ router.post('/forgot_mail', (req, res)=>{
 		else if (result){
 			var newpass = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
+
 			Utilisateur.modifPwd(result[0].name, newpass.shuffle(), (err, res)=>{
 				if (err) throw err
-				console.log('le mot de passe est modifié')
+
+				var transporter = nodemailer.createTransport({
+					service: 'Gmail',
+					auth: {
+						user:'matcha42matcha@gmail.com',
+						pass:'projetmatcha42'
+					}
+				})
+				var mailOptions ={
+					from: 'Matcha 42 <matcha42matcha@gmail.com>',
+					to: 'rosamond.julien@gmail.com',
+					subject: 'forgot mdp',
+					text:'vous perdu votre mot de pass?' + result[0].pwd,
+					html:'<p>ceci est le contenu html: </p></br>' + result[0].pwd + '</br>changez le pour plus de securites <a href="http://localhost:3000">lien</a></html>' 
+				}
+
+				transporter.sendMail(mailOptions, (err, info)=>{
+					if (err){
+						console.log(err);
+	
+					}else{
+						console.log("----MAIL ENVOYE--:", info.response);
+						
+					}
+				})
 			})
 		}
 	})
