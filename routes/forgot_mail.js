@@ -44,12 +44,15 @@ router.post('/forgot_mail', (req, res)=>{
 						pass:'projetmatcha42'
 					}
 				})
+
+				var textLink = "http://" + req.headers.host;
+
 				var mailOptions ={
 					from: 'Matcha 42 <matcha42matcha@gmail.com>',
-					to: 'rosamond.julien@gmail.com',
+					to: req.body.email,
 					subject: 'forgot mdp',
-					text:'vous perdu votre mot de pass?' + result[0].pwd,
-					html:'<p>ceci est le contenu html: </p></br>' + result[0].pwd + '</br>changez le pour plus de securites <a href="http://localhost:3000">lien</a></html>' 
+					generateTextFromHTML: true,
+					html:'<p>votre nouveau pwd: </p></br>' + result[0].pwd + '</br><a href=\"'+ textLink.toString() + '\">Click here to activate your account.</a>'
 				}
 
 				transporter.sendMail(mailOptions, (err, info)=>{
