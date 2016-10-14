@@ -141,7 +141,7 @@ static findUsers3(username, callback){
 								genre: request.body.genre,
 								orientation: request.body.orientation,
 								bio: request.body.bio,
-								like: "", liker : "",  popularite: 0,
+								like: [], liker : [],  popularite: 0,
 								tag: request.body.tag,
 								geo: request.body.geo}
 				this.updateUser(user, db, request.user.name, (res)=>{

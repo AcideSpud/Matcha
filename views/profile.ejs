@@ -5,15 +5,17 @@
             <img class="img-thumbnail" alt="140x140" src="http://lorempixel.com/140/140/" />
         </div>
         <div class="col-md-8 column">
-            <blockquote>
+
                 <P>
                     <%= ret[0].name %>
-                </p> <small>21 / M / Single / Straight <cite>London England</cite></small>
-            </blockquote>
+                </p> <% for (var i = 0; i < ret[0].tag.length;  i++) { %>
+                <p><small><span class="label label-info"> <%= ret[0].tag[i] %> </span></small></p>
+                <% } %>
+
         </div>
         <div class="col-md-2 column">
             <% if (islike == false){ %>
-            <button id="mylikebutton" class="btn btn-default btn-block" onclick="like_request('<%= ret[0].name %>')" type="button">
+            <button id="mylikebutton" class="btn btn-primary btn-block" onclick="like_request('<%= ret[0].name %>')" type="button">
                 Like
             </button>
             <% } else { %>
@@ -21,8 +23,11 @@
                 Unlike !
             </button>
             <% } %>
-            <button class="btn btn-default btn-block" type="button">
+            <button class="btn btn-info btn-block" type="button">
                 Message
+            </button>
+            <button class="btn btn-warning btn-block" type="button">
+                Report !
             </button>
 
 
@@ -56,8 +61,13 @@
                                             Details
                                         </th>
                                         <th>
-                                            His/ Her
+                                            <% if (ret[0].genre == 'M'){ %>
+                                                His
+                                            <% } else { %>
+                                                Her
+                                            <% } %>
                                         </th>
+
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -67,6 +77,24 @@
                                         </td>
                                         <td>
                                             1 hour ago
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Insterested by :
+                                        </td>
+                                        <td>
+                                            <% if (ret[0].orientation == 'Ht' && ret[0].genre == 'M'){ %>
+                                            Woman
+                                            <% } else if (ret[0].orientation == 'Ht' && ret[0].genre == 'Mme') { %>
+                                            Man
+                                            <% } else if (ret[0].orientation == 'Hm' && ret[0].genre == 'M') { %>
+                                            Man
+                                            <% } else if (ret[0].orientation == 'Hm' && ret[0].genre == 'Mme') { %>
+                                            Woman
+                                            <% } else if (ret[0].orientation == 'Bi'){ %>
+                                            THE WORLD !!!
+                                            <% } %>
                                         </td>
                                     </tr>
                                     
