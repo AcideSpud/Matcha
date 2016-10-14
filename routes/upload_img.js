@@ -12,16 +12,12 @@ var storage = multer.diskStorage({
 	},
 	filename: function (req, file, callback){
 		let Utilisateur = require('../models/utilisateur');
-		var path = file.fieldname + '-' + Date.now();
-
+		if (file.mimetype == 'image/jpeg')
+		var path = '/img/'+file.fieldname + '-' + Date.now() + '.jpg';
+		else if(file.mimetype == 'image/png')
+			var path = '/img/'+file.fieldname + '-' + Date.now() + '.png';
 		console.log('FILENAME----', file)
 
-//		if (file == undefined)
-//		{
-//			var err = "PUT A FILE FDP"
-//			callback(err)
-//		}
-		//else{
 			if (file.mimetype == 'image/jpeg' ||
 			file.mimetype == 'image/png'){
 			console.log('FILEEEE MIMETYPE OOOK')
@@ -39,7 +35,6 @@ var storage = multer.diskStorage({
 			var err = 'Not jpg or png'
 			callback(err)
 			}
-		//}
 	}
 });
 
