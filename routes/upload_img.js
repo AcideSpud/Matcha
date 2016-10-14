@@ -13,9 +13,9 @@ var storage = multer.diskStorage({
 	filename: function (req, file, callback){
 		let Utilisateur = require('../models/utilisateur');
 		if (file.mimetype == 'image/jpeg')
-		var path = '/img/'+file.fieldname + '-' + Date.now() + '.jpg';
+		var path1 = '/img/'+file.fieldname + '-' + Date.now() + '.jpg';
 		else if(file.mimetype == 'image/png')
-			var path = '/img/'+file.fieldname + '-' + Date.now() + '.png';
+			var path2 = '/img/'+file.fieldname + '-' + Date.now() + '.png';
 		console.log('FILENAME----', file)
 
 			if (file.mimetype == 'image/jpeg' ||
@@ -27,8 +27,8 @@ var storage = multer.diskStorage({
 				//flash message
 				}
 			})
-			if (file.mimetype == 'image/jpeg') callback(null, file.fieldname + '-' + Date.now()+'.jpg');
-			else callback(null, file.fieldname + '-' + Date.now()+'.png')
+			if (file.mimetype == 'image/jpeg') callback(null, path1);
+			else callback(null, path2)
 			}
 		else{
 			console.log('pas oook')
