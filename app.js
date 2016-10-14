@@ -1,5 +1,6 @@
 let express = require('express');
 let path = require('path');
+let http = require('http');
 let favicon = require('serve-favicon');
 let logger = require('morgan');
 let cookieParser = require('cookie-parser');
@@ -13,9 +14,20 @@ let profile = require('./routes/profile');
 let login = require('./routes/login');
 let upload_img = require('./routes/upload_img');
 let forgot_mail = require('./routes/forgot_mail');
-let session = require('express-session');
-let app = express();
 
+
+let session = require('express-session');
+let server = http.Server();
+let io  = require('socket.io')(server);
+let app = express(server);
+
+
+io.on('connection', function (socket) {
+    socket.emit('news', { hello: 'world' });
+    socket.on('my other event', function (data) {
+        console.log(data);
+    });
+});
 
 //app.use(require('./middlewares/flash'));
 //connection to db
@@ -56,10 +68,10 @@ app.use(session({
 	cookie: { secure: false }
 }))
 
-app.use(function (req, res, next) {
-  console.log('Time:', Date.now());
-  next();
-});
+//app.use(function (req, res, next) {
+  //console.log('Time:', Date.now());
+//  next();
+//});
 
 
 app.use(function(req, res, next){

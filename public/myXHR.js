@@ -20,7 +20,7 @@ function unlike_request(name) {
     my_name = name;
     xhr.open("POST", "/profile/unlike/:" + name, true);
     xhr.send();
-    $('#mylikebutton').text('like').removeClass('btn-danger').addClass('btn-default').attr("onclick", "like_request('" + my_name + "')");
+    $('#mylikebutton').text('like').removeClass('btn-danger').addClass('btn-primary').attr("onclick", "like_request('" + my_name + "')");
 
 }
 
