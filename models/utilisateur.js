@@ -28,6 +28,7 @@ class Utilisateur {
 		})
 	}
 
+
 static findUsers3(username, callback){
 
 		let mongo = require('mongodb').MongoClient;
@@ -192,7 +193,7 @@ static findUsers3(username, callback){
 			if (err) throw err
 			else{
 				console.log("connecte a la base de donne matcha")
-				var user = {name: request.body.name, email: request.body.email, pwd: request.body.pwd}
+				var user = {name: request.body.name, email: request.body.email, pwd: request.body.pwd, question: request.body.questionSecrete, reponse: request.body.repQuestion}
 
 				this.findUsers(db, request.body.name, (doc)=>{
 					console.log(doc , '  blbla')
