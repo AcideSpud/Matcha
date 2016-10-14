@@ -14,13 +14,32 @@ var storage = multer.diskStorage({
 		let Utilisateur = require('../models/utilisateur');
 		var path = file.fieldname + '-' + Date.now();
 
-		Utilisateur.uploadImg2(req.user.name, path, (res, err)=>{
-			if (err) {throw err}
-			else{
-			//flash message
+		console.log('FILENAME----', file)
+
+//		if (file == undefined)
+//		{
+//			var err = "PUT A FILE FDP"
+//			callback(err)
+//		}
+		//else{
+			if (file.mimetype == 'image/jpeg' ||
+			file.mimetype == 'image/png'){
+			console.log('FILEEEE MIMETYPE OOOK')
+			Utilisateur.uploadImg2(req.user.name, path, (res, err)=>{
+				if (err) {throw err}
+				else{
+				//flash message
+				}
+			})
+			if (file.mimetype == 'image/jpeg') callback(null, file.fieldname + '-' + Date.now()+'.jpg');
+			else callback(null, file.fieldname + '-' + Date.now()+'.png')
 			}
-		})
-		callback(null, file.fieldname + '-' + Date.now());
+		else{
+			console.log('pas oook')
+			var err = 'Not jpg or png'
+			callback(err)
+			}
+		//}
 	}
 });
 
@@ -43,13 +62,20 @@ router.get('/', requireLogin, (req, res, next)=>{
 router.use(bodyParser.urlencoded({extended: false}));
 
 router.post('/upload_img', (req, res)=>{
-	upload(req, res, function(err){
-		console.log("-----UPLOAD IMG REQFILE" + req.files);
-		if (err){
-			return res.end("Error uploading file.");
-		}
-		res.end("file is uploaded")
-	})
+
+
+
+	console.log('UPLOAD---', req.files)
+	
+		upload(req, res, function(err){
+			console.log("-----UPLOAD IMG REQFILE" + req.files);
+			 if (err){
+				return res.end("Error uploading file.");
+			}
+			else
+			 return res.end("file is uploaded")
+		})
+	
 })
 
 module.exports = router;
