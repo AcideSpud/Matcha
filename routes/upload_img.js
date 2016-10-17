@@ -21,7 +21,7 @@ var storage = multer.diskStorage({
 			if (file.mimetype == 'image/jpeg' ||
 			file.mimetype == 'image/png'){
 			console.log('FILEEEE MIMETYPE OOOK')
-			Utilisateur.uploadImg2(req.user.name, path, (res, err)=>{
+			Utilisateur.uploadImg2(req.user.name, path1, (res, err)=>{
 				if (err) {throw err}
 				else{
 				//flash message
