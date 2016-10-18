@@ -12,8 +12,6 @@ var storage = multer.diskStorage({
 	},
 	filename: function (req, file, callback){
 
-		console.log('MIMETYPE----', file.mimetype)
-
 		if (file.mimetype == 'image/png'){
 			let Utilisateur = require('../models/utilisateur');
 			
@@ -21,7 +19,7 @@ var storage = multer.diskStorage({
 		Utilisateur.uploadImg2(req.user.name, path, (res, err)=>{
 
 				if (err)
-					{console.log(err)}
+					{throw err}
 				else{
 					//flash
 				}
