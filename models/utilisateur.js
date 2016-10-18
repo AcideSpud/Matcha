@@ -181,8 +181,10 @@ class Utilisateur {
 	static uploadImg2(username, imgpath, callback) {
 		let mongo = require('mongodb').MongoClient;
 
-		mongo.connect('mongodb://localhost/matcha', (err, db)=> {
-			db.collection("users").updateOne({"name": username}, {$push: {"img": imgpath}}, (err, res)=> {
+        mongo.connect('mongodb://localhost/matcha', (err, db)=>{
+			var path = '/img/'+ imgpath;
+			db.collection("users").updateOne({"name": username}, {$push: {"img": path}}, (err, res)=>{
+
 				if (err) throw err
 				else
 					callback()
@@ -200,13 +202,9 @@ class Utilisateur {
 			if (err) throw err
 			else {
 				console.log("connecte a la base de donne matcha")
-				var user = {
-					name: request.body.name,
-					email: request.body.email,
-					pwd: request.body.pwd,
-					question: request.body.questionSecrete,
-					reponse: request.body.repQuestion
-				}
+
+				var user = {name: request.body.name, email: request.body.email, pwd: request.body.pwd, question: request.body.questionSecrete, reponse: request.body.repQuestion, orientation: "Bi"}
+
 
 				this.findUsers(db, request.body.name, (doc)=> {
 					console.log(doc, '  blbla')
