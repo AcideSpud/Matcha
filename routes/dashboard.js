@@ -12,11 +12,13 @@ function requireLogin (req, res, next) {
 };
 
 let User = require('../models/getDataUser');
-
+let getProfile = require('../models/utilisateur');
 router.get('/', requireLogin, function(req, res, next) {
 
 	User.Create_db((ret)=>{
-	    res.render('dashboard', {ret : ret});
+		getProfile.SortPrefSexUser(req.session.user, ret, (cb)=>{
+			res.render('dashboard', {ret : cb});
+		})
 	});
 
 });
