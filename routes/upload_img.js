@@ -11,13 +11,14 @@ var storage = multer.diskStorage({
 		callback(null, './public/img');
 	},
 	filename: function (req, file, callback){
-		let Utilisateur = require('../models/utilisateur');
+
+		console.log('MIMETYPE----', file.mimetype)
+
+		if (file.mimetype == 'image/png'){
+			let Utilisateur = require('../models/utilisateur');
 			
 		var	path =  file.fieldname + '-' + Date.now() + '.png'
-
-
-		
-			Utilisateur.uploadImg2(req.user.name, path, (res, err)=>{
+		Utilisateur.uploadImg2(req.user.name, path, (res, err)=>{
 
 				if (err)
 					{console.log(err)}
@@ -27,27 +28,13 @@ var storage = multer.diskStorage({
 				
 			})
 
-		callback(null, path)
-
-		/*	if (file.mimetype == 'image/png'){
-
-				var path;
-				path = '/img/' + file.fieldname + '-' + Date.now() + '.png';
-
-				Utilisateur.uploadImg2(req.user.name, path, (res, err)=>{
-					if (err) {throw err}
-					else{
-					//flash message
-					}
-				})
-				console.log('PATH UPLOAD---',path)
-				callback(null, path)
-			}
-			else{
-				console.log('pas oook')
+			callback(null, path)
+		}
+		else{
+			console.log('pas oook')
 				var err = 'NEED PNG'
-				callback(null ,err)
-			}*/
+				callback(err)
+		}
 	}
 });
 
