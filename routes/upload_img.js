@@ -12,29 +12,42 @@ var storage = multer.diskStorage({
 	},
 	filename: function (req, file, callback){
 		let Utilisateur = require('../models/utilisateur');
-		if (file.mimetype == 'image/jpeg')
-		var path1 = '/img/'+file.fieldname + '-' + Date.now() + '.jpg';
-		else if(file.mimetype == 'image/png')
-			var path2 = '/img/'+file.fieldname + '-' + Date.now() + '.png';
-		console.log('FILENAME----', file)
+			
+		var	path =  file.fieldname + '-' + Date.now() + '.png'
 
-			if (file.mimetype == 'image/jpeg' ||
-			file.mimetype == 'image/png'){
-			console.log('FILEEEE MIMETYPE OOOK')
+
+		
 			Utilisateur.uploadImg2(req.user.name, path, (res, err)=>{
-				if (err) {throw err}
+
+				if (err)
+					{console.log(err)}
 				else{
-				//flash message
+					//flash
 				}
+				
 			})
-			if (file.mimetype == 'image/jpeg') callback(null, path1);
-			else callback(null, path2)
+
+		callback(null, path)
+
+		/*	if (file.mimetype == 'image/png'){
+
+				var path;
+				path = '/img/' + file.fieldname + '-' + Date.now() + '.png';
+
+				Utilisateur.uploadImg2(req.user.name, path, (res, err)=>{
+					if (err) {throw err}
+					else{
+					//flash message
+					}
+				})
+				console.log('PATH UPLOAD---',path)
+				callback(null, path)
 			}
-		else{
-			console.log('pas oook')
-			var err = 'Not jpg or png'
-			callback(err)
-			}
+			else{
+				console.log('pas oook')
+				var err = 'NEED PNG'
+				callback(null ,err)
+			}*/
 	}
 });
 
@@ -58,17 +71,13 @@ router.use(bodyParser.urlencoded({extended: false}));
 
 router.post('/upload_img', (req, res)=>{
 
-
-
-	console.log('UPLOAD---', req.files)
-	
 		upload(req, res, function(err){
 			console.log("-----UPLOAD IMG REQFILE" + req.files);
 			 if (err){
 				return res.end("Error uploading file.");
 			}
-			else
-			 return res.end("file is uploaded")
+		
+			res.end("file is uploaded")
 		})
 	
 })
