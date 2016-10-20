@@ -5,7 +5,7 @@
     <% for (ret of ret) { %>
     <div class="col-sm-6 col-md-4">
         <div class="thumbnail" style="background-image: linear-gradient(90deg,rgb(127, 18, 47), rgb(200, 255, 255) );">
-            <img src="<%= ret.img_path %>" alt="">
+            <img class="parent" src="<%= ret.img[0] %>"  alt="">
             <div class="caption" id="mybox">
                 <h3><%=ret.nom%> <%= ret.prenom %></h3>
                 <p id="test"><%= ret.bio %>...</p>
