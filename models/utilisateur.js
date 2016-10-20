@@ -317,7 +317,7 @@ class Utilisateur {
         callback(res);
     }
     static  updatePop(nbScore, userToUp, db){
-            db.collection("users").updateOne({"name": user.name}, {$set: {"popularite": userToUp.popularite + nbScore}}, (err)=> {
+            db.collection("users").updateOne({"name": userToUp[0].name}, {$set: {"popularite": nbScore}}, (err)=> {
                 if (err)
                     throw err;
                 else
@@ -329,4 +329,4 @@ class Utilisateur {
 
 }
 
-module.exports= Utilisateur
+module.exports= Utilisateur;

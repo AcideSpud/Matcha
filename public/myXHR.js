@@ -5,6 +5,8 @@ $(function() {
 
 });
 
+$("#ex2").slider({});
+
 var my_name;
 function like_request(name) {
     var xhr = new XMLHttpRequest();
