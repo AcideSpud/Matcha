@@ -18,22 +18,23 @@ function requireLogin (req, res, next) {
 
 router.get('/:userID', requireLogin, (req, res, next)=>{
     Profile.findUsers4(req.params.userID, (ret)=> {
-
-        var islike = false;
-        if (ret[0].liker) {
-            for (var i = 0, len = ret[0].liker.length; i < len; i++) {
-                if (ret[0].liker[i] == req.session.user.name) {
-                    console.log("HERE BITCH !!! ");
-                    islike = true;
+        User.updatePop(1, ret, db, ()=>{
+            var islike = false;
+            if (ret[0].liker) {
+                for (var i = 0, len = ret[0].liker.length; i < len; i++) {
+                    if (ret[0].liker[i] == req.session.user.name) {
+                        console.log("HERE BITCH !!! ");
+                        islike = true;
+                    }
                 }
             }
-        }
 
-        console.log(islike);
+            console.log(islike);
             res.render('profile', {
                 ret: ret,
                 islike: islike
             });
+        })
     })
 });
     //next();
@@ -43,17 +44,26 @@ router.post('/like/:Namelike', requireLogin, (req, res) =>{
     console.log(req.session.user.name);
 
     User.GetDB((db)=> {
-        User.updateLikeUser(req.session.user, db, req.params.Namelike.substring(1));
+        Profile.findUsers4(req.params.Namelike, (ret)=> {
+            User.updatePop(3, ret, db, ()=>{
+                User.updateLikeUser(req.session.user, db, req.params.Namelike.substring(1));
+            })
+
+        });
     });
+
     res.end();
 });
 
 router.post('/unlike/:Nameunlike', requireLogin, (req, res)=>{
     console.log("receve UNLIKE POST BITCH !");
 
-    User.GetDB((db)=>{
-        console.log(req.params.Nameunlike);
-      User.updateUnlikeUser(req.session.user, db, req.params.Nameunlike.substring(1));
+    User.GetDB((db)=> {
+        Profile.findUsers4(req.params.Nameunlike, (ret)=> {
+            User.updatePop(-3, ret, db, ()=> {
+                User.updateUnlikeUser(req.session.user, db, req.params.Nameunlike.substring(1));
+            });
+        });
     });
     res.end();
 });
