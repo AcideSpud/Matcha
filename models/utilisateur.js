@@ -132,6 +132,7 @@ class Utilisateur {
 		})
 	}
 
+
 	static modifUser(request, callback) {
 		let mongo = require('mongodb').MongoClient;
 		var path = require('path'),
