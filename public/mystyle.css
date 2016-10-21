@@ -1,5 +1,13 @@
+.left {
+	float: left;
+	height: 520px;
+	width: 220px;
+}
+.right {
+	float: right;
+}
+
 .parent {
-	width: 220px; /* I took the width from your post and placed it in css */
 	height: 200px;
 }
 
@@ -8,15 +16,21 @@
 	height: 100%;
 	width: 100%;
 }
+#datbox {
 
+}
 
 #mybox {
-		height : 208px;
-		width : 357px;
-		overflow : auto;
+    overflow : auto;
+    height: 500px;
+
+}
+#b_view {
+    position: absolute;
+    bottom: 30px;
 }
 
-#test {
 
-	overflow : auto;
-}
+
+
+

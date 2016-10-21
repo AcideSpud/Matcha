@@ -1,11 +1,13 @@
 /**
  * Created by tapostin on 10/10/16.
  */
+
+
 $(function() {
 
 });
 
-$("#ex2").slider({});
+
 
 var my_name;
 function like_request(name) {
