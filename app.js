@@ -69,17 +69,11 @@ app.use(session({
 	cookie: { secure: false }
 }))
 
-//app.use(function (req, res, next) {
-  //console.log('Time:', Date.now());
-//  next();
-//});
-
 
 app.use(function(req, res, next){
   if (req.session && req.session.user){
     let Utilisateur = require('./models/utilisateur')
     Utilisateur.findUsers3(req.session.user.name, (result, err)=>{
-      console.log('BIEN CONNECTE')
       if (err){
         console.log(err)
       }else{
@@ -113,8 +107,6 @@ function requireLogin (req, res, next) {
 };
 
 
-
-
 //ROUTAGE
 app.use(require('./middlewares/flash'));
 app.use('/inscription', inscription);
@@ -128,10 +120,6 @@ app.use('/profile', profile);
 app.use('/upload_img', upload_img);
 app.use('/forgot_mail', forgot_mail);
 app.use('/logout', logout);
-
-
-
-
 
 
 
