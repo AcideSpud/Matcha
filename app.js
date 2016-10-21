@@ -14,6 +14,7 @@ let profile = require('./routes/profile');
 let login = require('./routes/login');
 let upload_img = require('./routes/upload_img');
 let forgot_mail = require('./routes/forgot_mail');
+let logout = require('./routes/logout')
 
 
 let session = require('express-session');
@@ -126,6 +127,7 @@ app.use('/compte', compte);
 app.use('/profile', profile);
 app.use('/upload_img', upload_img);
 app.use('/forgot_mail', forgot_mail);
+app.use('/logout', logout);
 
 
 
