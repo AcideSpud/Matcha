@@ -2,6 +2,7 @@ let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 var express = require('express');
 var router = express.Router();
+let bcrypt = require('bcryptjs');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -26,7 +27,7 @@ router.post('/form_log', (request, response)=>{
       }else{
           console.log('REQUEST', request.body.password)
           console.log('PASS', result[0].pwd)
-        if (request.body.password === result[0].pwd){
+        if (bcrypt.compareSync(request.body.password, result[0].pwd)){
           //set info cookie
           request.flash('success', "bien Connecte")
           request.session.user = result[0];

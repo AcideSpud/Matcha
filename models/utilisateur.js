@@ -204,7 +204,10 @@ class Utilisateur {
 			else {
 				console.log("connecte a la base de donne matcha")
 
-				var user = {name: request.body.name, email: request.body.email, pwd: request.body.pwd, question: request.body.questionSecrete, reponse: request.body.repQuestion, orientation: "Bi", geo: []}
+				var hash = bcrypt.hashSync(request.body.pwd);
+				console.log("HASHH PWD---", hash)
+
+				var user = {name: request.body.name, email: request.body.email, pwd: hash, question: request.body.questionSecrete, reponse: request.body.repQuestion, orientation: "Bi", geo: []}
 
 
 				this.findUsers(db, request.body.name, (doc)=> {
