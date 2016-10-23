@@ -91,20 +91,6 @@ class Utilisateur {
 	}
 
 
-	static insertUser(db, user, response, request) {
-		db.collection("users").insert(user, null, (err, res)=> {
-			if (err) return false
-			else {
-				console.log("l'utilisateur a bien ete enregistre")
-				
-//				callback(res)
-
-				return true;
-			}
-
-		})
-	}
-
 	static updateLikeUser(user, db, key) {
 		console.log('-----UPDATE ARRAY USER' + user + '[' + key + ']');
 
@@ -168,7 +154,6 @@ class Utilisateur {
 			}
 		})
 	}
-
 
 	static queryUserByMail(mail, callback) {
 		let mongo = require('mongodb').MongoClient;
@@ -266,7 +251,7 @@ class Utilisateur {
 			}
 			else if (user.genre == 'Tran') {
 				for (let i = 0, len = otherUserArray.length; i < len; i++) {
-					if (otherUserArray[i].genre == 'Mme' || otherUserArray[i].genre == 'M' && otherUserArray[i].orientation == 'Ht') {
+					if (otherUserArray[i].genre == 'Mme' || otherUserArray.genre == 'M' && otherUserArray[i].orientation == 'Ht') {
 						res[cmp] = otherUserArray[i];
 						cmp++;
 					}
@@ -292,7 +277,7 @@ class Utilisateur {
 			}
 			else if (user.genre == 'Tran') {
 				for (let i = 0, len = otherUserArray.length; i < len; i++) {
-					if (otherUserArray[i].genre == 'Mme' || otherUserArray[i].genre == 'M' && otherUserArray[i].orientation == 'Hm') {
+					if (otherUserArray[i].genre == 'Mme' || otherUserArray.genre == 'M' && otherUserArray[i].orientation == 'Hm') {
 						res[cmp] = otherUserArray[i];
 						cmp++;
 					}
@@ -301,7 +286,7 @@ class Utilisateur {
 		}
 		else if (user.orientation == 'Bi') {
 			for (let i = 0, len = otherUserArray.length; i < len; i++) {
-				if (otherUserArray[i].genre == 'Mme' || otherUserArray[i].genre == 'M' || otherUserArray[i].genre == 'Tran') {
+				if (otherUserArray[i].genre == 'Mme' || otherUserArray.genre == 'M' || otherUserArray.genre == 'Tran') {
 					res[cmp] = otherUserArray[i];
 					cmp++;
 				}
@@ -341,8 +326,6 @@ class Utilisateur {
                     console.log("popularite update OK !");
             });
     }
-
-
 
 }
 
