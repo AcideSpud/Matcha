@@ -43,7 +43,9 @@ class Utilisateur {
 				db.collection('users').find({name: username}).toArray(function (err, result) {
 					if (err) {
 						callback(err);
-					} else if (result.length) {
+					}
+					if (result[0]) {
+						
 					} else {
 						console.log('No document(s) found with defined "find" criteria!');
 						result = undefined
@@ -89,12 +91,15 @@ class Utilisateur {
 	}
 
 
-	static insertUser(db, user, callback) {
+	static insertUser(db, user, response, request) {
 		db.collection("users").insert(user, null, (err, res)=> {
-			if (err) throw err
+			if (err) return false
 			else {
 				console.log("l'utilisateur a bien ete enregistre")
-				callback(res)
+				
+//				callback(res)
+
+				return true;
 			}
 
 		})
@@ -138,12 +143,17 @@ class Utilisateur {
 		var path = require('path'),
 			fs = require('fs');
 
+
 		mongo.connect("mongodb://localhost/matcha", (err, db)=> {
+		let bcrypt = require('bcryptjs')
+
+			var hash = bcrypt.hashSync(request.body.pwd);
+
 			if (err) {
 				throw err
 			} else {
 				var user = {
-					email: request.body.email, pwd: request.body.pwd, nom: request.body.nom,
+					email: request.body.email, pwd: hash, nom: request.body.nom,
 					prenom: request.body.prenom,
 					age: request.body.age,
 					genre: request.body.genre,
@@ -193,7 +203,7 @@ class Utilisateur {
 		})
 	}
 
-	static create(request, response, callback) {
+	static create(request, response) {
 		let mongo = require('mongodb').MongoClient
 		let bcrypt = require('bcryptjs')
 
@@ -210,18 +220,22 @@ class Utilisateur {
 				var user = {name: request.body.name, email: request.body.email, pwd: hash, question: request.body.questionSecrete, reponse: request.body.repQuestion, orientation: "Bi", geo: []}
 
 
-				this.findUsers(db, request.body.name, (doc)=> {
-					console.log(doc, '  blbla')
-					if (doc) {
+				this.findUsers3(request.body.name, (result)=> {
+					console.log(result, '  blbla')
+					if (result != undefined) {
 						console.log("le nom n\'est pas disponible")
-						db.close
 						request.flash('error', "Un Utilisateur utilise deja ce pseudo")
+						response.redirect('/');
 
-					} else {
-						console.log('Le nom est disponible')
-						this.insertUser(db, user, (res)=> {
-							return callback(res)
+					} else if (result == undefined) {
+							db.collection("users").insert(user, null, (err, res)=>{
+							if (err) throw err;
+							else{
+								request.flash('success', "Bravo")
+								response.redirect('/')
+							}
 						})
+				
 					}
 					db.close;
 				})

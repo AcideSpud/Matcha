@@ -21,15 +21,29 @@ var storage = multer.diskStorage({
 				if (err)
 					{throw err}
 				else{
-					//flash
+					req.flash('sucess',"Votre Image est upload")
 				}
 				
 			})
 
 			callback(null, path)
+		} else if (file.mimetype == 'image/jpeg'){
+			var	path =  file.fieldname + '-' + Date.now() + '.jpg'
+		Utilisateur.uploadImg2(req.user.name, path, (res, err)=>{
+
+				if (err)
+					{throw err}
+				else{
+					req.flash('sucess',"Votre Image est upload")
+				}
+				
+			})
+
+			callback(null, path)
+
 		}
 		else{
-			console.log('pas oook')
+			req.flash('error',"Verifiez que c'est bien du jpeg ou png")
 				var err = 'NEED PNG'
 				callback(err)
 		}
