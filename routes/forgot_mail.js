@@ -60,8 +60,7 @@ router.post('/forgot_mail', (req, res)=>{
 						console.log(err);
 	
 					}else{
-						console.log("----MAIL ENVOYE--:", info.response);
-						
+						console.log("----MAIL ENVOYE--:", info.response);		
 					}
 				})
 			})

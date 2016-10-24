@@ -12,7 +12,6 @@ class Utilisateur {
 		})
 	}
 
-
 	static findUsers(db, username, callback) {
 
 		let assert = require('assert')
@@ -28,7 +27,6 @@ class Utilisateur {
 		})
 	}
 
-
 	static findUsers3(username, callback) {
 
 		let mongo = require('mongodb').MongoClient;
@@ -39,7 +37,6 @@ class Utilisateur {
 				throw err
 			}
 			else {
-				console.log("-----FIND USER MONGO")
 				db.collection('users').find({name: username}).toArray(function (err, result) {
 					if (err) {
 						callback(err);
@@ -60,8 +57,6 @@ class Utilisateur {
 		let mongo = require('mongodb').MongoClient;
 
 		mongo.connect("mongodb://localhost/matcha", (err, db)=> {
-			console.log('-------MODIFPWD', pwd);
-			console.log('-----MODIFPWD USERNAME', username)
 			db.collection("users").updateOne({"name": username}, {$set: {"pwd": pwd}}, (err, res)=> {
 				if (err) callback(err)
 				else {
@@ -73,7 +68,6 @@ class Utilisateur {
 	}
 
 	static updateUser(user, db, username, callback) {
-		console.log('-----UPDATE USER: ', username)
 		db.collection("users").updateOne({"name": username}, {
 			$set: {
 				"email": user.email, "pwd": user.pwd,
@@ -84,7 +78,7 @@ class Utilisateur {
 				"geo": user.geo
 			}
 		}, (err, res)=> {
-			if (err) console.log("----/!/----ERROR UPDATE", err)
+			if (err) throw err
 			console.log("fin update")
 			callback()
 		})
@@ -159,7 +153,6 @@ class Utilisateur {
 		let mongo = require('mongodb').MongoClient;
 
 		mongo.connect("mongodb://localhost/matcha", (err, db)=> {
-			console.log('-----QUERY USER BY MAIL', mail)
 			db.collection("users").find({email: mail}).toArray((err, result)=> {
 				if (err)
 					callback(err);
@@ -180,7 +173,6 @@ class Utilisateur {
         mongo.connect('mongodb://localhost/matcha', (err, db)=>{
 			var path = '/img/'+ imgpath;
 			db.collection("users").updateOne({"name": username}, {$push: {"img": path}}, (err, res)=>{
-
 				if (err) throw err
 				else
 					callback()
@@ -192,35 +184,30 @@ class Utilisateur {
 		let mongo = require('mongodb').MongoClient
 		let bcrypt = require('bcryptjs')
 
-
 		mongo.connect("mongodb://localhost/matcha", (err, db)=> {
-			let error;
 			if (err) throw err
 			else {
-				console.log("connecte a la base de donne matcha")
-
 				var hash = bcrypt.hashSync(request.body.pwd);
-				console.log("HASHH PWD---", hash)
-
-				var user = {name: request.body.name, email: request.body.email, pwd: hash, question: request.body.questionSecrete, reponse: request.body.repQuestion, orientation: "Bi", geo: []}
-
+				var user = {name: request.body.name,
+							email: request.body.email,
+							pwd: hash,
+							question: request.body.questionSecrete,
+							reponse: request.body.repQuestion,
+							orientation: "Bi",
+							geo: []}
 
 				this.findUsers3(request.body.name, (result)=> {
-					console.log(result, '  blbla')
 					if (result != undefined) {
-						console.log("le nom n\'est pas disponible")
 						request.flash('error', "Un Utilisateur utilise deja ce pseudo")
 						response.redirect('/');
-
 					} else if (result == undefined) {
 							db.collection("users").insert(user, null, (err, res)=>{
 							if (err) throw err;
 							else{
-								request.flash('success', "Bravo")
+								request.flash('success', "Vous êtes bien enregistré!")
 								response.redirect('/')
 							}
 						})
-				
 					}
 					db.close;
 				})

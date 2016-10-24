@@ -3,46 +3,33 @@ let bodyParser = require('body-parser');
 var express = require('express');
 var router = express.Router();
 let bcrypt = require('bcryptjs');
-
-/* GET home page. */
-router.get('/', function(req, res, next) {
-	  res.render('login');
-});
+let Utilisateur = require('../models/utilisateur');
 
 router.use(bodyParser.urlencoded({ extended: false }));
-
-//request message flash module
 router.use(require('../middlewares/flash'));
 
+router.get('/', function(req, res, next) {
+    res.render('login');
+});
 
 router.post('/form_log', (request, response)=>{
-  let Utilisateur = require('../models/utilisateur')
   Utilisateur.findUsers3(request.body.name, (result, err)=>{
-    if (err){
-      console.log('error: ', err)
-    } 
+    if (err) throw err
     else{
       if (result === undefined){
         request.flash('error', "Pseudo inconnu")
       }else{
-          console.log('REQUEST', request.body.password)
-          console.log('PASS', result[0].pwd)
         if (bcrypt.compareSync(request.body.password, result[0].pwd)){
           //set info cookie
           request.flash('success', "bien Connecte")
           request.session.user = result[0];
-          console.log('SESSION USER', request.session.user)
         }
-        else{
+        else
           request.flash('error', "mauvais mdp")
-        }
       }
     }
     response.redirect('/');
   })
 })
 
-
-
 module.exports = router;
-
