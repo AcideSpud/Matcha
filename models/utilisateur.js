@@ -123,7 +123,6 @@ class Utilisateur {
 		var path = require('path'),
 			fs = require('fs');
 
-
 		mongo.connect("mongodb://localhost/matcha", (err, db)=> {
 		let bcrypt = require('bcryptjs')
 

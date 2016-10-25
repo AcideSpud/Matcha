@@ -1,21 +1,19 @@
 <% include header2 %>
 <div class="container">
 	<div class="col-sm-6 col-sm-offset-3">
-    <h1><span class="fa fa-sign-in"></span> Authentification</h1>
-    <!-- LOGIN FORM -->
+    <div class="jumbotron text-center"  style="padding:40px;">
+    <h2><span class="fa fa-sign-in"></span>Authentification</h2>
     <form action="login/form_log" method="post">
         <div class="form-group">
-            <label>name</label>
-            <input type="text" class="form-control" name="name">
+            <input type="text" class="form-control" name="name" required="required" placeholder="Pseudo">
         </div>
-        <hr>
         <div class="form-group">
-            <label>Password</label>
-            <input type="password" class="form-control" name="password">
+            <input type="password" class="form-control" name="password" placeholder="password" required="required">
         </div>
         <hr>
         <button type="submit" class="btn btn-warning btn-lg">Connexion</button>
     </form>
+    </div>
     <hr>
     <p>Password oublié? <a href="/forgot_mail">Password oublié</a></p>
     <p>Pas encore inscrit? <a href="/inscription">Signup</a></p>
