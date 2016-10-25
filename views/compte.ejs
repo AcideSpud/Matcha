@@ -33,7 +33,7 @@
 
         <div class="form-group">
             <input type="text" class="form-control" name="email" required="required"
-            placeholder="Email" value="">
+            placeholder="Email" value="<%= ret[0].email %>">
         </div>
 
         <div class="form-group">
@@ -42,16 +42,16 @@
         <hr>
 
         <div class="form-group">
-            <input type="text" class="form-control" id="nom" name="nom" required="required" placeholder="Nom">
+            <input type="text" class="form-control" id="nom" name="nom" required="required" placeholder="Nom" value="<%= ret[0].nom %>">
         </div>
 
         <div class="form-group">
-            <input type="text" class="form-control" id="prenom" name="prenom" required="required" placeholder="Prénom">
+            <input type="text" class="form-control" id="prenom" name="prenom" required="required" placeholder="Prénom" value="<%= ret[0].prenom %>">
         </div>
 
         <div class="form-group">
             <label class="control-label col-sm-2">Age *</label>
-            <input type="number" name="age" min="18" max="100" required="required">
+            <input type="number" name="age" min="18" max="100" required="required" value="<%= ret[0].age %>">
         </div>
 
 
@@ -71,7 +71,7 @@
 
         <div class="form-group">
             <label class="control-label col-sm-2">Orientation</label>
-            <label class="radio-inline ">
+            <label class="radio-inline">
                 <input type="radio" name="orientation" value="Ht">Hétérosexuel
             </label>
             <label class="radio-inline">
@@ -84,7 +84,7 @@
 
         <div class = "form-group">
             <label>Put some #hobbies</label>
-            <textarea class="form-control" rows="4" id="hastag" name="hashtag" maxlength="200" placeholder="Put some #hobbies"></textarea>
+            <textarea class="form-control" rows="3" id="hastag" name="hashtag" maxlength="200" placeholder="Put some #hobbies (200 caractères)"></textarea>
         </div>
 
         <div class="form-group">

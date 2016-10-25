@@ -19,7 +19,9 @@ function requireLogin (req, res, next) {
 };
 
 router.get('/', requireLogin, function(req, res, next) {
-	  res.render('compte');
+  Utilisateur.findUsers3(req.user.name, (result)=>{
+    res.render('compte', {ret : result});
+  })	  
 });
 
 

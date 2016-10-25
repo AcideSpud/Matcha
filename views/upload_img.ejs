@@ -2,14 +2,18 @@
 
 <div class="container">
 	<div class="col-sm-6 col-sm-offset-3">
-    <h1><span class="fa fa-sign-in"></span>Uploadez vos photos</h1>
+    <div class="jumbotron text-center"  style="padding:40px;">
+    <h2><span class="fa fa-sign-in"></span>Uploadez vos photos</h2>
 
-    <form id="uploadImgForm" enctype="multipart/form-data" action="/upload_img/upload_img" method="post">
+    <form class="" id="uploadImgForm" enctype="multipart/form-data" action="/upload_img/upload_img" method="post">
     <div class="form-group">
-    	<label> Partagez vos photos!</label>
-    	<input type="file" name="userImg" multiple/>
-    	<input type="submit" value="Upload Image" name="submit">
+      <br>
+    	<input class="btn btn-info" type="file" name="userImg" multiple/>
+      <br>
+    	<input type="submit" class="btn btn-warning btn-lg" value="Upload" name="submit">
+      <br>
     	<span id="status"></span>
+    </div>
     </div>
    </form>
 
