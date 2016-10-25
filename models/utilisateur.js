@@ -68,6 +68,8 @@ class Utilisateur {
 	}
 
 	static updateUser(user, db, username, callback) {
+		console.log('----UPDATEUSEER', user.tag)
+
 		db.collection("users").updateOne({"name": username}, {
 			$set: {
 				"email": user.email, "pwd": user.pwd,
@@ -125,8 +127,11 @@ class Utilisateur {
 
 		mongo.connect("mongodb://localhost/matcha", (err, db)=> {
 		let bcrypt = require('bcryptjs')
+		var hashtag = require('find-hashtags')
+		var hash = bcrypt.hashSync(request.body.pwd);
+		var hobbies = hashtag(request.body.hashtag)
 
-			var hash = bcrypt.hashSync(request.body.pwd);
+			console.log('------hobbies----', hobbies)
 
 			if (err) {
 				throw err
@@ -139,7 +144,7 @@ class Utilisateur {
 					orientation: request.body.orientation,
 					bio: request.body.bio,
 					like: [], liker: [], popularite: 0,
-					tag: request.body.tag,
+					tag: hobbies,
 					geo: request.body.geo
 				}
 				this.updateUser(user, db, request.user.name, (res)=> {

@@ -26,11 +26,10 @@ router.get('/', requireLogin, function(req, res, next) {
 router.post('/form_compte', upload.single('userFile'), (request, response)=>{
   
   Utilisateur.modifUser(request, (res, err)=>{
-    if (err){
-      console.log('error: ', err)
-    } else {
+    if (err)
+      request.flash('error', err)
+    else
       request.flash('success', "informations bien enregistrées")
-    }
   })
   response.redirect('/upload_img')
 })
