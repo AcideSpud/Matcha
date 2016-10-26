@@ -5,85 +5,86 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-   <link rel="stylesheet" type="text/css" href="/mystyle.css">
+    <link rel="stylesheet" type="text/css" href="/mystyle.css">
     <script type="text/javascript" src="/myXHR.js"></script>
+    <script type="text/javascript" src="/myDash.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body style="background-image: linear-gradient(90deg,rgb(200, 255, 255), rgb(127, 18, 47) );">
 
-    <nav class="navbar navbar-inverse navbar-static-top">
-        <body style="background-image: linear-gradient(90deg,rgb(200, 255, 255), rgb(127, 18, 47) );">
-         <div class="container">
-                    <a class="navbar-brand" href="/">Michto</a>
-                    <ul class="nav navbar-nav">
-                        <li class="active">
-                            <a href="/">DashBoard</a>
-                        </li>
-                        <li class="">
-                            <a href="/compte">Mon compte</a>
-                        </li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="/logout">logout</a>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-bell" aria-hidden="true"></span> <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                            </ul>
-                        </li>
+<nav class="navbar navbar-inverse navbar-static-top">
+    <body style="background-image: linear-gradient(90deg,rgb(200, 255, 255), rgb(127, 18, 47) );">
+    <div class="container">
+        <a class="navbar-brand" href="/">Michto</a>
+        <ul class="nav navbar-nav">
+            <li class="active">
+                <a href="/">DashBoard</a>
+            </li>
+            <li class="">
+                <a href="/compte">Mon compte</a>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a href="/logout">logout</a>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-bell" aria-hidden="true"></span> <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                </ul>
+            </li>
 
-                    </ul>
-                </div>
-         <form action="dashboard/form_filtre" method="post">
-         <div class="container">
+        </ul>
+    </div>
+    <form action="dashboard/form_filtre" method="post">
+        <div class="container">
             <ul class="nav navbar-nav">
                 <li style="margin-right: 10px;padding-left: 10px;" >
                     <div class="form-group">
                         <p style="color: rgb(255,255,255);"><label> Age min </label></p>
-                        <input type="number" name="age" min="18" max="100" value="18" required="required">
+                        <input type="number" id="age-min" name="age-min" min="18" max="100" value="18" required="required">
                     </div>
                 </li>
 
                 <li style="margin-right: 10px;padding-left: 10px;">
                     <div class="form-group">
                         <p style="color: rgb(255,255,255);"><label> Age max </label></p>
-                        <input type="number" name="age" min="18" max="100" value="100" required="required">
+                        <input type="number" id="age-max" name="age-max" min="18" max="100" value="100" required="required">
                     </div>
                 </li>
                 <li class="divider-vertical"></li>
             </ul>
-             <ul class="nav navbar-nav">
-                 <li style="margin-right: 10px;padding-left: 10px;" >
-                     <div class="form-group">
-                         <p style="color: rgb(255,255,255);"><label> Pop min </label></p>
-                         <input type="number" name="age" min="18" max="100" value="0" required="required">
-                     </div>
-                 </li>
-                 <li style="margin-right: 10px;padding-left: 10px;">
-                     <div class="form-group">
-                         <p style="color: rgb(255,255,255);"><label> Pop max </label></p>
-                         <input type="number" name="age" min="18" max="100" value="100" required="required">
-                     </div>
-                 </li>
-                 <li class="divider-vertical"></li>
-                 <li style="margin-right: 10px;padding-left: 10px;">
-                     <div class="form-group">
-                         <p style="color: rgb(255,255,255);"><label><span class="glyphicon glyphicon-map-marker" aria-hidden="true">Dist </label></p>
-                         <input style="margin-top: 5px" type="number" name="age" min="18" max="100" value="10" required="required"><span style="margin-left:10px;color: rgb(255,255,255);">Km</span>
-                     </div>
-                 </li>
-                 <li>
-                     <button style="margin-top: 25px;margin-left: 35px;" class="btn btn-warning btn-block" type="button">Find !</button>
-                 </li>
-             </ul>
-         </div></form>
-        </body>
+            <ul class="nav navbar-nav">
+                <li style="margin-right: 10px;padding-left: 10px;" >
+                    <div class="form-group">
+                        <p style="color: rgb(255,255,255);"><label> Pop min </label></p>
+                        <input type="number" id="pop-min" name="pop-min" min="18" max="100" value="0" required="required">
+                    </div>
+                </li>
+                <li style="margin-right: 10px;padding-left: 10px;">
+                    <div class="form-group">
+                        <p style="color: rgb(255,255,255);"><label> Pop max </label></p>
+                        <input type="number" id="pop-max" name="pop-max" min="18" max="100" value="100" required="required">
+                    </div>
+                </li>
+                <li class="divider-vertical"></li>
+                <li style="margin-right: 10px;padding-left: 10px;">
+                    <div class="form-group">
+                        <p style="color: rgb(255,255,255);"><label><span class="glyphicon glyphicon-map-marker" aria-hidden="true">Dist </label></p>
+                        <input style="margin-top: 5px" id="dist" type="number" name="dist" min="10" max="100" value="10" required="required"><span style="margin-left:10px;color: rgb(255,255,255);">Km</span>
+                    </div>
+                </li>
+                <li>
+                    <button style="margin-top: 25px;margin-left: 35px;" id="btn-find" onclick="find();" class="btn btn-warning btn-block" type="button">Find !</button>
+                </li>
+            </ul>
+        </div></form>
+    </body>
 </nav>
 
 
