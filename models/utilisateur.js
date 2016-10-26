@@ -42,7 +42,7 @@ class Utilisateur {
 						callback(err);
 					}
 					if (result[0]) {
-						
+
 					} else {
 						console.log('No document(s) found with defined "find" criteria!');
 						result = undefined
@@ -126,10 +126,10 @@ class Utilisateur {
 			fs = require('fs');
 
 		mongo.connect("mongodb://localhost/matcha", (err, db)=> {
-		let bcrypt = require('bcryptjs')
-		var hashtag = require('find-hashtags')
-		var hash = bcrypt.hashSync(request.body.pwd);
-		var hobbies = hashtag(request.body.hashtag)
+			let bcrypt = require('bcryptjs')
+			var hashtag = require('find-hashtags')
+			var hash = bcrypt.hashSync(request.body.pwd);
+			var hobbies = hashtag(request.body.hashtag)
 
 			console.log('------hobbies----', hobbies)
 
@@ -139,7 +139,7 @@ class Utilisateur {
 				var user = {
 					email: request.body.email, pwd: hash, nom: request.body.nom,
 					prenom: request.body.prenom,
-					age: request.body.age,
+					age: parseInt(request.body.age),
 					genre: request.body.genre,
 					orientation: request.body.orientation,
 					bio: request.body.bio,
@@ -174,9 +174,9 @@ class Utilisateur {
 	static uploadImg2(username, imgpath, callback) {
 		let mongo = require('mongodb').MongoClient;
 
-        mongo.connect('mongodb://localhost/matcha', (err, db)=>{
-			var path = '/img/'+ imgpath;
-			db.collection("users").updateOne({"name": username}, {$push: {"img": path}}, (err, res)=>{
+		mongo.connect('mongodb://localhost/matcha', (err, db)=> {
+			var path = '/img/' + imgpath;
+			db.collection("users").updateOne({"name": username}, {$push: {"img": path}}, (err, res)=> {
 				if (err) throw err
 				else
 					callback()
@@ -192,22 +192,24 @@ class Utilisateur {
 			if (err) throw err
 			else {
 				var hash = bcrypt.hashSync(request.body.pwd);
-				var user = {name: request.body.name,
-							email: request.body.email,
-							pwd: hash,
-							question: request.body.questionSecrete,
-							reponse: request.body.repQuestion,
-							orientation: "Bi",
-							geo: []}
+				var user = {
+					name: request.body.name,
+					email: request.body.email,
+					pwd: hash,
+					question: request.body.questionSecrete,
+					reponse: request.body.repQuestion,
+					orientation: "Bi",
+					geo: []
+				}
 
 				this.findUsers3(request.body.name, (result)=> {
 					if (result != undefined) {
 						request.flash('error', "Un Utilisateur utilise deja ce pseudo")
 						response.redirect('/');
 					} else if (result == undefined) {
-							db.collection("users").insert(user, null, (err, res)=>{
+						db.collection("users").insert(user, null, (err, res)=> {
 							if (err) throw err;
-							else{
+							else {
 								request.flash('success', "Vous êtes bien enregistré!")
 								response.redirect('/')
 							}
@@ -242,7 +244,7 @@ class Utilisateur {
 			}
 			else if (user.genre == 'Tran') {
 				for (let i = 0, len = otherUserArray.length; i < len; i++) {
-					if (otherUserArray[i].genre == 'Mme' || otherUserArray.genre == 'M' && otherUserArray[i].orientation == 'Ht') {
+					if (otherUserArray[i].genre == 'Mme' || otherUserArray[i].genre == 'M' && otherUserArray[i].orientation == 'Ht') {
 						res[cmp] = otherUserArray[i];
 						cmp++;
 					}
@@ -268,7 +270,7 @@ class Utilisateur {
 			}
 			else if (user.genre == 'Tran') {
 				for (let i = 0, len = otherUserArray.length; i < len; i++) {
-					if (otherUserArray[i].genre == 'Mme' || otherUserArray.genre == 'M' && otherUserArray[i].orientation == 'Hm') {
+					if (otherUserArray[i].genre == 'Mme' || otherUserArray[i].genre == 'M' && otherUserArray[i].orientation == 'Hm') {
 						res[cmp] = otherUserArray[i];
 						cmp++;
 					}
@@ -277,7 +279,7 @@ class Utilisateur {
 		}
 		else if (user.orientation == 'Bi') {
 			for (let i = 0, len = otherUserArray.length; i < len; i++) {
-				if (otherUserArray[i].genre == 'Mme' || otherUserArray.genre == 'M' || otherUserArray.genre == 'Tran') {
+				if (otherUserArray[i].genre == 'Mme' || otherUserArray[i].genre == 'M' || otherUserArray[i].genre == 'Tran') {
 					res[cmp] = otherUserArray[i];
 					cmp++;
 				}
@@ -293,31 +295,34 @@ class Utilisateur {
 		for (let i = 0, len = otherUserArray.length; i < len; i++) {
 			if (otherUserArray[i].age >= ageMin && otherUserArray[i].age <= ageMax) {
 				res[cmp] = otherUserArray[i];
+				cmp++;
 			}
 		}
 		callback(res);
 	}
 
 	static    sortByPop(popMin, popMax, otherUserArray, callback) {
-        let res = [];
-        let cmp = 0;
+		let res = [];
+		let cmp = 0;
 
-        for (let i = 0, len = otherUserArray.length; i < len; i++) {
-            if (otherUserArray[i].popularite >= popMin && otherUserArray[i].popularite <= popMax) {
-                res[cmp] = otherUserArray[i];
-            }
-        }
-        callback(res);
-    }
-    static  updatePop(nbScore, userToUp, db){
-            db.collection("users").updateOne({"name": userToUp[0].name}, {$set: {"popularite": nbScore}}, (err)=> {
-                if (err)
-                    throw err;
-                else
-                    console.log("popularite update OK !");
-            });
-    }
+		for (let i = 0, len = otherUserArray.length; i < len; i++) {
+			if (otherUserArray[i].popularite >= popMin && otherUserArray[i].popularite <= popMax) {
+				res[cmp] = otherUserArray[i];
+				cmp++;
+			}
+		}
+		callback(res);
+	}
 
+	static  updatePop(nbScore, userToUp, db) {
+		db.collection("users").updateOne({"name": userToUp[0].name}, {$set: {"popularite": nbScore}}, (err)=> {
+			if (err)
+				throw err;
+			else
+				console.log("popularite update OK !");
+		});
+	}
 }
+
 
 module.exports= Utilisateur;
