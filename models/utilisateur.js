@@ -12,7 +12,6 @@ class Utilisateur {
 		})
 	}
 
-
 	static findUsers(db, username, callback) {
 
 		let assert = require('assert')
@@ -28,7 +27,6 @@ class Utilisateur {
 		})
 	}
 
-
 	static findUsers3(username, callback) {
 
 		let mongo = require('mongodb').MongoClient;
@@ -39,11 +37,12 @@ class Utilisateur {
 				throw err
 			}
 			else {
-				console.log("-----FIND USER MONGO")
 				db.collection('users').find({name: username}).toArray(function (err, result) {
 					if (err) {
 						callback(err);
-					} else if (result.length) {
+					}
+					if (result[0]) {
+						
 					} else {
 						console.log('No document(s) found with defined "find" criteria!');
 						result = undefined
@@ -58,8 +57,6 @@ class Utilisateur {
 		let mongo = require('mongodb').MongoClient;
 
 		mongo.connect("mongodb://localhost/matcha", (err, db)=> {
-			console.log('-------MODIFPWD', pwd);
-			console.log('-----MODIFPWD USERNAME', username)
 			db.collection("users").updateOne({"name": username}, {$set: {"pwd": pwd}}, (err, res)=> {
 				if (err) callback(err)
 				else {
@@ -71,7 +68,8 @@ class Utilisateur {
 	}
 
 	static updateUser(user, db, username, callback) {
-		console.log('-----UPDATE USER: ', username)
+		console.log('----UPDATEUSEER', user.tag)
+
 		db.collection("users").updateOne({"name": username}, {
 			$set: {
 				"email": user.email, "pwd": user.pwd,
@@ -82,23 +80,12 @@ class Utilisateur {
 				"geo": user.geo
 			}
 		}, (err, res)=> {
-			if (err) console.log("----/!/----ERROR UPDATE", err)
+			if (err) throw err
 			console.log("fin update")
 			callback()
 		})
 	}
 
-
-	static insertUser(db, user, callback) {
-		db.collection("users").insert(user, null, (err, res)=> {
-			if (err) throw err
-			else {
-				console.log("l'utilisateur a bien ete enregistre")
-				callback(res)
-			}
-
-		})
-	}
 
 	static updateLikeUser(user, db, key) {
 		console.log('-----UPDATE ARRAY USER' + user + '[' + key + ']');
@@ -139,18 +126,25 @@ class Utilisateur {
 			fs = require('fs');
 
 		mongo.connect("mongodb://localhost/matcha", (err, db)=> {
+		let bcrypt = require('bcryptjs')
+		var hashtag = require('find-hashtags')
+		var hash = bcrypt.hashSync(request.body.pwd);
+		var hobbies = hashtag(request.body.hashtag)
+
+			console.log('------hobbies----', hobbies)
+
 			if (err) {
 				throw err
 			} else {
 				var user = {
-					email: request.body.email, pwd: request.body.pwd, nom: request.body.nom,
+					email: request.body.email, pwd: hash, nom: request.body.nom,
 					prenom: request.body.prenom,
 					age: request.body.age,
 					genre: request.body.genre,
 					orientation: request.body.orientation,
 					bio: request.body.bio,
 					like: [], liker: [], popularite: 0,
-					tag: request.body.tag,
+					tag: hobbies,
 					geo: request.body.geo
 				}
 				this.updateUser(user, db, request.user.name, (res)=> {
@@ -159,12 +153,10 @@ class Utilisateur {
 		})
 	}
 
-
 	static queryUserByMail(mail, callback) {
 		let mongo = require('mongodb').MongoClient;
 
 		mongo.connect("mongodb://localhost/matcha", (err, db)=> {
-			console.log('-----QUERY USER BY MAIL', mail)
 			db.collection("users").find({email: mail}).toArray((err, result)=> {
 				if (err)
 					callback(err);
@@ -185,7 +177,6 @@ class Utilisateur {
         mongo.connect('mongodb://localhost/matcha', (err, db)=>{
 			var path = '/img/'+ imgpath;
 			db.collection("users").updateOne({"name": username}, {$push: {"img": path}}, (err, res)=>{
-
 				if (err) throw err
 				else
 					callback()
@@ -193,34 +184,33 @@ class Utilisateur {
 		})
 	}
 
-	static create(request, response, callback) {
+	static create(request, response) {
 		let mongo = require('mongodb').MongoClient
 		let bcrypt = require('bcryptjs')
 
-
 		mongo.connect("mongodb://localhost/matcha", (err, db)=> {
-			let error;
 			if (err) throw err
 			else {
-				console.log("connecte a la base de donne matcha")
-
 				var hash = bcrypt.hashSync(request.body.pwd);
-				console.log("HASHH PWD---", hash)
+				var user = {name: request.body.name,
+							email: request.body.email,
+							pwd: hash,
+							question: request.body.questionSecrete,
+							reponse: request.body.repQuestion,
+							orientation: "Bi",
+							geo: []}
 
-				var user = {name: request.body.name, email: request.body.email, pwd: hash, question: request.body.questionSecrete, reponse: request.body.repQuestion, orientation: "Bi", geo: []}
-
-
-				this.findUsers(db, request.body.name, (doc)=> {
-					console.log(doc, '  blbla')
-					if (doc) {
-						console.log("le nom n\'est pas disponible")
-						db.close
+				this.findUsers3(request.body.name, (result)=> {
+					if (result != undefined) {
 						request.flash('error', "Un Utilisateur utilise deja ce pseudo")
-
-					} else {
-						console.log('Le nom est disponible')
-						this.insertUser(db, user, (res)=> {
-							return callback(res)
+						response.redirect('/');
+					} else if (result == undefined) {
+							db.collection("users").insert(user, null, (err, res)=>{
+							if (err) throw err;
+							else{
+								request.flash('success', "Vous êtes bien enregistré!")
+								response.redirect('/')
+							}
 						})
 					}
 					db.close;
@@ -252,7 +242,7 @@ class Utilisateur {
 			}
 			else if (user.genre == 'Tran') {
 				for (let i = 0, len = otherUserArray.length; i < len; i++) {
-					if (otherUserArray[i].genre == 'Mme' || otherUserArray[i].genre == 'M' && otherUserArray[i].orientation == 'Ht') {
+					if (otherUserArray[i].genre == 'Mme' || otherUserArray.genre == 'M' && otherUserArray[i].orientation == 'Ht') {
 						res[cmp] = otherUserArray[i];
 						cmp++;
 					}
@@ -278,7 +268,7 @@ class Utilisateur {
 			}
 			else if (user.genre == 'Tran') {
 				for (let i = 0, len = otherUserArray.length; i < len; i++) {
-					if (otherUserArray[i].genre == 'Mme' || otherUserArray[i].genre == 'M' && otherUserArray[i].orientation == 'Hm') {
+					if (otherUserArray[i].genre == 'Mme' || otherUserArray.genre == 'M' && otherUserArray[i].orientation == 'Hm') {
 						res[cmp] = otherUserArray[i];
 						cmp++;
 					}
@@ -287,7 +277,7 @@ class Utilisateur {
 		}
 		else if (user.orientation == 'Bi') {
 			for (let i = 0, len = otherUserArray.length; i < len; i++) {
-				if (otherUserArray[i].genre == 'Mme' || otherUserArray[i].genre == 'M' || otherUserArray[i].genre == 'Tran') {
+				if (otherUserArray[i].genre == 'Mme' || otherUserArray.genre == 'M' || otherUserArray.genre == 'Tran') {
 					res[cmp] = otherUserArray[i];
 					cmp++;
 				}
@@ -327,8 +317,6 @@ class Utilisateur {
                     console.log("popularite update OK !");
             });
     }
-
-
 
 }
 
