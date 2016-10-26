@@ -4,15 +4,17 @@
     <div class="row">
 
         <% for (ret of ret) { %>
-        <div class="col-sm-6 col-md-3" id="datbox">
-            <div class="thumbnail" style="background-image: linear-gradient(90deg,rgb(127, 18, 47), rgb(200, 255, 255) );" id="mybox">
-                <img class="parent" src="<%= ret.img[0] %>"  alt="">
-                <div class="caption">
-                    <h3><%=ret.nom%> <%= ret.prenom %></h3>
-                    <p id="test"><%= ret.bio %>...</p>
-
-                    <p id="b_view"><a href="#" class="btn btn-primary" role="button">Like</a> <a href="/profile/<%= ret.name %>" class="btn btn-default" role="button">View profil</a></p>
-
+        <div class="jumbotron text-center"  style="padding:40px;">
+            <div class="col-sm-6 col-md-3" id="datbox">
+                <div class="thumbnail" style="background-image:     linear-gradient(90deg,rgb(127, 18, 47), rgb(200, 255, 255) );"  id="mybox">
+                    <img class="parent" src="<%= ret.img[0] %>"  alt="">
+                    <div class="caption">
+                        <h3><%=ret.nom%> <%= ret.prenom %></h3>
+                        <p id="test"><%= ret.bio %>...</p>
+    
+                        <p id="b_view"><a href="#" class="btn btn-primary"  role="button">Like</a> <a href="/profile/<%= ret.name %>"    class="btn btn-default" role="button">View profil</a></p>
+    
+                    </div>
                 </div>
             </div>
         </div>
