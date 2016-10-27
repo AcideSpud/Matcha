@@ -58,7 +58,7 @@ router.post('/filter', upload.array(),requireLogin, (req, res) =>{
 			getProfile.sortByAge(ageMin, ageMax, cb, (callB)=>{
 				getProfile.sortByPop(popMin, popMax, callB, (m_cb)=>{
 					res.end()
-					//res.json(m_cb);
+					//res.json(JSON.stringify(m_cb));
 				});
 			});
 		});

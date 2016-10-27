@@ -191,7 +191,6 @@ class Utilisateur {
 		mongo.connect("mongodb://localhost/matcha", (err, db)=> {
 			if (err) throw err
 			else {
-				var no_image = ["/img/no_image.png", "/img/no_image.png", "/img/no_image.png", "/img/no_image.png"]
 				var hash = bcrypt.hashSync(request.body.pwd);
 				var user = {
 					name: request.body.name,
@@ -199,7 +198,7 @@ class Utilisateur {
 					pwd: hash,
 					question: request.body.questionSecrete,
 					reponse: request.body.repQuestion,
-					img: no_image,
+					img: [],
 					orientation: "Bi",
 					geo: []
 				}
