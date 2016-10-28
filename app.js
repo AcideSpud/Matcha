@@ -8,6 +8,7 @@ let bodyParser = require('body-parser');
 let routes = require('./routes/index');
 let users = require('./routes/users');
 let inscription = require('./routes/inscription');
+let inscription2 = require('./routes/inscription2');
 let compte = require('./routes/compte');
 let dashboard = require('./routes/dashboard');
 let profile = require('./routes/profile');
@@ -100,6 +101,7 @@ function requireLogin (req, res, next) {
 //ROUTAGE
 app.use(require('./middlewares/flash'));
 app.use('/inscription', inscription);
+app.use('/inscription2', inscription2);
 app.use('/', routes);
 app.use('/users', users);
 //app.use('/chat', chat);

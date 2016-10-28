@@ -25,7 +25,7 @@
 <% if (ret[0].img[0]) { %>
 <div class="container">
   <br>
-  <div class="jumbotron text-center" style="background-color:grey;">
+  <div class="jumbotron text-center" ">
   <div id="myCarousel" class="carousel slide" data-ride="carousel" style="background-color:black">
     
     <ol class="carousel-indicators">
@@ -38,11 +38,27 @@
     <div class="carousel-inner" role="listbox">
       <div class="item active">
         <img src="<%= ret[0].img[0] %>" alt="Chania" width="460" height="345">
+        <div class="overlay">
+          <button class="btn carousel-button">
+            <i class="fa fa-exchange"></i> Replace Image
+          </button>
+          <button class="btn carousel-button">
+            <i class="fa fa-times-circle"></i> Remove Image
+          </button> 
+        </div>
       </div>
 
      
       <div class="item">
         <img src="<%= ret[0].img[i] %>" alt="Chania" width="460" height="345">
+        <div class="overlay">
+          <button class="btn carousel-button">
+            <i class="fa fa-exchange"></i> Replace Image
+          </button>
+          <button class="btn carousel-button">
+            <i class="fa fa-times-circle"></i> Remove Image
+          </button> 
+        </div>
       </div>
 
     <% } %>
@@ -65,7 +81,7 @@
   <script>
   $(document).ready(function() {
      $('#uploadImgForm').submit(function() {
-        $("#status").empty().text("<strong>File is uploading...</strong>");
+        $("#status").empty().text("File is uploading...");
         $(this).ajaxSubmit({
             error: function(xhr) {
               status('Error: ' + xhr.status);
@@ -76,7 +92,13 @@
             }
         });
     return false;
-    });    
+    });   
+
+     $('.overlay .carousel-button:last-child').on('click', function(){
+
+     $('.item.active img').remove()     
+ });
+
 });
 </script>
 
