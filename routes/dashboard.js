@@ -5,7 +5,6 @@ let bodyParser = require('body-parser');
 var upload = multer();
 let User = require('../models/getDataUser');
 let getProfile = require('../models/utilisateur');
-
 /* GET home page. */
 function requireLogin (req, res, next) {
 	if (!req.user) {
@@ -52,17 +51,34 @@ router.post('/filter', upload.array(),requireLogin, (req, res) =>{
 	var popMin = req.body.popMin;
 	var popMax = req.body.popMax;
 	var dist = req.body.dist;
-	console.log(ageMin);
-	User.Create_db((ret)=>{
-		getProfile.SortPrefSexUser(req.session.user, ret, (cb)=>{
+	if (req.body.data)
+	{
+		let data = JSON.parse(req.body.data);
+		console.log(data[0].name);
+		getProfile.SortPrefSexUser(req.session.user, data, (cb)=>{
 			getProfile.sortByAge(ageMin, ageMax, cb, (callB)=>{
 				getProfile.sortByPop(popMin, popMax, callB, (m_cb)=>{
-					res.end()
-					//res.json(m_cb);
+					//res.end()
+					res.contentType('json');
+					res.send(JSON.stringify(m_cb));
 				});
 			});
 		});
-	});
+	}
+	else {
+		console.log(ageMin);
+		User.Create_db((ret)=> {
+			getProfile.SortPrefSexUser(req.session.user, ret, (cb)=> {
+				getProfile.sortByAge(ageMin, ageMax, cb, (callB)=> {
+					getProfile.sortByPop(popMin, popMax, callB, (m_cb)=> {
+						//res.end()
+						res.contentType('json');
+						res.send(JSON.stringify(m_cb));
+					});
+				});
+			});
+		});
+	}
 });
 
 module.exports = router;

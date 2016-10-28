@@ -2,7 +2,7 @@
  * Created by Tom on 22/10/2016.
  */
 $(function() {
-    $('#datbox').hide();
+
 });
 var getHttpRequest = function () {
     var httpRequest = false;
@@ -39,20 +39,37 @@ var onProgress = function(e) {
     }
 };
 
+var data = null;
+var xhr = getHttpRequest();
+
+function showTable(data){
+    for (mkey in data) {
+
+        $('#table').append('<div class="col-sm-6 col-md-3" id="thebox">' +
+       '<div class="thumbnail" style="background-image:linear-gradient(90deg,rgb(127, 18, 47), rgb(200, 255, 255) );" id="mybox">' +
+         '<img class="parent" src="'+ data[mkey].img[0]+ '"  alt="">' +
+            '<div class="caption">' + '<h3>' + data[mkey].nom + data[mkey].prenom +'</h3>' +
+            '<p id="test">'+ data[mkey].bio +'...</p>'+
+            '<p id="b_view"><a href="#" class="btn btn-primary" role="button">Like</a> <a href="/profile/' + data[mkey].name + '" class="btn btn-default" role="button">View profil</a></p>' +
+                '</div></div></div>');
+
+    }
+
+};
+
 var onReady = function(e) {
     // ready state
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:3000/dashboard/filter",
-        success: function (data) {
-            for (var pair of data.entries()) {
-                console.log(pair[0]+ ', ' + pair[1]);
-            }
-        },
-        error: function () {
-            alert('error')
+    var status;
+    // https://xhr.spec.whatwg.org/#dom-xmlhttprequest-readystate
+    if (xhr.readyState == 4) { // `DONE`
+        status = xhr.status;
+        if (status == 200) {
+            data = JSON.parse(xhr.responseText);
+            showTable(data);
+        } else {
+            console.log(status);
         }
-    })
+    }
     console.log("good");
 };
 
@@ -61,12 +78,16 @@ var onError = function(err) {
 };
 
 function find(){
+    if (data)
+    {
+        console.log("MYSUPERDUPERTEST !!!!");
+    }
     var ageMin = $('#age-min').val();
     var ageMax = $('#age-max').val();
     var popMin = $('#pop-min').val();
     var popMax = $('#pop-max').val();
     var mDist = $('#dist').val();
-
+    $('#table').empty();
 
 
     var myform = new FormData();
@@ -75,13 +96,18 @@ function find(){
     myform.append("popMin" , popMin);
     myform.append("popMax" , popMax);
     myform.append("dist" , mDist);
+    if (data)
+    {
+        myform.append('data', JSON.stringify(data));
+        console.log(myform.data + "HAHHAHAHAHAHHA");
+    }
 
     console.log(myform);
     for (var pair of myform.entries()) {
         console.log(pair[0]+ ', ' + pair[1]);
     }
-    $('#datbox').hide();
-    var xhr = getHttpRequest();
+
+
     xhr.open('POST', "/dashboard/filter", true);
     xhr.setRequestHeader('X-Requested-With', 'xmlhttprequest');
     xhr.addEventListener('error', onError, false);
