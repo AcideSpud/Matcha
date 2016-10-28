@@ -1,18 +1,27 @@
-<%include header_dash.ejs %>
+<% include header_dash.ejs %>
 <div class="container">
     <div class="row clearfix well">
+        <% if(ret[0].img[0]) { %>
         <div class="col-md-2 column">
-
-            <img class="img-thumbnail" alt="140x140" src="<%= ret[0].img[0] %>" />
-
+            
+           <img class=" img-thumbnail" alt="140x140" src="<%= ret[0].img[0] %>" />
         </div>
+        <% } else { %>
+        <div class="col-md-2 column">
+            
+           <img class=" img-thumbnail" alt="140x140" src="/img/no_image.png" />
+        </div>
+        <% } %>
+
         <div class="col-md-8 column">
 
                 <P>
                     <%= ret[0].name %>
+                    <% if (ret[0].tag) { %>
                 </p> <% for (var i = 0; i < ret[0].tag.length;  i++) { %>
                 <p><small><span class="label label-info"> <%= ret[0].tag[i] %> </span></small></p>
-                <% } %>
+                     <% } %>
+                    <% } %>
 
         </div>
         <div class="col-md-2 column">
@@ -31,8 +40,6 @@
             <button class="btn btn-warning btn-block" type="button">
                 Report !
             </button>
-
-
 
         </div>
     </div>
