@@ -5,7 +5,8 @@ var router = express.Router();
 var multer = require('multer');
 let Utilisateur = require('../models/utilisateur');
 
-router.use(require('../middlewares/flash'))
+router.use(require('../middlewares/flash'));
+router.use(bodyParser.urlencoded({extended: false}));
 
 var storage = multer.diskStorage({
 	destination: function (req, file, callback){
@@ -30,7 +31,7 @@ var storage = multer.diskStorage({
 			callback(null, path)
 		} else if (file.mimetype == 'image/jpeg'){
 			var	path =  file.fieldname + '-' + Date.now() + '.jpg'
-		Utilisateur.uploadImg2(req.user.name, path, (res, err)=>{
+			Utilisateur.uploadImg2(req.user.name, path, (res, err)=>{
 
 				if (err)
 					{throw err}
@@ -51,7 +52,7 @@ var storage = multer.diskStorage({
 	}
 });
 
-var upload = multer({storage : storage}).array('userImg', 2);
+var upload = multer({storage : storage}).array('userImg', 5);
 
 function requireLogin (req, res, next) {
   if (!req.user) {
@@ -63,16 +64,16 @@ function requireLogin (req, res, next) {
 };
 
 router.get('/', requireLogin, (req, res, next)=>{
-	console.log('IMG a bien ete upload');
-	res.render('upload_img');
+	Utilisateur.findUsers3(req.user.name, (result)=>{
+		res.render('upload_img', {ret: result});
+	})
 })
 
-router.use(bodyParser.urlencoded({extended: false}));
+
 
 router.post('/upload_img', (req, res)=>{
 
 		upload(req, res, function(err){
-			console.log("-----UPLOAD IMG REQFILE" + req.files);
 			 if (err){
 				return res.end("Error uploading file.");
 			}

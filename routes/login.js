@@ -20,7 +20,7 @@ router.post('/form_log', (request, response)=>{
         request.flash('error', "Pseudo inconnu")
       }else{
         if (bcrypt.compareSync(request.body.password, result[0].pwd)){
-          //set info cookie
+        
           request.flash('success', "bien Connecte")
           request.session.user = result[0];
         }

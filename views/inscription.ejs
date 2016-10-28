@@ -3,19 +3,19 @@
 <div class="col-sm-6 col-sm-offset-3">
 <div class="jumbotron text-center"  style="padding:40px;">
     <h2><span class="fa fa-sign-in"></span>Inscription</h2>
-    <form action="inscription/form_inscription" method="post">
+    <form id="inscri" action="inscription2/form_inscription2" method="post">
         <div class="form-group">
-            <input type="text" class="form-control" name="email" required="required" placeholder="Email">
+            <input type="text" class="form-control" id="email" name="email" required="required" placeholder="Email">
         </div>
         <div class="form-group">
-            <input type="password" class="form-control" name="pwd" required="required" placeholder="Password">
+            <input type="password" class="form-control" id="pwd" name="pwd" required="required" placeholder="Password">
         </div>
          <div class="form-group">
             <input type="name" class="form-control" id="name" name="name" required="required" placeholder="Nom d'utilisateur">
         </div>
-    <div class="form-group">
+        <div class="form-group">
             <label for="sel1">Question secrete</label>
-            <select  class="form-control" name="questionSecrete" id="sel1">
+            <select  class="form-control" id="questionSecrete" name="questionSecrete" id="sel1">
                 <option name="q1">Quel est votre animal preféré?</option>
                 <option name="q2">Quel est votre couleur preféré?</option>
                 <option name="q3">Quel est votre pays preféré?</option>
@@ -25,6 +25,9 @@
             <input type="text" class="form-control" name="repQuestion" required="required" placeholder="Réponse"/>
         </div>
         <hr>
+        <div class="form-group">
+        <span id="status"></span>
+      </div>
         <button type="submit" class="btn btn-warning btn-lg">Signup</button>
     </form>
 </div>
@@ -32,4 +35,35 @@
     <p>Vous avez deja un compte? <a href="/login">Login</a></p>
 </div>
 </div>
+<script type="text/javascript">
+
+$(document).ready(function() {
+    // Lorsque je soumets le formulaire
+    $('#inscri').on('submit', function(e) {
+        e.preventDefault();
+ 
+        var $this = $(this);
+        var name = $('name').val();
+        var mail = $('#email').val();
+        var pwd = $('#pwd').val();
+        var question = $('#questionSecrete').val();
+        var reponse = $('#repQuestion').val();
+ 
+        if(name === '' || mail === '' || pwd === '' || reponse = '') {
+            alert('Les champs doivent êtres remplis');
+        } else {
+
+            $.ajax({
+                url: $this.attr('action'), 
+                type: $this.attr('method'),
+                data: $this.serialize(),
+                success: function(html) {
+                    //faire un truc
+                }
+            });
+        }
+    });
+});
+
+</script>
 <%include footer %>

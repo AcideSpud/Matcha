@@ -198,6 +198,7 @@ class Utilisateur {
 					pwd: hash,
 					question: request.body.questionSecrete,
 					reponse: request.body.repQuestion,
+					img: [],
 					orientation: "Bi",
 					geo: []
 				}
@@ -205,13 +206,13 @@ class Utilisateur {
 				this.findUsers3(request.body.name, (result)=> {
 					if (result != undefined) {
 						request.flash('error', "Un Utilisateur utilise deja ce pseudo")
-						response.redirect('/');
+						response.redirect('/inscription');
 					} else if (result == undefined) {
 						db.collection("users").insert(user, null, (err, res)=> {
 							if (err) throw err;
 							else {
 								request.flash('success', "Vous êtes bien enregistré!")
-								response.redirect('/')
+								response.redirect('/login')
 							}
 						})
 					}
@@ -219,6 +220,12 @@ class Utilisateur {
 				})
 			}
 		})
+	}
+
+	static deleteImg(request, response){
+		var async = require('async');
+
+
 	}
 
 	static SortPrefSexUser(user, otherUserArray, callback) {

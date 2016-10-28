@@ -8,6 +8,7 @@ let bodyParser = require('body-parser');
 let routes = require('./routes/index');
 let users = require('./routes/users');
 let inscription = require('./routes/inscription');
+let inscription2 = require('./routes/inscription2');
 let compte = require('./routes/compte');
 let dashboard = require('./routes/dashboard');
 let profile = require('./routes/profile');
@@ -15,27 +16,19 @@ let login = require('./routes/login');
 let upload_img = require('./routes/upload_img');
 let forgot_mail = require('./routes/forgot_mail');
 let logout = require('./routes/logout')
-
+//let socket = require('./routes/socket')
 
 let session = require('express-session');
-let server = http.Server();
-let io  = require('socket.io')(server);
-let app = express(server);
-
+let app = express();
+let server = http.Server(app);
+var io = require('socket.io').listen(server);
 
 io.on('connection', function (socket) {
-    socket.emit('news', { hello: 'world' });
-    socket.on('my other event', function (data) {
-        console.log(data);
-    });
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
 });
-
-//app.use(require('./middlewares/flash'));
-//connection to db
-let i_db = require('./routes/db');
-i_db();
-//let my_db = require('./routes/db');
-//my_db();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -43,15 +36,15 @@ app.set('view engine', 'ejs');
 
 
 //init chat
-/*var io = require('socket.io').listen(app.listen(3000));
-io.sockets.on('connection', function (socket) 
-	console.log('client connect');
-	socket.on('echo', function (data) {
-		io.sockets.emit('message', data);
-	});
-});
-require('./routes/chat')(app,io);
-*/
+
+//io.sockets.on('connection', function (socket) 
+//	console.log('client connect');
+//	socket.on('echo', function (data) {
+	//	io.sockets.emit('message', data);
+	//);
+//});
+//require('./routes/chat')(app,io);
+
 
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -80,7 +73,6 @@ app.use(function(req, res, next){
         if (result[0])
         {
           req.user = result[0];
-          console.log("-----REQUEST-USER:", req.user)
           delete req.user.pwd;
           req.session.user = result[0];
           res.locals.user = result[0];
@@ -92,7 +84,6 @@ app.use(function(req, res, next){
       }
     })
   } else{
-    console.log('non log')
     next();
   }
 })
@@ -110,6 +101,7 @@ function requireLogin (req, res, next) {
 //ROUTAGE
 app.use(require('./middlewares/flash'));
 app.use('/inscription', inscription);
+app.use('/inscription2', inscription2);
 app.use('/', routes);
 app.use('/users', users);
 //app.use('/chat', chat);
@@ -125,39 +117,10 @@ app.use('/logout', logout);
 
 //port
 app.listen(3000, function () {
+  
   console.log('app listening on port 3000!');
 });
 
-// catch 404 and forward to error handler
-/*app.use(function(req, res, next) {
-  let err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
 
-// error handlers
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
-  });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', 
-    message: err.message,
-    error: {}
-  });
-});
-*/
 
 module.exports = app;

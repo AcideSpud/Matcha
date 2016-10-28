@@ -58,9 +58,10 @@ router.post('/filter', upload.array(),requireLogin, (req, res) =>{
 		getProfile.SortPrefSexUser(req.session.user, data, (cb)=>{
 			getProfile.sortByAge(ageMin, ageMax, cb, (callB)=>{
 				getProfile.sortByPop(popMin, popMax, callB, (m_cb)=>{
-					//res.end()
+
 					res.contentType('json');
 					res.send(JSON.stringify(m_cb));
+
 				});
 			});
 		});
