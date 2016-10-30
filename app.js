@@ -1,15 +1,16 @@
 let express = require('express');
 let http = require('http');
 let app = express();
-
 var server = http.createServer(app).listen(3000);
+var io = require('socket.io').listen(server);
 
 let path = require('path');
 let favicon = require('serve-favicon');
 let logger = require('morgan');
-
+let session = require('express-session');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
+
 let routes = require('./routes/index');
 let users = require('./routes/users');
 let inscription = require('./routes/inscription');
@@ -20,11 +21,9 @@ let profile = require('./routes/profile');
 let login = require('./routes/login');
 let upload_img = require('./routes/upload_img');
 let forgot_mail = require('./routes/forgot_mail');
-let logout = require('./routes/logout')
-let chat = require('./routes/chat')
-let session = require('express-session');
+let logout = require('./routes/logout');
+let chat = require('./routes/chat');
 
-var io = require('socket.io').listen(server);
 
 
 
@@ -72,15 +71,6 @@ app.use(function(req, res, next){
   }
 })
 
-function requireLogin (req, res, next) {
-  if (!req.user) {
-    req.flash('error', "il faut s'autentifier")
-    res.redirect('/login');
-  } else {
-    next();
-  }
-};
-
 
 io.on('connection', function (socket) {
   console.log('nouveau utilisateur')
@@ -105,6 +95,23 @@ app.use('/profile', profile);
 app.use('/upload_img', upload_img);
 app.use('/forgot_mail', forgot_mail);
 app.use('/logout', logout);
+
+
+// handling 404 errors
+app.get('*', function(req, res, next) {
+  var err = new Error();
+  err.status = 404;
+  next(err);
+});
+
+app.use(function(err, req, res, next) {
+  if(err.status !== 404) {
+    return next();
+  }
+  res.status(404);
+  res.render('page_error')
+  //res.send(err.message || '** no unicorns here **');
+});
 
 
 module.exports = app;
