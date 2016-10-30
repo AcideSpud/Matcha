@@ -28,6 +28,10 @@ let chat = require('./routes/chat');
 
 
 
+
+
+
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -72,26 +76,26 @@ app.use(function(req, res, next){
 })
 
 
-io.on('connection', function (socket) {
+io.sockets.on('connection', function (socket) {
   console.log('nouveau utilisateur')
 
-      
-  socket.on('message', function (message) {
-    console.log(user_name)
+  socket.on('message', function (message){
     console.log(message);
+   // console.log("----USER_INFO--",user_info);
+    
   });
 });
 
 app.use(require('./middlewares/flash'));
+app.use('/', routes);
 app.use('/inscription', inscription);
 app.use('/inscription2', inscription2);
-app.use('/', routes);
 app.use('/users', users);
-app.use('/chat', chat);
 app.use('/login', login);
 app.use('/dashboard', dashboard);
 app.use('/compte', compte);
 app.use('/profile', profile);
+app.use('/chat', chat);
 app.use('/upload_img', upload_img);
 app.use('/forgot_mail', forgot_mail);
 app.use('/logout', logout);
@@ -110,7 +114,6 @@ app.use(function(err, req, res, next) {
   }
   res.status(404);
   res.render('page_error')
-  //res.send(err.message || '** no unicorns here **');
 });
 
 

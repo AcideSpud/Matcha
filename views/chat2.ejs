@@ -1,6 +1,5 @@
 <% include header2 %>
 
-
 <div id="users"></div>
 	<div id="messages">
 		<div class="message" id="mess">
@@ -14,22 +13,19 @@
 </div>
 <form action="" id="chat_form">
 	<input type="text" id="message" class="text" />
+<!--	<input type="hidden" id="user_info" value="coucou"/> -->
 	<input type="submit" id="send" value="Envoyer mon message" class="submit"/>
 </form>
 
   <script src="socket.io/socket.io.js"></script>
-	<script src="/js/chat_client.js"></script>
 	<script>
    		var socket = io.connect('http://localhost:3000');
    		
-
-   		$('#chat_form').submit(function(event){
+   /*		$('#chat_form').submit(function(event){
    			event.preventDefault();
    			socket.emit('message', {
    				message : $('#message').val();
-   				user_name: <%= ret[0].name %>
    			})
-   		})
-
-  	</script>
+   		}) */
+   	</script>
 <% include footer %>
