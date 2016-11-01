@@ -7,8 +7,6 @@ $(function() {
 
 });
 
-
-
 var my_name;
 function like_request(name) {
     var xhr = new XMLHttpRequest();

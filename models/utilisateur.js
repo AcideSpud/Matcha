@@ -44,7 +44,6 @@ class Utilisateur {
 					if (result[0]) {
 
 					} else {
-						console.log('No document(s) found with defined "find" criteria!');
 						result = undefined
 					}
 					callback(result)
@@ -68,7 +67,6 @@ class Utilisateur {
 	}
 
 	static updateUser(user, db, username, callback) {
-		console.log('----UPDATEUSEER', user.tag)
 
 		db.collection("users").updateOne({"name": username}, {
 			$set: {

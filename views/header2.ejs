@@ -9,24 +9,13 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-
-<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-<script src="/socket.io/socket.io.js"></script>
-
+  <link rel="stylesheet" type="text/css" href="css/page_error.css">
     <style>
   .carousel-inner > .item > img,
   .carousel-inner > .item > a > img {
       margin: auto;
   }
   </style>
-
-  <script>
-    var socket = io.connect('http://localhost');
-    socket.on('news', function (data) {
-      console.log(data);
-      socket.emit('my other event', { my: 'data' });
-    });
-  </script>
 
 </head>
 <body style="background-image: linear-gradient(90deg,rgb(200, 255, 255), rgb(127, 18, 47) );">
@@ -50,9 +39,14 @@
       <li>
         <a href="/dashboard">c'est parti</a>
       </li>
+       <li>
+        <a href="/chat">chat</a>
+      </li>
       <li>
         <a href="/logout">logout</a>
       </li>
+
+
     </ul>
   </div>
 </nav>
