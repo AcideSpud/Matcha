@@ -5,6 +5,7 @@ var router = express.Router();
 var multer = require('multer')
 var upload = multer({dest: "../public/img/"})
 let Utilisateur = require('../models/utilisateur')
+let bcrypt = require('bcryptjs')
 
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(require('../middlewares/flash'));
@@ -20,7 +21,7 @@ function requireLogin (req, res, next) {
 
 router.get('/', requireLogin, function(req, res, next) {
   Utilisateur.findUsers3(req.user.name, (result)=>{
-    res.render('compte', {ret : result});
+    res.render('compte', {ret : result, coucou : 'salut'});
   })	  
 });
 

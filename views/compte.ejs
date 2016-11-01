@@ -37,7 +37,7 @@
         </div>
 
         <div class="form-group">
-            <input type="password" class="form-control" id="pwd" name="pwd" required="required" placeholder="Password">
+            <input type="password" class="form-control" id="pwd" name="pwd" required="required" placeholder="Password" value="">
         </div>
         <hr>
 
@@ -83,12 +83,12 @@
 
         <div class = "form-group">
             <label>Put some #hobbies</label>
-            <textarea class="form-control" rows="3" id="hastag" name="hashtag" maxlength="200" placeholder="Put some #hobbies (200 caractères)"></textarea>
+            <textarea class="form-control" rows="3" id="hastag" name="hashtag" maxlength="200" placeholder="Put some #hobbies (200 caractères)" value=""><%= ret[0].tag %></textarea>
         </div>
 
         <div class="form-group">
             <label>Tell us about you</label>
-  				<textarea class="form-control" rows="4" id="comment" name="bio" maxlength="200" placeholder="Biographie (200 caractères)"></textarea>
+  				<textarea class="form-control" rows="4" id="comment" name="bio" maxlength="200" placeholder="Biographie (200 caractères)" value=""><%= ret[0].bio %></textarea>
 		</div>
 		<hr>
         <div class="form-group">
