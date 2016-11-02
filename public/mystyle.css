@@ -9,11 +9,12 @@
 
 .parent {
 	height: 200px;
+
 }
 
 /* This will style any <img> element in .parent div */
 .parent img {
-	height: 100%;
+	height: 10%;
 
 }
 #datbox {
@@ -26,7 +27,9 @@
 
 }
 #b_view {
-
+	position:absolute;
+	bottom:0;
+	margin-bottom: 35px;
 }
 
 .navbar .divider-vertical {
