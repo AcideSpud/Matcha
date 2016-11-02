@@ -282,7 +282,8 @@ class Utilisateur {
 		}
 		else if (user.orientation == 'Bi') {
 			for (let i = 0, len = otherUserArray.length; i < len; i++) {
-				if (otherUserArray[i].genre == 'Mme' || otherUserArray[i].genre == 'M' || otherUserArray[i].genre == 'Tran') {
+				if ((otherUserArray[i].genre == 'Mme' || otherUserArray[i].genre == 'M' || otherUserArray[i].genre == 'Tran')  &&
+					otherUserArray[i].name != user.name) {
 					res[cmp] = otherUserArray[i];
 					cmp++;
 				}
@@ -325,7 +326,27 @@ class Utilisateur {
 				console.log("popularite update OK !");
 		});
 	}
+	static	GetDistance(user, otherUserArray, callback) {
+		let geolib = require('geolib');
+		let userLatitude = '48.89665970000001';
+		console.log(user.geo[2]);
+		console.log(user.geo[3]);
+		console.log(user.geo[4]);
+		console.log(user.geo[5]);
+
+		let userLongitude = '48.89665970000001';
+		let otherLatitude = '48.7333';
+		let otherLongitude = '2.2833';
+		let userpos = '{latitude: ' + userLatitude + ', longitude: ' + userLongitude + '}';
+		let otherpos = '{latitude: ' + otherLatitude+ ', longitude: ' + otherLongitude + '}';
+		console.log(userpos);
+		let dist = geolib.getDistance(userpos, otherpos);
+		console.log(dist);
+
+	}
 }
+
+
 
 
 module.exports= Utilisateur;

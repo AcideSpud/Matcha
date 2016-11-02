@@ -35,6 +35,7 @@ router.get('/', requireLogin, function(req, res, next) {
 
 	User.Create_db((ret)=>{
 		getProfile.SortPrefSexUser(req.session.user, ret, (cb)=>{
+			getProfile.GetDistance(req.session.user, cb);
 			res.render('dashboard', {ret : cb});
 		})
 	});

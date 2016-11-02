@@ -5,16 +5,63 @@
 
         <% for (ret of ret) { %>
         <!--<div class="jumbotron text-center"  style="padding:40px;">-->
-            <div class="col-sm-6 col-md-3" id="datbox">
+            <div class="col-sm-6 col-md-4 col-lg-3 col-xs-12" id="datbox">
                 <div class="thumbnail" style="background-image:     linear-gradient(90deg,rgb(127, 18, 47), rgb(200, 255, 255) );"  id="mybox">
+                    <div>
+                    <% if (ret.img[0]){ %>
                     <img class="parent" src="<%= ret.img[0] %>"  alt="">
+                    <% } else { %>
+                    <img class=" img-thumbnail" alt="140x140" src="/img/no_image.png" />
+                    <% } %></div>
                     <div class="caption">
                         <h3><%=ret.nom%> <%= ret.prenom %></h3>
-                        <p id="test"><%= ret.bio %>...</p>
-    
-                        <p id="b_view"><a href="#" class="btn btn-primary"  role="button">Like</a> <a href="/profile/<%= ret.name %>"    class="btn btn-default" role="button">View profil</a></p>
-    
+                        <div class="col-md-4 column">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <td>
+                                    Age :
+                                </td>
+                                <td>
+                                    <% if(ret.age) %>
+                                    <%= ret.age %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Popularite:
+                                </td>
+                                <td>
+                                    <%= ret.popularite %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Insterested by :
+                                </td>
+                                <td>
+                                    <% if (ret.orientation == 'Ht' && ret.genre == 'M'){ %>
+                                    Woman
+                                    <% } else if (ret.orientation == 'Ht' && ret.genre == 'Mme') { %>
+                                    Man
+                                    <% } else if (ret.orientation == 'Hm' && ret.genre == 'M') { %>
+                                    Man
+                                    <% } else if (ret.orientation == 'Hm' && ret.genre == 'Mme') { %>
+                                    Woman
+                                    <% } else if (ret.orientation == 'Bi'){ %>
+                                    Everybody
+                                    <% } %>
+                                </td>
+                            </tr>
+
+
+                            </thead>
+                        </table>
+
+                        </div>
                     </div>
+                        <p id="b_view"><a href="#" class="btn btn-primary"  role="button">Like</a> <a href="/profile/<%= ret.name %>"    class="btn btn-default" role="button">View profil</a></p>
+
                 </div>
             </div>
 
@@ -23,5 +70,6 @@
         <% } %>
     </div>
 </div>
+</body>
 
 <% include footer %>
