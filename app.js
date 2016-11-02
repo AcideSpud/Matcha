@@ -71,13 +71,39 @@ app.use(function(req, res, next){
 })
 
 
-
+var all_users = {}
+var rooms = ['room1', 'room2', 'room3']
 
 io.on('connection', function (socket) {
-  console.log('nouveau utilisateur');
-  io.sockets.emit('logged');
+  
 
 
+//WHEN THE CLIENT EMITS 'SENDCHAT', this listens and executes
+  socket.on('sendchat', function(data){
+    //we tell the client to execute 'updatechat'
+    io.sockets.emit('updatechat', socket.username, data);
+  });
+
+
+  socket.on('adduser', function(username){
+    socket.username = username;
+    all_users[username] = username;
+    socket.emit('updatechat', 'SERVER', 'You have connected');
+    socket.broadcast.emit('updatechat', 'SERVER', username + ' has connected');
+    io.sockets.emit('updateusers', all_users);
+  })
+
+  socket.on('disconnect', function(){
+    // remove the username from global usernames list
+    delete all_users[socket.username];
+    // update list of users in chat, client-side
+    io.sockets.emit('updateusers', all_users);
+    // echo globally that this client has left
+    socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
+  });
+
+
+/*
   var me = false;
   var historique_message =[];
   var history = 2;
@@ -94,8 +120,6 @@ io.on('connection', function (socket) {
 
   socket.on('mes', function (user){
     me = user;
-  
-
     users[me.name] = me;
     io.sockets.emit('newuser', me);
     
@@ -122,7 +146,8 @@ io.on('connection', function (socket) {
     }
     delete users[me.name];
     io.sockets.emit('disuser', me)
-  })
+  })*/
+
 });
 
 
