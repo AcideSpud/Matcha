@@ -328,22 +328,89 @@ class Utilisateur {
 	}
 	static	GetDistance(user, otherUserArray, callback) {
 		let geolib = require('geolib');
-		let userLatitude = '48.89665970000001';
-		console.log(user.geo[2]);
-		console.log(user.geo[3]);
-		console.log(user.geo[4]);
-		console.log(user.geo[5]);
-
-		let userLongitude = '48.89665970000001';
-		let otherLatitude = '48.7333';
-		let otherLongitude = '2.2833';
-		let userpos = '{latitude: ' + userLatitude + ', longitude: ' + userLongitude + '}';
-		let otherpos = '{latitude: ' + otherLatitude+ ', longitude: ' + otherLongitude + '}';
-		console.log(userpos);
-		let dist = geolib.getDistance(userpos, otherpos);
-		console.log(dist);
-
+		let userLatitude = user.geo.latitude.toString();
+		userLatitude = userLatitude.substring(0, 8);
+		console.log("userlatitude == " + userLatitude);
+		let userLongitude = user.geo.longitude.toString();
+		userLongitude = userLongitude.substring(0, 8);
+        let ret = [];
+        let otherLatitude = null;
+        let otherLongitude = null;
+        let userpos = null;
+        let otherpos = null;
+        let dist = null;
+		if (otherUserArray) {
+			for (let i = 0, len = otherUserArray.length; i < len; i++) {
+                otherLatitude = null;
+                otherLongitude = null;
+                userpos = null;
+                otherpos = null;
+                dist = null;
+				otherLatitude = otherUserArray[i].geo.latitude.toString();
+				otherLatitude = otherLatitude.substring(0, 8);
+				otherLongitude = otherUserArray[i].geo.longitude.toString();
+				otherLongitude = otherLongitude.substring(0, 8);
+				userpos = {latitude: userLatitude, longitude: userLongitude};
+				otherpos = {latitude: otherLatitude, longitude: otherLongitude};
+				dist = geolib.getDistance(userpos, otherpos);
+                dist = geolib.convertUnit('km', dist, 0);
+				ret[i] = {dist : dist};
+			}
+		}
+		else {
+		    ret = otherUserArray;
+        }
+		callback(ret);
 	}
+	static SortDistance(user, otherUserArray, distance, callback)
+    {
+        let res = [];
+        let cmp = 0;
+        this.GetDistance(user, otherUserArray, (cb)=>{
+            for (let i = 0, len = otherUserArray.length; i < len; i++) {
+               if (cb[i].dist <= distance){
+                   res[cmp] = otherUserArray[i];
+                   cmp++;
+               }
+            }
+            callback(res);
+        });
+    };
+
+    static SortTag(user, otherUserArray, val, callback){
+        let nbTagOther = null;
+        let nbTagUser = null;
+        let comTag = new Array;
+
+        let cmp2 = 0;
+        let cmp = 0;
+        if (val == 1) {
+            callback(otherUserArray);
+        }
+        else if (val == 2){
+            for (let i=0, len = otherUserArray.length; i < len; i++){
+                for (let j=0, lan = otherUserArray[i].tag.length; j < lan; j++){
+                    for (let k=0, lon = user.tag.length; k < lon; k++){
+                        comTag[cmp] = new Array;
+                        if (user.tag[k] == otherUserArray[i].tag[j]){
+                            comTag[cmp][cmp2] = otherUserArray[i].tag[j];
+                            cmp2++;
+                        }
+                    }
+                    cmp++;
+                    cmp2 = 0;
+                }
+            }
+            console.log(comTag);
+        }
+        else if (val == 3){
+
+        }
+        else {
+
+        }
+    }
+
 }
 
 

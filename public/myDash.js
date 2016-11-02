@@ -87,6 +87,8 @@ function find(){
     var popMin = $('#pop-min').val();
     var popMax = $('#pop-max').val();
     var mDist = $('#dist').val();
+    var tag = $('#sel1').val();
+
     $('#table').empty();
 
 
@@ -95,7 +97,9 @@ function find(){
     myform.append("ageMax" , ageMax);
     myform.append("popMin" , popMin);
     myform.append("popMax" , popMax);
+    myform.append("tag", tag);
     myform.append("dist" , mDist);
+
     if (data)
     {
         myform.append('data', JSON.stringify(data));
