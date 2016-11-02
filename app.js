@@ -81,18 +81,35 @@ io.on('connection', function (socket) {
 //WHEN THE CLIENT EMITS 'SENDCHAT', this listens and executes
   socket.on('sendchat', function(data){
     //we tell the client to execute 'updatechat'
-    io.sockets.emit('updatechat', socket.username, data);
+    io.sockets.in(socket.room).emit('updatechat', socket.username, data);
   });
 
 
   socket.on('adduser', function(username){
     socket.username = username;
+    socket.room = 'room1';
     all_users[username] = username;
-    socket.emit('updatechat', 'SERVER', 'You have connected');
-    socket.broadcast.emit('updatechat', 'SERVER', username + ' has connected');
-    io.sockets.emit('updateusers', all_users);
+    socket.join('room1');
+    socket.emit('updatechat', 'SERVER', 'You have connected to room1');
+    socket.broadcast.to('room1').emit('updatechat','SERVER', username + ' has connected');
+    io.sockets.emit('updaterooms', rooms, 'rooms1');
   })
 
+  socket.on('switchRoom', function(newroom){
+    // leave the current room (stored in session)
+    socket.leave(socket.room);
+    // join new room, received as function parameter
+    socket.join(newroom);
+    socket.emit('updatechat', 'SERVER', 'you have connected to '+ newroom);
+    // sent message to OLD room
+    socket.broadcast.to(socket.room).emit('updatechat', 'SERVER', socket.username+' has left this room');
+    // update socket session room title
+    socket.room = newroom;
+    socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username+' has joined this room');
+    socket.emit('updaterooms', rooms, newroom);
+  })
+
+// when the user disconnects.. perform this
   socket.on('disconnect', function(){
     // remove the username from global usernames list
     delete all_users[socket.username];
@@ -100,6 +117,7 @@ io.on('connection', function (socket) {
     io.sockets.emit('updateusers', all_users);
     // echo globally that this client has left
     socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
+    socket.leave(socket.room);
   });
 
 
