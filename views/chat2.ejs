@@ -1,31 +1,54 @@
 <% include header2 %>
 
-<div id="users"></div>
-	<div id="messages">
-		<div class="message" id="mess">
-		<img src="">
-		<div class="info">
-			<p><strong><!-- USERNAME --></strong></p>
-			<p></p>
-			<span class="date"><!--DATE--></span>
-		</div>
-	</div>
+<div id="messages">
 </div>
 <form action="" id="chat_form">
-	<input type="text" id="message" class="text" />
-<!--	<input type="hidden" id="user_info" value="coucou"/> -->
+	<input type="text"  id="message" class="text" />
+	<input type="hidden" id="user_name" value="<%= ret[0].name %>"/>
+	<input type="hidden" id="user_img" value="<%= ret[0].img[0] %>"/>
 	<input type="submit" id="send" value="Envoyer mon message" class="submit"/>
 </form>
 
   <script src="socket.io/socket.io.js"></script>
 	<script>
    		var socket = io.connect('http://localhost:3000');
-   		
-   /*		$('#chat_form').submit(function(event){
+
+
+   		//Gestion Connection
+   		socket.on('logged', function(){
+   			alert('Un utilisateur vien de se logger')
+   		})
+
+
+   		$('#chat_form').submit((event)=>{
    			event.preventDefault();
-   			socket.emit('message', {
-   				message : $('#message').val();
+   			socket.emit('mes', {
+   				user_name: $('#user_name').val(),
+   				user_img: $('#user_img').val()
    			})
-   		}) */
+   			socket.emit('newmsg', {
+   				message: $('#message').val(),
+   				user_name: $('#user_name').val(),
+   			})
+   			$('#message').val('');
+   			$('#message').focus();
+   		})
+
+   		socket.on('newmess', function(message){
+   			console.log('coucou new message')
+   			$('#messages').append('<div class="message"> <div class="info"><p><strong>' + message.user_name + ':</p></strong>' + message.message + '</div></div>')
+
+   		})
+
+   		//Gestion DECONNECTION
+
+   		socket.on('newuser', function(user){
+   			//alert('Nouvel user');
+   		})
+
+   		socket.on('disuser', function(user){
+   			alert('Utilisateur c deco');
+   		})
+   		
    	</script>
 <% include footer %>

@@ -27,11 +27,6 @@ let chat = require('./routes/chat');
 
 
 
-
-
-
-
-
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -76,15 +71,65 @@ app.use(function(req, res, next){
 })
 
 
-io.sockets.on('connection', function (socket) {
-  console.log('nouveau utilisateur')
 
-  socket.on('message', function (message){
-    console.log(message);
-   // console.log("----USER_INFO--",user_info);
+
+io.on('connection', function (socket) {
+  console.log('nouveau utilisateur');
+  io.sockets.emit('logged');
+
+
+  var me = false;
+  var historique_message =[];
+  var history = 2;
+
+  for (var k in users){
+    //socket.emit('newuser', users[k]);
+  }
+    for (var k in historique_message){
+    socket.emit('newmess', historique_message[k])
+  }
+
+
+  //JE ME CONNECTE
+
+  socket.on('mes', function (user){
+    me = user;
+  
+
+    users[me.name] = me;
+    io.sockets.emit('newuser', me);
     
   });
+
+  //RECU UN MESSAGE
+
+  socket.on('newmsg', function(message){
+    date = new Date();
+    message.h = date.getHours();
+    message.m = date.getMinutes();
+    historique_message.push(message);
+    if (historique_message.length > history){
+      historique_message.shift();
+    }
+    io.sockets.emit('newmess', message)
+  })
+
+  //JE QUITTE LE CHAT
+
+  socket.on('disconnect', function(){
+    if (!me){
+      return false;
+    }
+    delete users[me.name];
+    io.sockets.emit('disuser', me)
+  })
 });
+
+
+
+
+
+
 
 app.use(require('./middlewares/flash'));
 app.use('/', routes);
@@ -99,6 +144,7 @@ app.use('/chat', chat);
 app.use('/upload_img', upload_img);
 app.use('/forgot_mail', forgot_mail);
 app.use('/logout', logout);
+
 
 
 // handling 404 errors
@@ -116,5 +162,21 @@ app.use('/logout', logout);
 //  res.render('page_error')
 //});
 //
+
+app.get('*', function(req, res, next) {
+  var err = new Error();
+  err.status = 404;
+  next(err);
+});
+
+app.use(function(err, req, res, next) {
+  if(err.status !== 404) {
+    return next();
+  }
+  res.status(404);
+  res.render('page_error')
+});
+
+
 
 module.exports = app;

@@ -2,16 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c2a225f7-3455-4d3c-99b1-17ab6cd08268" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/header_pro.ejs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/img/userImg-1478008721915.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/img/userImg-1478008737201.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/img/userImg-1478008737209.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/img/userImg-1478013779932.png" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/views/chat.ejs" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/utilisateur.js" afterPath="$PROJECT_DIR$/models/utilisateur.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/node_modules/geolib/package.json" afterPath="$PROJECT_DIR$/node_modules/geolib/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/mystyle.css" afterPath="$PROJECT_DIR$/public/mystyle.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/dashboard.js" afterPath="$PROJECT_DIR$/routes/dashboard.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/dashboard.ejs" afterPath="$PROJECT_DIR$/views/dashboard.ejs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/header_dash.ejs" afterPath="$PROJECT_DIR$/views/header_dash.ejs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/profile.ejs" afterPath="$PROJECT_DIR$/views/profile.ejs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/chat.js" afterPath="$PROJECT_DIR$/routes/chat.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/compte.js" afterPath="$PROJECT_DIR$/routes/compte.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/chat2.ejs" afterPath="$PROJECT_DIR$/views/chat2.ejs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/compte.ejs" afterPath="$PROJECT_DIR$/views/compte.ejs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/header2.ejs" afterPath="$PROJECT_DIR$/views/header2.ejs" />
     </list>
     <ignored path="matcha_final.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -39,8 +41,8 @@
           <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1590">
-                  <caret line="106" column="21" selection-start-line="106" selection-start-column="21" selection-end-line="106" selection-end-column="21" />
+                <state relative-caret-position="2135">
+                  <caret line="148" column="0" selection-start-line="148" selection-start-column="0" selection-end-line="148" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -102,9 +104,9 @@
             <entry file="file://$PROJECT_DIR$/models/utilisateur.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="1080">
-                  <caret line="341" column="85" selection-start-line="341" selection-start-column="85" selection-end-line="341" selection-end-column="85" />
+                  <caret line="339" column="85" selection-start-line="339" selection-start-column="85" selection-end-line="339" selection-end-column="85" />
                   <folding>
-                    <marker date="1478024511872" expanded="true" signature="4322:5357" ph="{...}" />
+                    <marker date="1478093161424" expanded="true" signature="4288:5323" ph="{...}" />
                   </folding>
                 </state>
               </provider>
@@ -160,7 +162,7 @@
             <entry file="file://$PROJECT_DIR$/routes/compte.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="495">
-                  <caret line="33" column="64" selection-start-line="33" selection-start-column="64" selection-end-line="33" selection-end-column="64" />
+                  <caret line="34" column="64" selection-start-line="34" selection-start-column="64" selection-end-line="34" selection-end-column="64" />
                   <folding />
                 </state>
               </provider>
@@ -249,7 +251,6 @@
         <option value="$PROJECT_DIR$/routes/inscription.js" />
         <option value="$PROJECT_DIR$/views/header2.ejs" />
         <option value="$PROJECT_DIR$/public/myDash.js" />
-        <option value="$PROJECT_DIR$/app.js" />
         <option value="$PROJECT_DIR$/views/header_pro.ejs" />
         <option value="$PROJECT_DIR$/views/profile.ejs" />
         <option value="$PROJECT_DIR$/public/mystyle.css" />
@@ -258,6 +259,7 @@
         <option value="$PROJECT_DIR$/views/dashboard.ejs" />
         <option value="$PROJECT_DIR$/routes/dashboard.js" />
         <option value="$PROJECT_DIR$/models/utilisateur.js" />
+        <option value="$PROJECT_DIR$/app.js" />
       </list>
     </option>
   </component>
@@ -557,18 +559,18 @@
       <workItem from="1477642535525" duration="68000" />
       <workItem from="1477642798178" duration="12322000" />
       <workItem from="1478007049698" duration="11470000" />
-      <workItem from="1478093065676" duration="50000" />
+      <workItem from="1478093065676" duration="142000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="140184000" />
+    <option name="totallyTimeSpent" value="140276000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="2560" height="1440" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.0890625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.0890625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39984226" sideWeight="0.5015625" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -610,7 +612,7 @@
         <state relative-caret-position="1725">
           <caret line="115" column="29" selection-start-line="115" selection-start-column="21" selection-end-line="115" selection-end-column="29" />
           <folding>
-            <marker date="1478024511872" expanded="true" signature="4322:5357" ph="{...}" />
+            <marker date="1478093161424" expanded="true" signature="4288:5323" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -695,7 +697,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1478024511872" expanded="true" signature="4322:5357" ph="{...}" />
+            <marker date="1478093161424" expanded="true" signature="4288:5323" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -772,7 +774,7 @@
         <state relative-caret-position="165">
           <caret line="11" column="19" selection-start-line="11" selection-start-column="19" selection-end-line="11" selection-end-column="19" />
           <folding>
-            <marker date="1478024511872" expanded="true" signature="4322:5357" ph="{...}" />
+            <marker date="1478093161424" expanded="true" signature="4288:5323" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -903,24 +905,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1590">
-          <caret line="106" column="21" selection-start-line="106" selection-start-column="21" selection-end-line="106" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/utilisateur.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1080">
-          <caret line="341" column="85" selection-start-line="341" selection-start-column="85" selection-end-line="341" selection-end-column="85" />
-          <folding>
-            <marker date="1478024511872" expanded="true" signature="4322:5357" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/routes/profile.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="810">
@@ -958,7 +942,7 @@
     <entry file="file://$PROJECT_DIR$/routes/compte.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="495">
-          <caret line="33" column="64" selection-start-line="33" selection-start-column="64" selection-end-line="33" selection-end-column="64" />
+          <caret line="34" column="64" selection-start-line="34" selection-start-column="64" selection-end-line="34" selection-end-column="64" />
           <folding />
         </state>
       </provider>
@@ -1002,6 +986,24 @@
         <state relative-caret-position="6015">
           <caret line="401" column="27" selection-start-line="401" selection-start-column="27" selection-end-line="401" selection-end-column="27" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2135">
+          <caret line="148" column="0" selection-start-line="148" selection-start-column="0" selection-end-line="148" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/utilisateur.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1080">
+          <caret line="339" column="85" selection-start-line="339" selection-start-column="85" selection-end-line="339" selection-end-column="85" />
+          <folding>
+            <marker date="1478093161424" expanded="true" signature="4288:5323" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>

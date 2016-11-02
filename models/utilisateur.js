@@ -129,8 +129,6 @@ class Utilisateur {
 			var hash = bcrypt.hashSync(request.body.pwd);
 			var hobbies = hashtag(request.body.hashtag)
 
-			console.log('------hobbies----', hobbies)
-
 			if (err) {
 				throw err
 			} else {
@@ -143,7 +141,7 @@ class Utilisateur {
 					bio: request.body.bio,
 					like: [], liker: [], popularite: 0,
 					tag: hobbies,
-					geo: request.body.geo
+					geo: JSON.parse(request.body.geo)
 				}
 				this.updateUser(user, db, request.user.name, (res)=> {
 				})
