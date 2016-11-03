@@ -65,9 +65,11 @@ router.post('/filter', upload.array(),requireLogin, (req, res) =>{
 			getProfile.sortByAge(ageMin, ageMax, cb, (callB)=>{
 				getProfile.sortByPop(popMin, popMax, callB, (m_cb)=>{
 					getProfile.SortDistance(req.session.user, m_cb, dist, (my_cb)=>{
-						res.contentType('json');
-						res.send(JSON.stringify(my_cb));
-					})
+						getProfile.SortTag(req.session.user, my_cb, tag, (mylastcb)=> {
+							res.contentType('json');
+							res.send(JSON.stringify(mylastcb));
+						});
+					});
 				});
 			});
 		});
@@ -79,9 +81,10 @@ router.post('/filter', upload.array(),requireLogin, (req, res) =>{
 				getProfile.sortByAge(ageMin, ageMax, cb, (callB)=> {
 					getProfile.sortByPop(popMin, popMax, callB, (m_cb)=> {
 						getProfile.SortDistance(req.session.user, m_cb, dist, (my_cb)=>{
-						    getProfile.SortTag(req.session.user, my_cb, 2);
-							res.contentType('json');
-							res.send(JSON.stringify(my_cb));
+						    getProfile.SortTag(req.session.user, my_cb, tag, (mylastcb)=> {
+								res.contentType('json');
+								res.send(JSON.stringify(mylastcb));
+							});
 						});
 					});
 				});

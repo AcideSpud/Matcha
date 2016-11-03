@@ -377,37 +377,57 @@ class Utilisateur {
         });
     };
 
-    static SortTag(user, otherUserArray, val, callback){
-        let nbTagOther = null;
+    static SortTag(user, otherUserArray, val, callback) {
+        let nbTagOther = [];
         let nbTagUser = null;
+        let ret = [];
         let comTag = new Array;
-
         let cmp2 = 0;
         let cmp = 0;
+        comTag[cmp] = new Array;
+        if (val == 2)
+            val = 25;
+        else if (val == 3)
+            val = 50;
+        else if (val == 4)
+            val = 75;
         if (val == 1) {
             callback(otherUserArray);
         }
-        else if (val == 2){
-            for (let i=0, len = otherUserArray.length; i < len; i++){
-                for (let j=0, lan = otherUserArray[i].tag.length; j < lan; j++){
-                    for (let k=0, lon = user.tag.length; k < lon; k++){
-                        comTag[cmp] = new Array;
-                        if (user.tag[k] == otherUserArray[i].tag[j]){
-                            comTag[cmp][cmp2] = otherUserArray[i].tag[j];
+        else {
+            for (let i = 0, len = otherUserArray.length; i < len; i++) {
+                comTag[cmp] = new Array;
+                for (let j = 0, lan = otherUserArray[i].tag.length; j < lan; j++) {
+                    for (let k = 0, lon = user.tag.length; k < lon; k++) {
+                        if (user.tag[k] == otherUserArray[i].tag[j]) {
+                            comTag[cmp][cmp2] = {name: otherUserArray[i].name, tag: otherUserArray[i].tag[j]};
                             cmp2++;
                         }
                     }
-                    cmp++;
-                    cmp2 = 0;
+                }
+                cmp2 = 0;
+                cmp++;
+            }
+
+            nbTagUser = user.tag.length;
+            let tab = new Array;
+            for (let i = 0, len = comTag.length; i < len; i++) {
+                tab[i] = {name: comTag[i][0].name, size: comTag[i].length};
+            }
+            for (let i = 0, len = tab.length; i < len; i++) {
+                nbTagOther[i] = {name: tab[i].name, percent: tab[i].size * 100 / nbTagUser};
+            }
+            let j = 0;
+            for (let i = 0, len = otherUserArray.length; i < len; i++) {
+                for (let k = 0, lon = nbTagOther.length; k < lon; k++) {
+
+                    if (otherUserArray[i].name == nbTagOther[k].name && nbTagOther[k].percent >= val) {
+                        ret[j] = otherUserArray[i];
+                        j++;
+                    }
                 }
             }
-            console.log(comTag);
-        }
-        else if (val == 3){
-
-        }
-        else {
-
+            callback(ret);
         }
     }
 
