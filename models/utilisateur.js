@@ -66,6 +66,17 @@ class Utilisateur {
 
 	}
 
+	static updateChatroom(db, chatRoom, callback){
+		
+		db.collection("chatRoom").updateOne({"name": chatRoom.name},{
+			$set: {"name": chatRoom.name, "content": chatRoom.content
+			}
+		},(err, res)=>{
+			if (err) throw err
+			callback()
+		})
+	}
+
 	static updateUser(user, db, username, callback) {
 
 		db.collection("users").updateOne({"name": username}, {
@@ -196,7 +207,8 @@ class Utilisateur {
 					reponse: request.body.repQuestion,
 					img: [],
 					orientation: "Bi",
-					geo: []
+					geo: [],
+					match: []
 				}
 
 				this.findUsers3(request.body.name, (result)=> {
