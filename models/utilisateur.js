@@ -338,41 +338,57 @@ class Utilisateur {
 				console.log("popularite update OK !");
 		});
 	}
-	static	GetDistance(user, otherUserArray, callback) {
-		let geolib = require('geolib');
-		let userLatitude = user.geo.latitude.toString();
-		userLatitude = userLatitude.substring(0, 8);
-		console.log("userlatitude == " + userLatitude);
-		let userLongitude = user.geo.longitude.toString();
-		userLongitude = userLongitude.substring(0, 8);
-        let ret = [];
-        let otherLatitude = null;
-        let otherLongitude = null;
-        let userpos = null;
-        let otherpos = null;
-        let dist = null;
-		if (otherUserArray) {
-			for (let i = 0, len = otherUserArray.length; i < len; i++) {
-                otherLatitude = null;
-                otherLongitude = null;
-                userpos = null;
-                otherpos = null;
-                dist = null;
-				otherLatitude = otherUserArray[i].geo.latitude.toString();
-				otherLatitude = otherLatitude.substring(0, 8);
-				otherLongitude = otherUserArray[i].geo.longitude.toString();
-				otherLongitude = otherLongitude.substring(0, 8);
-				userpos = {latitude: userLatitude, longitude: userLongitude};
-				otherpos = {latitude: otherLatitude, longitude: otherLongitude};
-				dist = geolib.getDistance(userpos, otherpos);
-                dist = geolib.convertUnit('km', dist, 0);
-				ret[i] = {dist : dist};
+	static tcheckIf(user , otherUserArray)
+	{
+		let mbool = true;
+		if (user.geo.latitude){
+			for (let i = 0, len = otherUserArray; i < len ; i++){
+				if (!otherUserArray[i].geo.latitude)
+					mbool = false;
 			}
+			return mbool;
 		}
-		else {
-		    ret = otherUserArray;
-        }
-		callback(ret);
+		else
+			return (mbool = false);
+
+	}
+	static	GetDistance(user, otherUserArray, callback) {
+	    if (this.tcheckIf(user, otherUserArray)){
+		    let geolib = require('geolib');
+		    let userLatitude = user.geo.latitude.toString();
+		    userLatitude = userLatitude.substring(0, 8);
+		    console.log("userlatitude == " + userLatitude);
+		    let userLongitude = user.geo.longitude.toString();
+		    userLongitude = userLongitude.substring(0, 8);
+            let ret = [];
+            let otherLatitude = null;
+            let otherLongitude = null;
+            let userpos = null;
+            let otherpos = null;
+            let dist = null;
+		    if (otherUserArray) {
+                for (let i = 0, len = otherUserArray.length; i < len; i++) {
+                    otherLatitude = null;
+                    otherLongitude = null;
+                    userpos = null;
+                    otherpos = null;
+                    dist = null;
+                    otherLatitude = otherUserArray[i].geo.latitude.toString();
+                    otherLatitude = otherLatitude.substring(0, 8);
+                    otherLongitude = otherUserArray[i].geo.longitude.toString();
+                    otherLongitude = otherLongitude.substring(0, 8);
+                    userpos = {latitude: userLatitude, longitude: userLongitude};
+                    otherpos = {latitude: otherLatitude, longitude: otherLongitude};
+                    dist = geolib.getDistance(userpos, otherpos);
+                    dist = geolib.convertUnit('km', dist, 0);
+                    ret[i] = {dist: dist};
+                }
+            }
+            callback(ret);
+		}
+        else
+            callback(null);
+
 	}
 	static SortDistance(user, otherUserArray, distance, callback)
     {
