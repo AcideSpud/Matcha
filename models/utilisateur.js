@@ -303,8 +303,26 @@ class Utilisateur {
 		}
 		callback(res);
 	}
+	static		sortAge(otherUserArray, callback){
+		console.log(otherUserArray[0].age + "HEREEEeeeeeeeee !");
+		var byAge = otherUserArray.slice(0);
+		byAge.sort(function(a,b) {
+			return a.age - b.age;
+		});
+		//let ret = Object.keys(otherUserArray.age).sort(function(a,b){return list[a]-list[b]});
+		callback(byAge);
+	}
 
-	static    sortByAge(ageMin, ageMax, otherUserArray, callback) {
+	static		sortPop(otherUserArray, callback){
+		var byPop = otherUserArray.slice(0);
+		byPop.sort(function(a,b) {
+			return a.popularite - b.popularite;
+		});
+		//let ret = Object.keys(otherUserArray.age).sort(function(a,b){return list[a]-list[b]});
+		callback(byPop);
+	}
+
+	static		sortByAge(ageMin, ageMax, otherUserArray, callback) {
 		let res = [];
 		let cmp = 0;
 
@@ -317,7 +335,7 @@ class Utilisateur {
 		callback(res);
 	}
 
-	static    sortByPop(popMin, popMax, otherUserArray, callback) {
+	static		sortByPop(popMin, popMax, otherUserArray, callback) {
 		let res = [];
 		let cmp = 0;
 
@@ -329,6 +347,8 @@ class Utilisateur {
 		}
 		callback(res);
 	}
+
+
 
 	static  updatePop(nbScore, userToUp, db) {
 		db.collection("users").updateOne({"name": userToUp[0].name}, {$set: {"popularite": nbScore}}, (err)=> {

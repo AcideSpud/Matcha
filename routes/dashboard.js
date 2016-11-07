@@ -46,6 +46,60 @@ router.get('/', requireLogin, function(req, res, next) {
 
 });
 
+router.post('/sort', upload.array(), requireLogin, (req, res)=> {
+    if (req.body.data) {
+        let data = JSON.parse(req.body.data);
+        if (req.body.mySort = 1) {
+            getProfile.sortAge(data, (cb)=>{
+                res.contentType('json');
+                res.send(JSON.stringify(cb));
+            });
+        }
+        else if (req.body.mySort = 2) {
+            getProfile.sortPop(data, (cb)=>{
+                res.contentType('json');
+                res.send(JSON.stringify(cb));
+            });
+        }
+        else if (req.body.mySort = 3) {
+
+        }
+        else if (req.body.mySort = 4) {
+
+        }
+    }
+    else {
+        User.Create_db((array)=> {
+            let ret = [];
+            let cmp = 0;
+            for (let i = 0, len = array.length; i < len; i++) {
+                if (array[i].name != req.session.user.name){
+                    ret[cmp] = array[i];
+                    cmp++;
+                }
+            }
+            console.log(req.session.user.name);
+            if (req.body.mySort = 1) {
+                getProfile.sortAge(ret, (cb)=>{
+                    res.contentType('json');
+                    res.send(JSON.stringify(cb));
+                });
+            }
+            else if (req.body.mySort = 2) {
+                getProfile.sortPop(ret, (cb)=>{
+                    res.contentType('json');
+                    res.send(JSON.stringify(cb));
+                });
+            }
+            else if (req.body.mySort = 3) {
+
+            }
+            else if (req.body.mySort = 4) {
+
+            }
+        });
+    }
+});
 
 //					POST
 router.post('/filter', upload.array(),requireLogin, (req, res) =>{
@@ -86,13 +140,15 @@ router.post('/filter', upload.array(),requireLogin, (req, res) =>{
 				getProfile.sortByAge(ageMin, ageMax, cb, (callB)=> {
 					getProfile.sortByPop(popMin, popMax, callB, (m_cb)=> {
 						getProfile.SortDistance(req.session.user, m_cb, dist, (my_cb)=>{
-							getProfile.GetDistance(req.session.user, mylastcb, (geo)=> {
-								for (let i = 0, len = mylastcb.lentgh; len < i; i++) {
-									mylastcb[i].push({geo : geo[i]});
-								}
-								res.contentType('json');
-								res.send(JSON.stringify(mylastcb));
-							});
+							getProfile.SortTag(req.session.user, my_cb, tag, (mylastcb)=> {
+								getProfile.GetDistance(req.session.user, mylastcb, (geo)=> {
+										for (let i = 0, len = mylastcb.lentgh; len < i; i++) {
+											mylastcb[i].push({geo: geo[i]});
+										}
+										res.contentType('json');
+										res.send(JSON.stringify(mylastcb));
+									});
+								});
 							});
 						});
 					});
@@ -101,40 +157,6 @@ router.post('/filter', upload.array(),requireLogin, (req, res) =>{
 	}
 });
 
-router.post('/sort', upload.array(), requireLogin, (req, res)=> {
-	if (req.body.data) {
-		let data = JSON.parse(req.body.data);
-		if (req.body.mySort = 1) {
 
-		}
-		else if (req.body.mySort = 2) {
-
-		}
-		else if (req.body.mySort = 3) {
-
-		}
-		else if (req.body.mySort = 4) {
-
-		}
-	}
-	else {
-		User.Create_db((ret)=> {
-
-
-			if (req.body.mySort = 1) {
-
-			}
-			else if (req.body.mySort = 2) {
-
-			}
-			else if (req.body.mySort = 3) {
-
-			}
-			else if (req.body.mySort = 4) {
-
-			}
-		});
-	}
-});
 
 module.exports = router;

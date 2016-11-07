@@ -43,24 +43,42 @@ var data = null;
 var xhr = getHttpRequest();
 
 function showTable(data){
+    let age = null;
+    let orient = null;
     for (let i = 0; i < data.length; i++) {
+        if (data[i].age)
+            age = data[i].age;
+        else
+            age = 'noSet';
+
+        if (data[i].orientation  == 'Ht' &&  data[i].genre == 'M'){
+            orient = 'Woman';
+        } else if (data[i].orientation == 'Ht' &&  data[i].genre == 'Mme'){
+            orient = 'Man';
+        } else if (  data[i].orientation  == 'Hm' &&  data[i].genre == 'M') {
+            orient = 'Man';
+        } else if ( data[i].orientation == 'Hm' && data[i].genre == 'Mme') {
+            orient = 'Woman';
+        } else if ( data[i].orientation == 'Bi'){
+            orient = 'Everybody';
+        }
+        if (data[i].img[0])
+            img = data[i].img[0];
+        else
+            img = '/img/no_image.png';
 
         $('#table').append('<div class="col-sm-6 col-md-3" id="thebox">' +
        '<div class="thumbnail" style="background-image:linear-gradient(90deg,rgb(127, 18, 47), rgb(200, 255, 255) );" id="mybox">' +
-         '<img class="parent" src="'+ data[i].img[0]+ '"  alt="">' +
-            '<div class="caption">' + '<h3>' + data[i].nom + data[i].prenom +'</h3>' +
-            ' <div class="caption">' +
-        '<h3>' +  data[i].nom + data[i].prenom + '</h3>' +
+         '<img class="parent" src="'+ img+ '"  alt="">' +
+            '<div class="caption">' +
+            '<h3>' +  data[i].nom + data[i].prenom + '</h3>' +
             `<div class="col-md-4 column">
             <table class="table">
             <thead>
             <tr>
-            <td>
-            Age :
-    </td>
-        <td>` +
-         '<% if(' + data[i].age + ') %>' +
-     data[i].age  + `
+            <td>Age :</td>  
+            <td> 
+            ${age}  
             </td>
             </tr>
             <tr>
@@ -84,17 +102,7 @@ function showTable(data){
             Insterested by :
             </td>
         <td>
-        <% if (` + data[i].orientation + ` == 'Ht' && ` + data[i].genre + `== 'M'){ %>
-            Woman
-            <% } else if (` + data[i].orientation + ` == 'Ht' && ` + data[i].genre + `== 'Mme') { %>
-            Man
-            <% } else if (` + data[i].orientation +` == 'Hm' && ` + data[i].genre + `== 'M') { %>
-            Man
-            <% } else if (` + data[i].orientation ` + == 'Hm' && data[i].genre == 'Mme') { %>
-            Woman
-            <% } else if (data[i].orientation == 'Bi'){ %>
-            Everybody
-            <% } %>
+       ` + orient + `
     </td>
         </tr>
 
@@ -104,7 +112,7 @@ function showTable(data){
 
         </div>
         </div>'
-            '<p id="b_view"><a href="#" class="btn btn-primary" role="button">Like</a> <a href="/profile/' + data[mkey].name + '" class="btn btn-default" role="button">View profil</a></p>' +
+            '<p id="b_view"><a href="#" class="btn btn-primary" role="button">Like</a> <a href="/profile/`  + data[i].name + '" class="btn btn-default" role="button">View profil</a></p>' +
                 '</div></div></div>');
 
     }
@@ -175,12 +183,13 @@ function find(sort){
     else {
         var sortForm = new FormData();
         var mySort = $('#sel2').val();
+        console.log(mySort);
         sortForm.append("mySort", mySort);
         if (data) {
             sortForm.append('data', JSON.stringify(data));
-            console.log(myform.data + "HAHHAHAHAHAHHA");
+            console.log(sortForm.data + "HAHHAHAHAHAHHA");
         }
-
+        $('#table').empty();
         xhr.open('POST', "/dashboard/sort", true);
         xhr.setRequestHeader('X-Requested-With', 'xmlhttprequest');
         xhr.addEventListener('error', onError, false);
