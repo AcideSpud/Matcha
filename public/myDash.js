@@ -131,46 +131,61 @@ var onError = function(err) {
     // something went wrong with upload
 };
 
-function find(){
-    if (data)
-    {
-        console.log("MYSUPERDUPERTEST !!!!");
+function find(sort){
+    if (!sort) {
+        if (data) {
+            console.log("MYSUPERDUPERTEST !!!!");
+        }
+        var ageMin = $('#age-min').val();
+        var ageMax = $('#age-max').val();
+        var popMin = $('#pop-min').val();
+        var popMax = $('#pop-max').val();
+        var mDist = $('#dist').val();
+        var tag = $('#sel1').val();
+
+        $('#table').empty();
+
+
+        var myform = new FormData();
+        myform.append("ageMin", ageMin);
+        myform.append("ageMax", ageMax);
+        myform.append("popMin", popMin);
+        myform.append("popMax", popMax);
+        myform.append("tag", tag);
+        myform.append("dist", mDist);
+
+        if (data) {
+            myform.append('data', JSON.stringify(data));
+            console.log(myform.data + "HAHHAHAHAHAHHA");
+        }
+
+        console.log(myform);
+        for (var pair of myform.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+        }
+
+
+        xhr.open('POST', "/dashboard/filter", true);
+        xhr.setRequestHeader('X-Requested-With', 'xmlhttprequest');
+        xhr.addEventListener('error', onError, false);
+        xhr.addEventListener('progress', onProgress, false);
+        xhr.send(myform);
+        xhr.addEventListener('readystatechange', onReady, false);
     }
-    var ageMin = $('#age-min').val();
-    var ageMax = $('#age-max').val();
-    var popMin = $('#pop-min').val();
-    var popMax = $('#pop-max').val();
-    var mDist = $('#dist').val();
-    var tag = $('#sel1').val();
+    else {
+        var sortForm = new FormData();
+        var mySort = $('#sel2').val();
+        sortForm.append("mySort", mySort);
+        if (data) {
+            sortForm.append('data', JSON.stringify(data));
+            console.log(myform.data + "HAHHAHAHAHAHHA");
+        }
 
-    $('#table').empty();
-
-
-    var myform = new FormData();
-    myform.append("ageMin" , ageMin);
-    myform.append("ageMax" , ageMax);
-    myform.append("popMin" , popMin);
-    myform.append("popMax" , popMax);
-    myform.append("tag", tag);
-    myform.append("dist" , mDist);
-
-    if (data)
-    {
-        myform.append('data', JSON.stringify(data));
-        console.log(myform.data + "HAHHAHAHAHAHHA");
+        xhr.open('POST', "/dashboard/sort", true);
+        xhr.setRequestHeader('X-Requested-With', 'xmlhttprequest');
+        xhr.addEventListener('error', onError, false);
+        xhr.addEventListener('progress', onProgress, false);
+        xhr.send(sortForm);
+        xhr.addEventListener('readystatechange', onReady, false);
     }
-
-    console.log(myform);
-    for (var pair of myform.entries()) {
-        console.log(pair[0]+ ', ' + pair[1]);
-    }
-
-
-    xhr.open('POST', "/dashboard/filter", true);
-    xhr.setRequestHeader('X-Requested-With', 'xmlhttprequest');
-    xhr.addEventListener('error', onError, false);
-    xhr.addEventListener('progress', onProgress, false);
-    xhr.send(myform);
-    xhr.addEventListener('readystatechange', onReady, false);
-
 }

@@ -101,4 +101,40 @@ router.post('/filter', upload.array(),requireLogin, (req, res) =>{
 	}
 });
 
+router.post('/sort', upload.array(), requireLogin, (req, res)=> {
+	if (req.body.data) {
+		let data = JSON.parse(req.body.data);
+		if (req.body.mySort = 1) {
+
+		}
+		else if (req.body.mySort = 2) {
+
+		}
+		else if (req.body.mySort = 3) {
+
+		}
+		else if (req.body.mySort = 4) {
+
+		}
+	}
+	else {
+		User.Create_db((ret)=> {
+
+
+			if (req.body.mySort = 1) {
+
+			}
+			else if (req.body.mySort = 2) {
+
+			}
+			else if (req.body.mySort = 3) {
+
+			}
+			else if (req.body.mySort = 4) {
+
+			}
+		});
+	}
+});
+
 module.exports = router;

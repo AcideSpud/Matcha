@@ -25,10 +25,16 @@
          //On connection to server, ask for users'name;
          socket.on('connect', function(){
             console.log('Un utilisateur de connecte');
-            socket.emit('adduser', '<%= ret[0].name %>');
+           // socket.emit('adduser', '<%= ret[0].name %>');
+            socket.emit('adduser2', '<%= ret[0].name %>');
          });
 
          socket.on('updatechat', function(username, data){
+            var request = new XMLHttpRequest();
+                            request.open('POST', '/chat/chat', true);
+                            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+                            request.send("userName="+username+"&content="+data);
+
             $('#messages').append('<div class="message"><div class="info"><p><strong>' + username + ':</p></strong>' + data + '</div></div>');
          })
 
@@ -39,7 +45,7 @@
                     $('#rooms').append('<div>' + value + '</div>');
                  }
                  else {
-                    $('#rooms').append('<div><a href="#" onclick="switchRoom(\''+       value+'\')">' + value + '</a></div>');
+                    $('#rooms').append('<div><a href="#" onclick="switchRoom(\''+ value + '\')">' + value + '</a></div>');
                  }
               });
            });

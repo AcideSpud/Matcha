@@ -72,7 +72,9 @@ app.use(function(req, res, next){
 
 
 var all_users = {}
-var rooms = ['room1', 'room2', 'room3']
+var rooms = ['room1', 'room2', 'room3'];
+var chatRoom = [];
+var historique_message =[];
 
 io.on('connection', function (socket) {
   
@@ -82,6 +84,7 @@ io.on('connection', function (socket) {
   socket.on('sendchat', function(data){
     //we tell the client to execute 'updatechat'
     io.sockets.in(socket.room).emit('updatechat', socket.username, data);
+    io.sockets.in(socket.Croom).emit('updatechat', socket.username, data);
   });
 
 
@@ -93,6 +96,21 @@ io.on('connection', function (socket) {
     socket.emit('updatechat', 'SERVER', 'You have connected to room1');
     socket.broadcast.to('room1').emit('updatechat','SERVER', username + ' has connected');
     io.sockets.emit('updaterooms', rooms, 'rooms1');
+  })
+
+  socket.on('adduser2', function(username){
+
+    var roomChat = 'room1' + username;
+    if (chatRoom.indexOf('room1' + username) == -1)
+      chatRoom.push(roomChat);
+
+    socket.username = username;
+    socket.room = roomChat;
+    all_users[username] = username;
+    socket.join(roomChat);
+    socket.emit('updatechat', 'SERVER', 'You have connected to the new room');
+    socket.broadcast.to(roomChat).emit('updatechat','SERVER', username + ' has connected');
+    io.sockets.emit('updaterooms', chatRoom, roomChat);
   })
 
   socket.on('switchRoom', function(newroom){
