@@ -45,6 +45,8 @@ var xhr = getHttpRequest();
 function showTable(data){
     let age = null;
     let orient = null;
+    let img = null;
+    let imgclass = null;
     for (let i = 0; i < data.length; i++) {
         if (data[i].age)
             age = data[i].age;
@@ -62,16 +64,21 @@ function showTable(data){
         } else if ( data[i].orientation == 'Bi'){
             orient = 'Everybody';
         }
-        if (data[i].img[0])
+        if (data[i].img[0]) {
             img = data[i].img[0];
-        else
+            imgclass = 'parent';
+        }
+        else{
+            imgclass = 'img-thumbnail'
             img = '/img/no_image.png';
+        }
+
 
         $('#table').append('<div class="col-sm-6 col-md-3" id="thebox">' +
        '<div class="thumbnail" style="background-image:linear-gradient(90deg,rgb(127, 18, 47), rgb(200, 255, 255) );" id="mybox">' +
-         '<img class="parent" src="'+ img+ '"  alt="">' +
+         '<div><img class="'+ imgclass +'" src="'+ img+ '"  alt=""></div>' +
             '<div class="caption">' +
-            '<h3>' +  data[i].nom + data[i].prenom + '</h3>' +
+            '<h3>' +  data[i].nom + '&nbsp;' + data[i].prenom + '</h3>' +
             `<div class="col-md-4 column">
             <table class="table">
             <thead>
@@ -112,7 +119,7 @@ function showTable(data){
 
         </div>
         </div>'
-            '<p id="b_view"><a href="#" class="btn btn-primary" role="button">Like</a> <a href="/profile/`  + data[i].name + '" class="btn btn-default" role="button">View profil</a></p>' +
+            '<p id="b_view"><a href="/profile/`  + data[i].name + '" class="btn btn-default" role="button">View profil</a></p>' +
                 '</div></div></div>');
 
     }

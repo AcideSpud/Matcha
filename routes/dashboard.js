@@ -62,41 +62,76 @@ router.post('/sort', upload.array(), requireLogin, (req, res)=> {
             });
         }
         else if (req.body.mySort = 3) {
-
+            getProfile.GetDistance(req.session.user, data, (cb)=> {
+                for (let i = 0, len = data.length; i < len; i++) {
+                    data[i].push({geo: cb[i]});
+                }
+                getProfile.sortDist(data, (cb)=> {
+                    res.contentType('json');
+                    res.send(JSON.stringify(cb));
+                })
+            });
         }
         else if (req.body.mySort = 4) {
-
+            getProfile.nbTag(req.session.user, data, (cb)=>{
+                for (let i = 0, len = data.length; i < len; i++){
+                    for (let j = 0, lon = cb.length; i < lon; j++){
+                        if (data[i] == cb[j].name){
+                            data[i].push({nTag : cb[j].size});
+                        }
+                    }
+                }
+                getProfile.sortByTag(data, (mcb)=>{
+                    res.contentType('json');
+                    res.send(JSON.stringify(mcb));
+                })
+            })
         }
     }
     else {
         User.Create_db((array)=> {
-            let ret = [];
-            let cmp = 0;
-            for (let i = 0, len = array.length; i < len; i++) {
-                if (array[i].name != req.session.user.name){
-                    ret[cmp] = array[i];
-                    cmp++;
+            getProfile.SortPrefSexUser(req.session.user, array, (ret)=>{
+                console.log(req.session.user.name);
+                if (req.body.mySort = 1) {
+                    getProfile.sortAge(ret, (cb)=>{
+                        res.contentType('json');
+                        res.send(JSON.stringify(cb));
+                    });
                 }
-            }
-            console.log(req.session.user.name);
-            if (req.body.mySort = 1) {
-                getProfile.sortAge(ret, (cb)=>{
-                    res.contentType('json');
-                    res.send(JSON.stringify(cb));
-                });
-            }
-            else if (req.body.mySort = 2) {
-                getProfile.sortPop(ret, (cb)=>{
-                    res.contentType('json');
-                    res.send(JSON.stringify(cb));
-                });
-            }
-            else if (req.body.mySort = 3) {
+                else if (req.body.mySort = 2) {
+                    getProfile.sortPop(ret, (cb)=>{
+                        res.contentType('json');
+                        res.send(JSON.stringify(cb));
+                    });
+                }
+                else if (req.body.mySort = 3) {
+                    getProfile.GetDistance(req.sessios.user, ret, (cb)=>{
+                        for (let i = 0, len = ret.length; i < len; i++){
+                            ret[i].push({geo : cb[i]});
+                        }
+                        getProfile.sortDist(ret , (cb)=>{
+                            res.contentType('json');
+                            res.send(JSON.stringify(cb));
+                        })
 
-            }
-            else if (req.body.mySort = 4) {
-
-            }
+                    })
+                }
+                else if (req.body.mySort = 4) {
+                    getProfile.nbTag(req.session.user, ret, (cb)=>{
+                        for (let i = 0, len = ret.length; i < len; i++){
+                            for (let j = 0, lon = cb.length; i < lon; j++){
+                                if (ret[i] == cb[j].name){
+                                    ret[i].push({nTag : cb[j].size});
+                                }
+                            }
+                        }
+                        getProfile.sortByTag(ret, (mcb)=>{
+                            res.contentType('json');
+                            res.send(JSON.stringify(mcb));
+                        })
+                    })
+                }
+                });
         });
     }
 });

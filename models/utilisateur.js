@@ -1,6 +1,6 @@
 class Utilisateur {
 
-	static GetDB(callback) {
+	static		GetDB(callback) {
 		let mongo = require('mongodb').MongoClient;
 
 		mongo.connect("mongodb://localhost/matcha", (err, db) => {
@@ -12,7 +12,7 @@ class Utilisateur {
 		})
 	}
 
-	static findUsers(db, username, callback) {
+	static		findUsers(db, username, callback) {
 
 		let assert = require('assert')
 		var cursor = db.collection('users').find({name: username})
@@ -27,7 +27,7 @@ class Utilisateur {
 		})
 	}
 
-	static findUsers3(username, callback) {
+	static		findUsers3(username, callback) {
 
 		let mongo = require('mongodb').MongoClient;
 
@@ -52,7 +52,7 @@ class Utilisateur {
 		})
 	}
 
-	static modifPwd(username, pwd, callback) {
+	static		modifPwd(username, pwd, callback) {
 		let mongo = require('mongodb').MongoClient;
 
 		mongo.connect("mongodb://localhost/matcha", (err, db)=> {
@@ -66,7 +66,7 @@ class Utilisateur {
 
 	}
 
-	static updateChatroom(db, chatRoom, callback){
+	static		updateChatroom(db, chatRoom, callback){
 		
 		db.collection("chatRoom").updateOne({"name": chatRoom.name},{
 			$set: {"name": chatRoom.name, "content": chatRoom.content
@@ -77,7 +77,7 @@ class Utilisateur {
 		})
 	}
 
-	static updateUser(user, db, username, callback) {
+	static		updateUser(user, db, username, callback) {
 
 		db.collection("users").updateOne({"name": username}, {
 			$set: {
@@ -96,7 +96,7 @@ class Utilisateur {
 	}
 
 
-	static updateLikeUser(user, db, key) {
+	static		updateLikeUser(user, db, key) {
 		console.log('-----UPDATE ARRAY USER' + user + '[' + key + ']');
 
 		db.collection("users").updateOne({"name": user.name}, {$push: {"like": key}}, (err)=> {
@@ -113,7 +113,7 @@ class Utilisateur {
 		})
 	}
 
-	static updateUnlikeUser(user, db, key) {
+	static		updateUnlikeUser(user, db, key) {
 		db.collection("users").updateOne({"name": user.name}, {$pull: {"like": key}}, (err)=> {
 			if (err)
 				throw err;
@@ -129,7 +129,7 @@ class Utilisateur {
 	}
 
 
-	static modifUser(request, callback) {
+	static		modifUser(request, callback) {
 		let mongo = require('mongodb').MongoClient;
 		var path = require('path'),
 			fs = require('fs');
@@ -160,7 +160,7 @@ class Utilisateur {
 		})
 	}
 
-	static queryUserByMail(mail, callback) {
+	static		queryUserByMail(mail, callback) {
 		let mongo = require('mongodb').MongoClient;
 
 		mongo.connect("mongodb://localhost/matcha", (err, db)=> {
@@ -178,7 +178,7 @@ class Utilisateur {
 		})
 	}
 
-	static uploadImg2(username, imgpath, callback) {
+	static      uploadImg2(username, imgpath, callback) {
 		let mongo = require('mongodb').MongoClient;
 
 		mongo.connect('mongodb://localhost/matcha', (err, db)=> {
@@ -191,7 +191,7 @@ class Utilisateur {
 		})
 	}
 
-	static create(request, response) {
+	static      create(request, response) {
 		let mongo = require('mongodb').MongoClient
 		let bcrypt = require('bcryptjs')
 
@@ -230,13 +230,13 @@ class Utilisateur {
 		})
 	}
 
-	static deleteImg(request, response){
+	static      deleteImg(request, response){
 		var async = require('async');
 
 
 	}
 
-	static SortPrefSexUser(user, otherUserArray, callback) {
+	static      SortPrefSexUser(user, otherUserArray, callback) {
 
 		let res = [];
 		let cmp = 0;
@@ -321,6 +321,14 @@ class Utilisateur {
 		//let ret = Object.keys(otherUserArray.age).sort(function(a,b){return list[a]-list[b]});
 		callback(byPop);
 	}
+	static		sortDist(otherUserArray, callback){
+		var byDist = otherUserArray.slice(0);
+		byDist.sort(function(a,b) {
+			return a.geo - b.geo;
+		});
+		//let ret = Object.keys(otherUserArray.age).sort(function(a,b){return list[a]-list[b]});
+		callback(byDist);
+	}
 
 	static		sortByAge(ageMin, ageMax, otherUserArray, callback) {
 		let res = [];
@@ -350,7 +358,7 @@ class Utilisateur {
 
 
 
-	static  updatePop(nbScore, userToUp, db) {
+	static      updatePop(nbScore, userToUp, db) {
 		db.collection("users").updateOne({"name": userToUp[0].name}, {$set: {"popularite": nbScore}}, (err)=> {
 			if (err)
 				throw err;
@@ -358,7 +366,7 @@ class Utilisateur {
 				console.log("popularite update OK !");
 		});
 	}
-	static tcheckIf(user , otherUserArray)
+	static      tcheckIf(user , otherUserArray)
 	{
 		let mbool = true;
 		if (user.geo.latitude){
@@ -372,7 +380,7 @@ class Utilisateur {
 			return (mbool = false);
 
 	}
-	static	GetDistance(user, otherUserArray, callback) {
+	static      GetDistance(user, otherUserArray, callback) {
 	    if (this.tcheckIf(user, otherUserArray)){
 		    let geolib = require('geolib');
 		    let userLatitude = user.geo.latitude.toString();
@@ -410,7 +418,7 @@ class Utilisateur {
             callback(null);
 
 	}
-	static SortDistance(user, otherUserArray, distance, callback)
+	static      SortDistance(user, otherUserArray, distance, callback)
     {
         let res = [];
         let cmp = 0;
@@ -424,8 +432,43 @@ class Utilisateur {
             callback(res);
         });
     };
+    static      sortByTag(otherUserArray, callback){
+        var byTag = otherUserArray.slice(0);
+        byTag.sort(function(a,b) {
+            return a.nTag - b.nTag;
+        });
+        //let ret = Object.keys(otherUserArray.age).sort(function(a,b){return list[a]-list[b]});
+        callback(byTag);
+    }
 
-    static SortTag(user, otherUserArray, val, callback) {
+    static      nbTag(user , otherUserArray, callback){
+        let comTag = new Array;
+        let cmp2 = 0;
+        let cmp = 0;
+        comTag[cmp] = new Array;
+        for (let i = 0, len = otherUserArray.length; i < len; i++) {
+            comTag[cmp] = new Array;
+            for (let j = 0, lan = otherUserArray[i].tag.length; j < lan; j++) {
+                for (let k = 0, lon = user.tag.length; k < lon; k++) {
+                    if (user.tag[k] == otherUserArray[i].tag[j]) {
+                        comTag[cmp][cmp2] = {name: otherUserArray[i].name, tag: otherUserArray[i].tag[j]};
+                        cmp2++;
+                    }
+                }
+            }
+            cmp2 = 0;
+            cmp++;
+        }
+
+        nbTagUser = user.tag.length;
+        let tab = new Array;
+        for (let i = 0, len = comTag.length; i < len; i++) {
+            tab[i] = {name: comTag[i][0].name, size: comTag[i].length};
+        }
+        callback(tab);
+	}
+
+    static      SortTag(user, otherUserArray, val, callback) {
         let nbTagOther = [];
         let nbTagUser = null;
         let ret = [];
@@ -480,8 +523,5 @@ class Utilisateur {
     }
 
 }
-
-
-
 
 module.exports= Utilisateur;
