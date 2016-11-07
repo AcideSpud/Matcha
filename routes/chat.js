@@ -17,11 +17,6 @@ function requireLogin (req, res, next) {
 
 router.get('/', requireLogin,  function(req, res, next) {
 
-	chatRoom.createChatroom('coucou', ()=>{
-		chatRoom.findChatRoom('coucou', (res)=>{
-			console.log(res[0].name)
-		})
-	})
 
 	Utilisateur.findUsers3(req.user.name, (result)=>{
     	res.render('chat2', {ret : result});
@@ -31,7 +26,33 @@ router.get('/', requireLogin,  function(req, res, next) {
 
 router.post('/chat', requireLogin, function(req, res, next){
 
-	console.log(req.body.userName, req.body.content);
+	
+		chatRoom.findChatRoom('test', (res)=>{
+			if (res === undefined)
+				chatRoom.createChatroom('test', ()=>{
+					console.log('chatroom created');
+		})
+			else
+				console.log('existe deja')
+	})
+	
+		if (req.body.userName == undefined)
+			req.body.userName == '';
+		if (req.body.content == undefined)
+			req.body.content == '';
+
+
+console.log("chhhhhhaaaaat",req.body.userName, req.body.content);
+		chatRoom.findChatRoom('test', (res)=>{
+			if (res)
+				chatRoom.modifContent('test', req.body.userName, req.body.content, ()=>{
+					console.log('TEST UPDATE CHAT');
+				})
+		})
+
+
+	
+	
 
 })
 

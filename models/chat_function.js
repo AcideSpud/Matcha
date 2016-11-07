@@ -22,7 +22,7 @@ class Chat {
 				throw err
 			}
 			else {
-				db.collection('chatRoom').find({name: name}).toArray(function (err, result) {
+				db.collection('chatRoom').find({chatRoomName: name}).toArray(function (err, result) {
 					if (err) {
 						callback(err);
 					}
@@ -37,28 +37,27 @@ class Chat {
 		})
 	}
 
-	static modifContent(name, content, callback) {
+	static modifContent(name, usernames, content, callback) {
 
-		this.GetDB(function(cb){
-				db.collection("chatRoom").updateOne({"name": name},{
-				$push: {"content": content}
+		console.log('USERNAMES----', usernames, 'CONTENT---', content)
+
+		this.GetDB(function(db){
+				db.collection("chatRoom").updateOne({"chatRoomName": name},{
+				$push: {"userNames": usernames, "content": content}
 			},(err, res)=>{
 				if (err) throw err
 					callback()
 			})
 
 		})
-
-		
 	}
 
 	static createChatroom(name, callback){
 		
-		var chatRoom = {name: name,
-						content: {
-							userName: [],
-							content:[]
-						}}
+		var chatRoom = {chatRoomName: name,
+						userNames: [],
+						content: []
+						}
 		this.GetDB(function(db){
 			db.collection("chatRoom").insert(chatRoom, null, (err, res)=>{
 				if (err) throw err;

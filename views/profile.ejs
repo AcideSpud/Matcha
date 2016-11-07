@@ -38,9 +38,9 @@
                 Unlike !
             </button>
             <% } %>
-            <button class="btn btn-info btn-block" type="button">
+            <a href="/chat"><button class="btn btn-info btn-block" onclick="send_info_chat('<%= ret[0].name %>', '<%= user %>')" type="button">
                 Message
-            </button>
+            </button></a>
             <button class="btn btn-warning btn-block" type="button">
                 Report !
             </button>

@@ -26,3 +26,10 @@ function unlike_request(name) {
 
 }
 
+function send_info_chat(name1, name2){
+    var request = new XMLHttpRequest();
+    request.open('POST', '/chat/chat', true);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    request.send("name1="+name1+"&name2="+name2);
+}
+

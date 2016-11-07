@@ -98,11 +98,12 @@ io.on('connection', function (socket) {
     io.sockets.emit('updaterooms', rooms, 'rooms1');
   })
 
-  socket.on('adduser2', function(username){
+  socket.on('adduser2', function(username, chatRoomName){
 
-    var roomChat = 'room1' + username;
-    if (chatRoom.indexOf('room1' + username) == -1)
+    var roomChat = chatRoomName;
+    if (chatRoom.indexOf(chatRoomName) == -1)
       chatRoom.push(roomChat);
+
 
     socket.username = username;
     socket.room = roomChat;
@@ -206,23 +207,6 @@ app.use('/upload_img', upload_img);
 app.use('/forgot_mail', forgot_mail);
 app.use('/logout', logout);
 
-
-
-// handling 404 errors
-//app.get('*', function(req, res, next) {
-//  var err = new Error();
-//  err.status = 404;
-//  next(err);
-//});
-//
-//app.use(function(err, req, res, next) {
-//  if(err.status !== 404) {
-//    return next();
-//  }
-//  res.status(404);
-//  res.render('page_error')
-//});
-//
 
 app.get('*', function(req, res, next) {
   var err = new Error();

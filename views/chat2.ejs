@@ -26,7 +26,7 @@
          socket.on('connect', function(){
             console.log('Un utilisateur de connecte');
            // socket.emit('adduser', '<%= ret[0].name %>');
-            socket.emit('adduser2', '<%= ret[0].name %>');
+            socket.emit('adduser2', '<%= ret[0].name %>', '<%= ret[0].match %>');
          });
 
          socket.on('updatechat', function(username, data){

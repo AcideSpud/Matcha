@@ -208,7 +208,7 @@ class Utilisateur {
 					img: [],
 					orientation: "Bi",
 					geo: [],
-					match: []
+					match: ["test"]
 				}
 
 				this.findUsers3(request.body.name, (result)=> {
@@ -363,7 +363,7 @@ class Utilisateur {
 		let mbool = true;
 		if (user.geo.latitude){
 			for (let i = 0, len = otherUserArray; i < len ; i++){
-				if (!otherUserArray[i].geo.latitude)
+				if (!otherUserArray[i].geo.latitude && !otherUserArray[i].geo.longitude)
 					mbool = false;
 			}
 			return mbool;

@@ -33,7 +33,7 @@ router.get('/:userID', requireLogin, (req, res, next)=>{
                 console.log("testtststs");
                 res.render('profile', {
                     ret: ret,
-                    islike: islike
+                    islike: islike, user: req.session.user.name
             });
         });
     });
