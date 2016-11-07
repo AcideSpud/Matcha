@@ -66,8 +66,13 @@ router.post('/filter', upload.array(),requireLogin, (req, res) =>{
 				getProfile.sortByPop(popMin, popMax, callB, (m_cb)=>{
 					getProfile.SortDistance(req.session.user, m_cb, dist, (my_cb)=>{
 						getProfile.SortTag(req.session.user, my_cb, tag, (mylastcb)=> {
-							res.contentType('json');
-							res.send(JSON.stringify(mylastcb));
+							getProfile.GetDistance(req.session.user, mylastcb, (geo)=> {
+								for (let i = 0, len = mylastcb.lentgh; len < i; i++) {
+									mylastcb[i].push({geo : geo[i]});
+								}
+ 								res.contentType('json');
+								res.send(JSON.stringify(mylastcb));
+								});
 						});
 					});
 				});
@@ -81,15 +86,18 @@ router.post('/filter', upload.array(),requireLogin, (req, res) =>{
 				getProfile.sortByAge(ageMin, ageMax, cb, (callB)=> {
 					getProfile.sortByPop(popMin, popMax, callB, (m_cb)=> {
 						getProfile.SortDistance(req.session.user, m_cb, dist, (my_cb)=>{
-						    getProfile.SortTag(req.session.user, my_cb, tag, (mylastcb)=> {
+							getProfile.GetDistance(req.session.user, mylastcb, (geo)=> {
+								for (let i = 0, len = mylastcb.lentgh; len < i; i++) {
+									mylastcb[i].push({geo : geo[i]});
+								}
 								res.contentType('json');
 								res.send(JSON.stringify(mylastcb));
+							});
 							});
 						});
 					});
 				});
 			});
-		});
 	}
 });
 

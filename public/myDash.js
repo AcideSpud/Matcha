@@ -43,13 +43,67 @@ var data = null;
 var xhr = getHttpRequest();
 
 function showTable(data){
-    for (mkey in data) {
+    for (let i = 0; i < data.length; i++) {
 
         $('#table').append('<div class="col-sm-6 col-md-3" id="thebox">' +
        '<div class="thumbnail" style="background-image:linear-gradient(90deg,rgb(127, 18, 47), rgb(200, 255, 255) );" id="mybox">' +
-         '<img class="parent" src="'+ data[mkey].img[0]+ '"  alt="">' +
-            '<div class="caption">' + '<h3>' + data[mkey].nom + data[mkey].prenom +'</h3>' +
-            '<p id="test">'+ data[mkey].bio +'...</p>'+
+         '<img class="parent" src="'+ data[i].img[0]+ '"  alt="">' +
+            '<div class="caption">' + '<h3>' + data[i].nom + data[i].prenom +'</h3>' +
+            ' <div class="caption">' +
+        '<h3>' +  data[i].nom + data[i].prenom + '</h3>' +
+            `<div class="col-md-4 column">
+            <table class="table">
+            <thead>
+            <tr>
+            <td>
+            Age :
+    </td>
+        <td>` +
+         '<% if(' + data[i].age + ') %>' +
+     data[i].age  + `
+            </td>
+            </tr>
+            <tr>
+            <td>
+            Popularite:
+    </td>
+        <td>` +
+         data[i].popularite +
+            `</td>
+            </tr>
+            <tr>
+            <td>
+            Dist:
+    </td>
+        <td>` +
+         data[i].geo.dist + `Km
+            </td>
+            </tr>
+            <tr>
+            <td>
+            Insterested by :
+            </td>
+        <td>
+        <% if (` + data[i].orientation + ` == 'Ht' && ` + data[i].genre + `== 'M'){ %>
+            Woman
+            <% } else if (` + data[i].orientation + ` == 'Ht' && ` + data[i].genre + `== 'Mme') { %>
+            Man
+            <% } else if (` + data[i].orientation +` == 'Hm' && ` + data[i].genre + `== 'M') { %>
+            Man
+            <% } else if (` + data[i].orientation ` + == 'Hm' && data[i].genre == 'Mme') { %>
+            Woman
+            <% } else if (data[i].orientation == 'Bi'){ %>
+            Everybody
+            <% } %>
+    </td>
+        </tr>
+
+
+        </thead>
+        </table>
+
+        </div>
+        </div>'
             '<p id="b_view"><a href="#" class="btn btn-primary" role="button">Like</a> <a href="/profile/' + data[mkey].name + '" class="btn btn-default" role="button">View profil</a></p>' +
                 '</div></div></div>');
 
