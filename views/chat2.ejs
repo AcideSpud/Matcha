@@ -29,6 +29,10 @@
             socket.emit('adduser2', '<%= ret[0].name %>', '<%= ret[0].match %>');
          });
 
+         socket.on('oldMess', (username, data)=>{
+            $('#messages').append('<div class="message"><div class="info"><p><strong>' + username + ':</p></strong>' + data + '</div></div>');
+         })
+
          socket.on('updatechat', function(username, data){
             var request = new XMLHttpRequest();
                             request.open('POST', '/chat/chat', true);

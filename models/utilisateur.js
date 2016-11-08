@@ -96,6 +96,8 @@ class Utilisateur {
 	}
 
 
+
+
 	static		updateLikeUser(user, db, key) {
 		console.log('-----UPDATE ARRAY USER' + user + '[' + key + ']');
 
@@ -208,7 +210,7 @@ class Utilisateur {
 					img: [],
 					orientation: "Bi",
 					geo: [],
-					match: ["test"]
+					match: ["test", "test2"]
 				}
 
 				this.findUsers3(request.body.name, (result)=> {

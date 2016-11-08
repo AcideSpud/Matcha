@@ -23,6 +23,7 @@ let upload_img = require('./routes/upload_img');
 let forgot_mail = require('./routes/forgot_mail');
 let logout = require('./routes/logout');
 let chat = require('./routes/chat');
+let header = require('./routes/header')
 
 
 
@@ -75,30 +76,63 @@ var all_users = {}
 var rooms = ['room1', 'room2', 'room3'];
 var chatRoom = [];
 var historique_message =[];
+var likeLength = 0;
 
 io.on('connection', function (socket) {
   
 
-
-//WHEN THE CLIENT EMITS 'SENDCHAT', this listens and executes
   socket.on('sendchat', function(data){
     //we tell the client to execute 'updatechat'
     io.sockets.in(socket.room).emit('updatechat', socket.username, data);
     io.sockets.in(socket.Croom).emit('updatechat', socket.username, data);
   });
 
+  socket.on('notification', function(data){
 
-  socket.on('adduser', function(username){
-    socket.username = username;
-    socket.room = 'room1';
-    all_users[username] = username;
-    socket.join('room1');
-    socket.emit('updatechat', 'SERVER', 'You have connected to room1');
-    socket.broadcast.to('room1').emit('updatechat','SERVER', username + ' has connected');
-    io.sockets.emit('updaterooms', rooms, 'rooms1');
+    console.log('NOTIFICATION---' + data)
+
+    var Utilisateur = require('./models/utilisateur.js');
+    
+    Utilisateur.findUsers3(data, (res)=>{
+      if (res[0].liker){
+            if (res[0].liker.length > likeLength){
+              console.log('liker DATABASE:' + res[0].liker.length)
+              console.log('liker ARRAY:' + likeLength)
+              console.log('ON TA LIKER');
+              likeLength = res[0].liker.length;
+            } else if (res[0].liker.length < likeLength){
+              console.log('ON TA DELIKER');
+              likeLength = res[0].liker.length;
+            }
+        console.log(likeLength)
+      }
+      else console.log('NO USER (NOTIFICATION')
+    })
   })
 
+  //socket.on('adduser', function(username){
+  //  socket.username = username;
+  //  socket.room = 'room1';
+  //  all_users[username] = username;
+  //  socket.join('room1');
+  //  socket.emit('updatechat', 'SERVER', 'You have connected to room1');
+  //  socket.broadcast.to('room1').emit('updatechat','SERVER', username + ' has connected');
+  //  io.sockets.emit('updaterooms', rooms, 'rooms1');
+  //})
+
   socket.on('adduser2', function(username, chatRoomName){
+
+    var chat = require('./models/chat_function.js')
+
+    chat.findChatRoom(chatRoomName, (res)=>{
+      if (res){
+        for (var i = 0; i < res[0].userNames[i]; i++){
+          console.log('Usernames: ', res[0].userNames[i], 'content: ', res[0].content[i])
+            socket.emit('oldMess', res[0].userNames[i], res[0].content[i])
+
+        }
+      }        
+    })
 
     var roomChat = chatRoomName;
     if (chatRoom.indexOf(chatRoomName) == -1)
@@ -109,8 +143,8 @@ io.on('connection', function (socket) {
     socket.room = roomChat;
     all_users[username] = username;
     socket.join(roomChat);
-    socket.emit('updatechat', 'SERVER', 'You have connected to the new room');
-    socket.broadcast.to(roomChat).emit('updatechat','SERVER', username + ' has connected');
+   // socket.emit('updatechat', 'SERVER', 'You have connected to the new room');
+   // socket.broadcast.to(roomChat).emit('updatechat','SERVER', username + ' has connected');
     io.sockets.emit('updaterooms', chatRoom, roomChat);
   })
 
@@ -125,7 +159,7 @@ io.on('connection', function (socket) {
     // update socket session room title
     socket.room = newroom;
     socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username+' has joined this room');
-    socket.emit('updaterooms', rooms, newroom);
+    socket.emit('updaterooms', chatRoom, newroom);
   })
 
 // when the user disconnects.. perform this
@@ -205,6 +239,7 @@ app.use('/profile', profile);
 app.use('/chat', chat);
 app.use('/upload_img', upload_img);
 app.use('/forgot_mail', forgot_mail);
+app.use('/header', header)
 app.use('/logout', logout);
 
 
