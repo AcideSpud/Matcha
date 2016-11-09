@@ -49,11 +49,6 @@ console.log("chhhhhhaaaaat",req.body.userName, req.body.content);
 					console.log('TEST UPDATE CHAT');
 				})
 		})
-
-
-	
-	
-
 })
 
 module.exports = router;

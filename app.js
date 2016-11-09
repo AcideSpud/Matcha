@@ -75,7 +75,8 @@ var chatRoom = [];
 var historique_message =[];
 var likeLength = 0;
 var matchLength = 0;
- var Utilisateur = require('./models/utilisateur.js');
+var visitLength = 0;
+var Utilisateur = require('./models/utilisateur.js');
 
 io.on('connection', function (socket) {
   
@@ -88,10 +89,6 @@ io.on('connection', function (socket) {
 
   socket.on('notification_like', function(data){
 
-    console.log('NOTIFICATION---' + data)
-
-   
-    
     Utilisateur.findUsers3(data, (res)=>{
       if (res[0].liker){
             if (res[0].liker.length > likeLength){
@@ -116,6 +113,18 @@ io.on('connection', function (socket) {
         if (res[0].match.length > matchLength){
           console.log('ON TA MATCHH');
           matchLength = res[0].match.length;
+        }
+      }
+    })
+  })
+
+  socket.on('notification_visit', function(data){
+    Utilisateur.findUsers3(data, (res)=>{
+      if (res[0].visit){
+        if (res[0].visit.length > visitLength){
+          console.log('ON TA VISITER');
+          visitLength = res[0].visit.length;
+
         }
       }
     })

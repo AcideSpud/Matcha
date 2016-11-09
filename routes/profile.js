@@ -19,21 +19,20 @@ function requireLogin (req, res, next) {
 router.get('/:userID', requireLogin, (req, res, next)=>{
     Profile.findUsers4(req.params.userID, (ret)=> {
         User.GetDB((db)=> {
+            User.updateVisit(req.params.userID, db, req.session.user.name);
             User.updatePop(ret[0].popularite + 1, ret, db);
                 var islike = false;
                 if (ret[0].liker) {
                     for (var i = 0, len = ret[0].liker.length; i < len; i++) {
                         if (ret[0].liker[i] == req.session.user.name) {
-                            console.log("HERE BITCH !!! ");
                             islike = true;
                         }
                     }
                 }
-
-                console.log("testtststs");
-                res.render('profile', {
-                    ret: ret,
-                    islike: islike, user: req.session.user.name
+            res.render('profile', {
+                ret: ret,
+                islike: islike,
+                user: req.session.user.name
             });
         });
     });
@@ -41,10 +40,6 @@ router.get('/:userID', requireLogin, (req, res, next)=>{
     //next();
 
 router.post('/like/:Namelike', requireLogin, (req, res) =>{
-    console.log("RECEVE POST BITCH !");
-    console.log(req.session.user.name);
-    console.log(req.params.Namelike)
-
     User.GetDB((db)=> {
 
         Profile.findUsers4(req.params.Namelike.substring(1), (ret)=> {
@@ -60,8 +55,6 @@ router.post('/like/:Namelike', requireLogin, (req, res) =>{
 });
 
 router.post('/unlike/:Nameunlike', requireLogin, (req, res)=>{
-    console.log("receve UNLIKE POST BITCH !");
-
     User.GetDB((db)=> {
         Profile.findUsers4(req.params.Nameunlike.substring(1), (ret)=> {
             User.updatePop(ret[0].popularite -3, ret, db)

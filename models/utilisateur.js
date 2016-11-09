@@ -95,6 +95,16 @@ class Utilisateur {
 		})
 	}
 
+	static		updateVisit(user, db, key){
+		this.findUsers3(user, (res)=>{
+			if (res[0])
+				db.collection("users").updateOne({"name": user}, {
+					$push : {"visit": key}
+				}, (err, res)=>{
+					if (err) throw err;
+				})
+		})
+	}
 
 	static		checkMatch(user, db, key){
 
@@ -167,7 +177,6 @@ class Utilisateur {
 				console.log("Update liker OK!");
 		})
 	}
-
 
 
 	static		updateLikeUser(user, db, key) {
@@ -282,7 +291,8 @@ class Utilisateur {
 					img: [],
 					orientation: "Bi",
 					geo: [],
-					match: ["test", "test2"]
+					match: ["test", "test2"],
+					visit: []
 				}
 
 				this.findUsers3(request.body.name, (result)=> {
