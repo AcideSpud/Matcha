@@ -96,6 +96,78 @@ class Utilisateur {
 	}
 
 
+	static		checkMatch(user, db, key){
+
+		this.findUsers3(user.name, (res)=>{
+			if (res[0])
+				for (var i = 0; i < res[0].liker.length; i++){
+					console.log('LES PERSONNES QUE JE LIKE' +res[0].like[i]);
+					console.log('LES PERSONNES QUI ME LIKE'  +res[0].liker[i]);
+					if (res[0].liker[i] === key){
+						console.log('MATCHHH');
+						this.updateMatchUser(user, db, key);
+					}
+					else
+						console.log('pas match')
+				}
+			else (console.log('personne updateMatch'))
+		})
+
+	}
+
+	static		checkUnMatch(user, db, key){
+
+		this.findUsers3(user.name, (res)=>{
+			if (res[0])
+				for (var i = 0; i < res[0].liker.length; i++){
+					console.log('LES PERSONNES QUE JE LIKE' +res[0].like[i]);
+					console.log('LES PERSONNES QUI ME LIKE'  +res[0].liker[i]);
+					if (res[0].liker[i] === key){
+						console.log('UNNNMATCHHH');
+						this.updateUnMatchUser(user, db, key);
+					}
+					else
+						console.log('pas match')
+				}
+			else (console.log('personne updateMatch'))
+		})
+
+	}
+
+	static		updateMatchUser(user, db, key) {
+		console.log('-----UPDATE ARRAY USER' + user + '[' + key + ']');
+
+		db.collection("users").updateOne({"name": user.name}, {$push: {"match": key+user.name}}, (err)=> {
+			if (err)
+				throw err;
+			else
+				console.log("Update like OK !");
+		})
+		db.collection("users").updateOne({"name": key}, {$push: {"match": key+user.name}}, (err)=> {
+			if (err)
+				throw err;
+			else
+				console.log("Update liker OK!");
+		})
+	}
+
+	static		updateUnMatchUser(user, db, key) {
+		console.log('-----UPDATE ARRAY USER' + user + '[' + key + ']');
+
+		db.collection("users").updateOne({"name": user.name}, {$pull: {"match": key+user.name}}, (err)=> {
+			if (err)
+				throw err;
+			else
+				console.log("Update like OK !");
+		})
+		db.collection("users").updateOne({"name": key}, {$pull: {"match": key+user.name}}, (err)=> {
+			if (err)
+				throw err;
+			else
+				console.log("Update liker OK!");
+		})
+	}
+
 
 
 	static		updateLikeUser(user, db, key) {

@@ -43,6 +43,7 @@ router.get('/:userID', requireLogin, (req, res, next)=>{
 router.post('/like/:Namelike', requireLogin, (req, res) =>{
     console.log("RECEVE POST BITCH !");
     console.log(req.session.user.name);
+    console.log(req.params.Namelike)
 
     User.GetDB((db)=> {
 
@@ -50,6 +51,7 @@ router.post('/like/:Namelike', requireLogin, (req, res) =>{
 
             User.updatePop(ret[0].popularite + 3, ret, db);
                 User.updateLikeUser(req.session.user, db, req.params.Namelike.substring(1));
+                User.checkMatch(req.session.user, db, ret[0].name);
 
         });
     });
@@ -64,6 +66,7 @@ router.post('/unlike/:Nameunlike', requireLogin, (req, res)=>{
         Profile.findUsers4(req.params.Nameunlike.substring(1), (ret)=> {
             User.updatePop(ret[0].popularite -3, ret, db)
                 User.updateUnlikeUser(req.session.user, db, req.params.Nameunlike.substring(1))
+                User.checkUnMatch(req.session.user, db, ret[0].name);
         });
     });
     res.end();

@@ -26,8 +26,6 @@ let chat = require('./routes/chat');
 let header = require('./routes/header')
 
 
-
-
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -71,12 +69,13 @@ app.use(function(req, res, next){
   }
 })
 
-
 var all_users = {}
 var rooms = ['room1', 'room2', 'room3'];
 var chatRoom = [];
 var historique_message =[];
 var likeLength = 0;
+var matchLength = 0;
+ var Utilisateur = require('./models/utilisateur.js');
 
 io.on('connection', function (socket) {
   
@@ -87,11 +86,11 @@ io.on('connection', function (socket) {
     io.sockets.in(socket.Croom).emit('updatechat', socket.username, data);
   });
 
-  socket.on('notification', function(data){
+  socket.on('notification_like', function(data){
 
     console.log('NOTIFICATION---' + data)
 
-    var Utilisateur = require('./models/utilisateur.js');
+   
     
     Utilisateur.findUsers3(data, (res)=>{
       if (res[0].liker){
@@ -107,6 +106,18 @@ io.on('connection', function (socket) {
         console.log(likeLength)
       }
       else console.log('NO USER (NOTIFICATION')
+    })
+  })
+
+  socket.on('notification_match', function(data){
+
+    Utilisateur.findUsers3(data, (res)=>{
+      if (res[0].match){
+        if (res[0].match.length > matchLength){
+          console.log('ON TA MATCHH');
+          matchLength = res[0].match.length;
+        }
+      }
     })
   })
 
