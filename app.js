@@ -89,7 +89,7 @@ io.on('connection', function (socket) {
 
   socket.on('notification_like', function(data){
 
-    Utilisateur.findUsers3(data, (res)=>{
+  /*  Utilisateur.findUsers3(data, (res)=>{
       if (res[0].liker){
             if (res[0].liker.length > likeLength){
               console.log('liker DATABASE:' + res[0].liker.length)
@@ -103,7 +103,7 @@ io.on('connection', function (socket) {
         console.log(likeLength)
       }
       else console.log('NO USER (NOTIFICATION')
-    })
+    })*/
   })
 
   socket.on('notification_match', function(data){

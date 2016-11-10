@@ -95,6 +95,17 @@ class Utilisateur {
 		})
 	}
 
+	static		updateReported(db , reportedUser) {
+		console.log(reportedUser);
+		db.collection("users").updateOne({"name": reportedUser}, {
+			$set: {
+				"reported" : true
+			}
+		}, (err)=> {
+			if (err) throw err;
+		})
+	}
+
 	static		updateVisit(user, db, key){
 		this.findUsers3(user, (res)=>{
 			if (res[0])
@@ -291,8 +302,8 @@ class Utilisateur {
 					img: [],
 					orientation: "Bi",
 					geo: [],
-					matchRoom: ["test", "test2"],
-					visit: []
+					match: ["test", "test2"],
+					visit: [], reported: false
 				}
 
 				this.findUsers3(request.body.name, (result)=> {
@@ -318,6 +329,18 @@ class Utilisateur {
 		var async = require('async');
 
 
+	}
+	static		sortReported(otherUserArray, callback){
+		let ret = [];
+		let cmp = 0;
+
+		for (let i = 0, len = otherUserArray.length; i < len; i++){
+			if (otherUserArray[i].reported == false){
+				ret[cmp] = otherUserArray[i];
+				cmp++;
+			}
+		}
+		callback(ret);
 	}
 
 	static      SortPrefSexUser(user, otherUserArray, callback) {
