@@ -17,9 +17,10 @@ function requireLogin (req, res, next) {
 
 router.get('/', requireLogin,  function(req, res, next) {
 
+	console.log(req.params);
 
 	Utilisateur.findUsers3(req.user.name, (result)=>{
-    	res.render('chat2', {ret : result});
+    	res.render('chat2', {ret : result, autre: req.params.nom});
   })
 });
 
@@ -35,6 +36,8 @@ router.post('/chat', requireLogin, function(req, res, next){
 			else
 				console.log('existe deja')
 	})
+
+console.log("chhhhhhaaaaat",req.body.name1, req.body.name2);
 	
 		if (req.body.userName == undefined)
 			req.body.userName == '';
@@ -42,7 +45,7 @@ router.post('/chat', requireLogin, function(req, res, next){
 			req.body.content == '';
 
 
-console.log("chhhhhhaaaaat",req.body.userName, req.body.content);
+
 		chatRoom.findChatRoom('test', (res)=>{
 			if (res)
 				chatRoom.modifContent('test', req.body.userName, req.body.content, ()=>{

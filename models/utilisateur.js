@@ -109,7 +109,7 @@ class Utilisateur {
 	static		checkMatch(user, db, key){
 
 		this.findUsers3(user.name, (res)=>{
-			if (res[0])
+			if (res[0].liker)
 				for (var i = 0; i < res[0].liker.length; i++){
 					console.log('LES PERSONNES QUE JE LIKE' +res[0].like[i]);
 					console.log('LES PERSONNES QUI ME LIKE'  +res[0].liker[i]);
@@ -128,7 +128,7 @@ class Utilisateur {
 	static		checkUnMatch(user, db, key){
 
 		this.findUsers3(user.name, (res)=>{
-			if (res[0])
+			if (res[0].liker)
 				for (var i = 0; i < res[0].liker.length; i++){
 					console.log('LES PERSONNES QUE JE LIKE' +res[0].like[i]);
 					console.log('LES PERSONNES QUI ME LIKE'  +res[0].liker[i]);
@@ -147,13 +147,13 @@ class Utilisateur {
 	static		updateMatchUser(user, db, key) {
 		console.log('-----UPDATE ARRAY USER' + user + '[' + key + ']');
 
-		db.collection("users").updateOne({"name": user.name}, {$push: {"match": key+user.name}}, (err)=> {
+		db.collection("users").updateOne({"name": user.name}, {$push: {"matchRoom": key+user.name}}, (err)=> {
 			if (err)
 				throw err;
 			else
 				console.log("Update like OK !");
 		})
-		db.collection("users").updateOne({"name": key}, {$push: {"match": key+user.name}}, (err)=> {
+		db.collection("users").updateOne({"name": key}, {$push: {"matchRoom": key+user.name}}, (err)=> {
 			if (err)
 				throw err;
 			else
@@ -164,13 +164,13 @@ class Utilisateur {
 	static		updateUnMatchUser(user, db, key) {
 		console.log('-----UPDATE ARRAY USER' + user + '[' + key + ']');
 
-		db.collection("users").updateOne({"name": user.name}, {$pull: {"match": key+user.name}}, (err)=> {
+		db.collection("users").updateOne({"name": user.name}, {$pull: {"matchRoom": key+user.name}}, (err)=> {
 			if (err)
 				throw err;
 			else
 				console.log("Update like OK !");
 		})
-		db.collection("users").updateOne({"name": key}, {$pull: {"match": key+user.name}}, (err)=> {
+		db.collection("users").updateOne({"name": key}, {$pull: {"matchRoom": key+user.name}}, (err)=> {
 			if (err)
 				throw err;
 			else
@@ -291,7 +291,7 @@ class Utilisateur {
 					img: [],
 					orientation: "Bi",
 					geo: [],
-					match: ["test", "test2"],
+					matchRoom: ["test", "test2"],
 					visit: []
 				}
 

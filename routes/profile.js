@@ -32,7 +32,8 @@ router.get('/:userID', requireLogin, (req, res, next)=>{
             res.render('profile', {
                 ret: ret,
                 islike: islike,
-                user: req.session.user.name
+                user: req.session.user.name,
+                autre: req.params.userID
             });
         });
     });

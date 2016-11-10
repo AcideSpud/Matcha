@@ -33,3 +33,11 @@ function send_info_chat(name1, name2){
     request.send("name1="+name1+"&name2="+name2);
 }
 
+function send_info_chat2(name1, name2){
+    var value1 = encodeURIComponent(name1),
+    value2 = encodeURIComponent(name2);
+    var request = new XMLHttpRequest();
+    request.open('GET', '/chat/?name1=' + value1 '?name2=' + value2, true);
+    xhr.send(null);
+}
+

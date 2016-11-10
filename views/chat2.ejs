@@ -21,12 +21,9 @@
   <script src="socket.io/socket.io.js"></script>
 	<script>
    		var socket = io.connect('http://localhost:3000');
-
-         //On connection to server, ask for users'name;
          socket.on('connect', function(){
-            console.log('Un utilisateur de connecte');
-           // socket.emit('adduser', '<%= ret[0].name %>');
-            socket.emit('adduser2', '<%= ret[0].name %>', '<%= ret[0].match %>');
+            console.log('Un utilisateur de connecte-----------');
+            socket.emit('adduser2', '<%= ret[0].name %>', '<%= ret[0].matchRoom[0] %>');
          });
 
          socket.on('oldMess', (username, data)=>{
@@ -58,16 +55,13 @@
             function switchRoom(room){
                socket.emit('switchRoom', room);
             }
-            //on load of page
+
             $(function(){
-            // when the client clicks SEND
             $('#datasend').click( function() {
                var message = $('#data').val();
                $('#data').val('');
-               // tell server to execute 'sendchat' and send along one parameter
                socket.emit('sendchat', message);
             });
-            // when the client hits ENTER on their keyboard
             $('#data').keypress(function(e) {
                if(e.which == 13) {
                $(this).blur();

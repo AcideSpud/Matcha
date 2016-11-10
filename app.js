@@ -144,28 +144,33 @@ io.on('connection', function (socket) {
 
     var chat = require('./models/chat_function.js')
 
+    var allChatRoom = new Array();
+
+    console.log('CHATROOMNAME:----' + chatRoomName)
+
     chat.findChatRoom(chatRoomName, (res)=>{
       if (res){
-        for (var i = 0; i < res[0].userNames[i]; i++){
-          console.log('Usernames: ', res[0].userNames[i], 'content: ', res[0].content[i])
+        for (var i = 0; i < res[0].userNames.length; i++){
             socket.emit('oldMess', res[0].userNames[i], res[0].content[i])
-
         }
       }        
     })
+    Utilisateur.findUsers3(username, (res)=>{
+      if (res[0])
+        for (var i = 0; i < res[0].matchRoom.length; i++){
+          if (allChatRoom.indexOf(res[0].matchRoom[i]) == -1){
+            allChatRoom[i] = res[0].matchRoom[i];
+          }
+        }
 
-    var roomChat = chatRoomName;
-    if (chatRoom.indexOf(chatRoomName) == -1)
-      chatRoom.push(roomChat);
-
-
-    socket.username = username;
-    socket.room = roomChat;
-    all_users[username] = username;
-    socket.join(roomChat);
+      socket.username = username;
+      socket.room = chatRoomName;
+      all_users[username] = username;
+      socket.join(chatRoomName);
    // socket.emit('updatechat', 'SERVER', 'You have connected to the new room');
-   // socket.broadcast.to(roomChat).emit('updatechat','SERVER', username + ' has connected');
-    io.sockets.emit('updaterooms', chatRoom, roomChat);
+   // socket.broadcast.to(allChatRoom).emit('updatechat','SERVER', username + ' has connected');
+      io.sockets.emit('updaterooms', allChatRoom, chatRoomName);  
+    })    
   })
 
   socket.on('switchRoom', function(newroom){
@@ -179,7 +184,7 @@ io.on('connection', function (socket) {
     // update socket session room title
     socket.room = newroom;
     socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username+' has joined this room');
-    socket.emit('updaterooms', chatRoom, newroom);
+    socket.emit('updaterooms', allChatRoom, newroom);
   })
 
 // when the user disconnects.. perform this
@@ -249,7 +254,7 @@ io.on('connection', function (socket) {
 
 app.use(require('./middlewares/flash'));
 app.use('/', routes);
-app.use('/inscription', inscription);
+//app.use('/inscription', inscription);
 app.use('/inscription2', inscription2);
 app.use('/users', users);
 app.use('/login', login);
