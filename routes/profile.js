@@ -37,6 +37,30 @@ router.get('/:userID', requireLogin, (req, res, next)=>{
         });
     });
 });
+
+router.post('/reporte/:name', requireLogin, (req, res)=>{
+   console.log("RECEVE POST BITCH :" + req.params.name);
+    Profile.findUsers4(req.params.name, (ret)=> {
+        User.GetDB((db)=> {
+            User.updateReported(db, req.params.name);
+            User.updateVisit(req.params.name, db, req.session.user.name);
+            User.updatePop(ret[0].popularite + 1, ret, db);
+            var islike = false;
+            if (ret[0].liker) {
+                for (var i = 0, len = ret[0].liker.length; i < len; i++) {
+                    if (ret[0].liker[i] == req.session.user.name) {
+                        islike = true;
+                    }
+                }
+            }
+            res.render('profile', {
+                ret: ret,
+                islike: islike,
+                user: req.session.user.name
+            });
+        });
+    });
+});
     //next();
 
 router.post('/like/:Namelike', requireLogin, (req, res) =>{
@@ -57,8 +81,8 @@ router.post('/like/:Namelike', requireLogin, (req, res) =>{
 router.post('/unlike/:Nameunlike', requireLogin, (req, res)=>{
     User.GetDB((db)=> {
         Profile.findUsers4(req.params.Nameunlike.substring(1), (ret)=> {
-            User.updatePop(ret[0].popularite -3, ret, db)
-                User.updateUnlikeUser(req.session.user, db, req.params.Nameunlike.substring(1))
+            User.updatePop(ret[0].popularite -3, ret, db);
+                User.updateUnlikeUser(req.session.user, db, req.params.Nameunlike.substring(1));
                 User.checkUnMatch(req.session.user, db, ret[0].name);
         });
     });
