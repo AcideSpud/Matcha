@@ -17,10 +17,10 @@ function requireLogin (req, res, next) {
 
 router.get('/', requireLogin,  function(req, res, next) {
 
-	console.log(req.params);
+	console.log(req.user.name)
 
 	Utilisateur.findUsers3(req.user.name, (result)=>{
-    	res.render('chat2', {ret : result, autre: req.params.nom});
+    	res.render('chat2', {ret : result});
   })
 });
 

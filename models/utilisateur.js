@@ -106,6 +106,27 @@ class Utilisateur {
 		})
 	}
 
+	static		updateMainChatRoom(db, username, focusName){
+		this.findUsers3(user, (res)=>{
+
+			for (var i = 0; i < res[0].chatRoom.length; i++){
+				if (res[0].chatRoom[i].indexOf(focusName) == 0){
+					var focus = res[0].chatRoom[i];
+					break;
+				}
+			}
+				console.log('FOCUSSS----', focus);
+
+
+			if (res[0])
+				db.collection("users").updateOne({"name": username}, {
+					$set : {"focus": focus}
+				}, (err, res)=>{
+					if (err) throw err;
+				})
+		})
+	}
+
 	static		updateVisit(user, db, key){
 		this.findUsers3(user, (res)=>{
 			if (res[0])
@@ -303,7 +324,8 @@ class Utilisateur {
 					orientation: "Bi",
 					geo: [],
 					match: ["test", "test2"],
-					visit: [], reported: false
+					visit: [],
+					reported: false
 				}
 
 				this.findUsers3(request.body.name, (result)=> {

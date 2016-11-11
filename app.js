@@ -249,12 +249,9 @@ io.on('connection', function (socket) {
 
 
 
-
-
-
 app.use(require('./middlewares/flash'));
 app.use('/', routes);
-//app.use('/inscription', inscription);
+app.use('/inscription', inscription);
 app.use('/inscription2', inscription2);
 app.use('/users', users);
 app.use('/login', login);
@@ -266,7 +263,6 @@ app.use('/upload_img', upload_img);
 app.use('/forgot_mail', forgot_mail);
 app.use('/header', header)
 app.use('/logout', logout);
-
 
 app.get('*', function(req, res, next) {
   var err = new Error();
@@ -281,7 +277,5 @@ app.use(function(err, req, res, next) {
   res.status(404);
   res.render('page_error')
 });
-
-
 
 module.exports = app;
