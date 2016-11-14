@@ -323,7 +323,7 @@ class Utilisateur {
 					img: [],
 					orientation: "Bi",
 					geo: [],
-					match: ["test", "test2"],
+					matchRoom: ["test", "test2"],
 					visit: [],
 					reported: false
 				}

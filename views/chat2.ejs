@@ -35,7 +35,6 @@
                             request.open('POST', '/chat/chat', true);
                             request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
                             request.send("userName="+username+"&content="+data);
-
             $('#messages').append('<div class="message"><div class="info"><p><strong>' + username + ':</p></strong>' + data + '</div></div>');
          })
 

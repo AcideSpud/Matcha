@@ -13,7 +13,7 @@ let bodyParser = require('body-parser');
 
 let routes = require('./routes/index');
 let users = require('./routes/users');
-let inscription = require('./routes/inscription');
+//let inscription = require('./routes/inscription');
 let inscription2 = require('./routes/inscription2');
 let compte = require('./routes/compte');
 let dashboard = require('./routes/dashboard');
@@ -251,7 +251,7 @@ io.on('connection', function (socket) {
 
 app.use(require('./middlewares/flash'));
 app.use('/', routes);
-app.use('/inscription', inscription);
+//app.use('/inscription', inscription);
 app.use('/inscription2', inscription2);
 app.use('/users', users);
 app.use('/login', login);
@@ -263,6 +263,7 @@ app.use('/upload_img', upload_img);
 app.use('/forgot_mail', forgot_mail);
 app.use('/header', header)
 app.use('/logout', logout);
+
 
 app.get('*', function(req, res, next) {
   var err = new Error();
