@@ -76,15 +76,14 @@ var historique_message =[];
 var likeLength = 0;
 var matchLength = 0;
 var visitLength = 0;
+var allChatRoom = new Array();
 var Utilisateur = require('./models/utilisateur.js');
 
 io.on('connection', function (socket) {
   
 
   socket.on('sendchat', function(data){
-    //we tell the client to execute 'updatechat'
     io.sockets.in(socket.room).emit('updatechat', socket.username, data);
-    io.sockets.in(socket.Croom).emit('updatechat', socket.username, data);
   });
 
   socket.on('notification_like', function(data){
@@ -130,23 +129,10 @@ io.on('connection', function (socket) {
     })
   })
 
-  //socket.on('adduser', function(username){
-  //  socket.username = username;
-  //  socket.room = 'room1';
-  //  all_users[username] = username;
-  //  socket.join('room1');
-  //  socket.emit('updatechat', 'SERVER', 'You have connected to room1');
-  //  socket.broadcast.to('room1').emit('updatechat','SERVER', username + ' has connected');
-  //  io.sockets.emit('updaterooms', rooms, 'rooms1');
-  //})
 
   socket.on('adduser2', function(username, chatRoomName){
 
     var chat = require('./models/chat_function.js')
-
-    var allChatRoom = new Array();
-
-    console.log('CHATROOMNAME:----' + chatRoomName)
 
     chat.findChatRoom(chatRoomName, (res)=>{
       if (res){
@@ -156,6 +142,7 @@ io.on('connection', function (socket) {
       }        
     })
     Utilisateur.findUsers3(username, (res)=>{
+
       if (res[0])
         for (var i = 0; i < res[0].matchRoom.length; i++){
           if (allChatRoom.indexOf(res[0].matchRoom[i]) == -1){
@@ -197,52 +184,6 @@ io.on('connection', function (socket) {
     socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
     socket.leave(socket.room);
   });
-
-
-/*
-  var me = false;
-  var historique_message =[];
-  var history = 2;
-
-  for (var k in users){
-    //socket.emit('newuser', users[k]);
-  }
-    for (var k in historique_message){
-    socket.emit('newmess', historique_message[k])
-  }
-
-
-  //JE ME CONNECTE
-
-  socket.on('mes', function (user){
-    me = user;
-    users[me.name] = me;
-    io.sockets.emit('newuser', me);
-    
-  });
-
-  //RECU UN MESSAGE
-
-  socket.on('newmsg', function(message){
-    date = new Date();
-    message.h = date.getHours();
-    message.m = date.getMinutes();
-    historique_message.push(message);
-    if (historique_message.length > history){
-      historique_message.shift();
-    }
-    io.sockets.emit('newmess', message)
-  })
-
-  //JE QUITTE LE CHAT
-
-  socket.on('disconnect', function(){
-    if (!me){
-      return false;
-    }
-    delete users[me.name];
-    io.sockets.emit('disuser', me)
-  })*/
 
 });
 

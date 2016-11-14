@@ -20,9 +20,6 @@ function dump(obj) {
 	for (var i in obj) {
 		out += i + ": " + obj[i] + "\n";
 	}
-
-	console.log(out);
-
 }
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -37,8 +34,6 @@ router.get('/', requireLogin, function(req, res, next) {
         getProfile.sortReported(ret, (ret)=>{
 		getProfile.SortPrefSexUser(req.session.user, ret, (cb)=> {
             getProfile.GetDistance(req.session.user, cb, (geo)=> {
-                console.log(cb);
-                console.log(geo);
                 res.render('dashboard', {
                     ret: cb,
                     geo: geo
@@ -96,7 +91,6 @@ router.post('/sort', upload.array(), requireLogin, (req, res)=> {
         User.Create_db((array)=> {
             getProfile.sortReported(array, (array)=>{
             getProfile.SortPrefSexUser(req.session.user, array, (ret)=>{
-                console.log(req.session.user.name);
                 if (req.body.mySort = 1) {
                     getProfile.sortAge(ret, (cb)=>{
                         res.contentType('json');
@@ -144,8 +138,6 @@ router.post('/sort', upload.array(), requireLogin, (req, res)=> {
 
 //					POST
 router.post('/filter', upload.array(),requireLogin, (req, res) =>{
-
-	console.log(req.body.ageMin + "BLABLABLAB!");
 	var ageMin = req.body.ageMin;
 	let ageMax = req.body.ageMax;
 	var popMin = req.body.popMin;
@@ -155,7 +147,6 @@ router.post('/filter', upload.array(),requireLogin, (req, res) =>{
 	if (req.body.data)
 	{
 		let data = JSON.parse(req.body.data);
-		console.log(data[0].name);
 		getProfile.SortPrefSexUser(req.session.user, data, (cb)=>{
 			getProfile.sortByAge(ageMin, ageMax, cb, (callB)=>{
 				getProfile.sortByPop(popMin, popMax, callB, (m_cb)=>{
@@ -175,7 +166,6 @@ router.post('/filter', upload.array(),requireLogin, (req, res) =>{
 		});
 	}
 	else {
-		console.log(ageMin);
 		User.Create_db((ret)=> {
             getProfile.sortReported(ret, (ret)=>{
 			getProfile.SortPrefSexUser(req.session.user, ret, (cb)=> {

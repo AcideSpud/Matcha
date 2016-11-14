@@ -18,7 +18,6 @@ class Utilisateur {
 		var cursor = db.collection('users').find({name: username})
 		cursor.each((err, doc)=> {
 			assert.equal(err, null)
-			console.log(doc)
 			if (doc) {
 				callback(doc)
 			} else {
@@ -90,13 +89,11 @@ class Utilisateur {
 			}
 		}, (err, res)=> {
 			if (err) throw err
-			console.log("fin update")
 			callback()
 		})
 	}
 
 	static		updateReported(db , reportedUser) {
-		console.log(reportedUser);
 		db.collection("users").updateOne({"name": reportedUser}, {
 			$set: {
 				"reported" : true
@@ -107,18 +104,18 @@ class Utilisateur {
 	}
 
 	static		updateMainChatRoom(db, username, focusName){
-		this.findUsers3(user, (res)=>{
-
-			for (var i = 0; i < res[0].chatRoom.length; i++){
-				if (res[0].chatRoom[i].indexOf(focusName) == 0){
-					var focus = res[0].chatRoom[i];
-					break;
+		this.findUsers3(username, (res)=>{
+			if (res[0]){
+				for (var i = 0; i < res[0].matchRoom.length; i++){
+					if (res[0].matchRoom[i].indexOf(focusName) == 0){
+						var focus = res[0].matchRoom[i];
+						break;
+					}
 				}
-			}
+			}	
 				console.log('FOCUSSS----', focus);
 
-
-			if (res[0])
+			if (res[0] && focus)
 				db.collection("users").updateOne({"name": username}, {
 					$set : {"focus": focus}
 				}, (err, res)=>{
@@ -177,7 +174,6 @@ class Utilisateur {
 	}
 
 	static		updateMatchUser(user, db, key) {
-		console.log('-----UPDATE ARRAY USER' + user + '[' + key + ']');
 
 		db.collection("users").updateOne({"name": user.name}, {$push: {"matchRoom": key+user.name}}, (err)=> {
 			if (err)
@@ -194,7 +190,6 @@ class Utilisateur {
 	}
 
 	static		updateUnMatchUser(user, db, key) {
-		console.log('-----UPDATE ARRAY USER' + user + '[' + key + ']');
 
 		db.collection("users").updateOne({"name": user.name}, {$pull: {"matchRoom": key+user.name}}, (err)=> {
 			if (err)
@@ -212,7 +207,6 @@ class Utilisateur {
 
 
 	static		updateLikeUser(user, db, key) {
-		console.log('-----UPDATE ARRAY USER' + user + '[' + key + ']');
 
 		db.collection("users").updateOne({"name": user.name}, {$push: {"like": key}}, (err)=> {
 			if (err)
@@ -325,7 +319,8 @@ class Utilisateur {
 					geo: [],
 					matchRoom: ["test", "test2"],
 					visit: [],
-					reported: false
+					reported: false,
+					focus: []
 				}
 
 				this.findUsers3(request.body.name, (result)=> {
@@ -433,7 +428,6 @@ class Utilisateur {
 		callback(res);
 	}
 	static		sortAge(otherUserArray, callback){
-		console.log(otherUserArray[0].age + "HEREEEeeeeeeeee !");
 		var byAge = otherUserArray.slice(0);
 		byAge.sort(function(a,b) {
 			return a.age - b.age;
@@ -514,7 +508,6 @@ class Utilisateur {
 		    let geolib = require('geolib');
 		    let userLatitude = user.geo.latitude.toString();
 		    userLatitude = userLatitude.substring(0, 8);
-		    console.log("userlatitude == " + userLatitude);
 		    let userLongitude = user.geo.longitude.toString();
 		    userLongitude = userLongitude.substring(0, 8);
             let ret = [];

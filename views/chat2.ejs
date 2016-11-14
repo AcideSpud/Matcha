@@ -23,7 +23,7 @@
    		var socket = io.connect('http://localhost:3000');
          socket.on('connect', function(){
             console.log('Un utilisateur de connecte-----------');
-            socket.emit('adduser2', '<%= ret[0].name %>', '<%= ret[0].matchRoom[0] %>');
+            socket.emit('adduser2', '<%= ret[0].name %>', '<%= ret[0].focus %>');
          });
 
          socket.on('oldMess', (username, data)=>{
@@ -34,7 +34,7 @@
             var request = new XMLHttpRequest();
                             request.open('POST', '/chat/chat', true);
                             request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-                            request.send("userName="+username+"&content="+data);
+                            request.send("userName="+username+"&content="+data+"&roomName="+"<%= ret[0].focus %>");
             $('#messages').append('<div class="message"><div class="info"><p><strong>' + username + ':</p></strong>' + data + '</div></div>');
          })
 

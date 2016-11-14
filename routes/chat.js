@@ -17,12 +17,7 @@ function requireLogin (req, res, next) {
 
 router.get('/', requireLogin,  function(req, res, next) {
 
-	//console.log(req.user.name)
-	//res.render('chat2', {ret : result});
-
 	Utilisateur.findUsers3(req.user.name, (result)=>{
-		console.log(req.user.name)
-		console.log(result[0].name)
     	res.render('chat2', {ret : result});
   })
 });
@@ -30,31 +25,30 @@ router.get('/', requireLogin,  function(req, res, next) {
 
 router.post('/chat', requireLogin, function(req, res, next){
 
-	
-		chatRoom.findChatRoom('test', (res)=>{
-			if (res === undefined)
-				chatRoom.createChatroom('test', ()=>{
-					console.log('chatroom created');
-		})
-			else
-				console.log('existe deja')
-	})
 
-console.log("chhhhhhaaaaat",req.body.name1, req.body.name2);
-	
-		if (req.body.userName == undefined)
-			req.body.userName == '';
-		if (req.body.content == undefined)
-			req.body.content == '';
+		if (req.body.name1 &&  req.body.name2){
 
+		chatRoom.findChatRoom((req.body.name2 + req.body.name1), (res)=>{
+					if (res === undefined)
+						chatRoom.createChatroom((req.body.name2 + req.body.name1), ()=>{
+							console.log('chatroom created');
+				})
+					else
+						console.log('existe deja')
+			})
 
+			Utilisateur.GetDB((db)=>{
+				Utilisateur.updateMainChatRoom(db, req.body.name2, (req.body.name2 + req.body.name1))
+			})
+		}
 
-		chatRoom.findChatRoom('test', (res)=>{
+		if (req.body.roomName){
+			chatRoom.findChatRoom(req.body.roomName, (res)=>{
 			if (res)
-				chatRoom.modifContent('test', req.body.userName, req.body.content, ()=>{
-					console.log('TEST UPDATE CHAT');
+				chatRoom.modifContent(req.body.roomName, req.body.userName, req.body.content, ()=>{
 				})
 		})
+		}
 })
 
 module.exports = router;
