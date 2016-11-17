@@ -76,7 +76,7 @@ var historique_message =[];
 var likeLength = 0;
 var matchLength = 0;
 var visitLength = 0;
-var allChatRoom = new Array();
+
 var Utilisateur = require('./models/utilisateur.js');
 
 io.on('connection', function (socket) {
@@ -133,34 +133,60 @@ io.on('connection', function (socket) {
   socket.on('adduser2', function(username, chatRoomName){
 
     var chat = require('./models/chat_function.js')
+    var allChatRoom = new Array();
+    
+
+    console.log('----CHat ROOM NAME'+ '-' + chatRoomName + '-')
+    console.log('----USERNAME'+ '-' + username + '-')
+
+    chat.findAllRooms((res)=>{
+      for (var i = 0; i<res.length; i++)
+        allChatRoom[i] = res[i].chatRoomName
+     // console.log(allChatRoom)
+    })
 
     chat.findChatRoom(chatRoomName, (res)=>{
       if (res){
+
         for (var i = 0; i < res[0].userNames.length; i++){
             socket.emit('oldMess', res[0].userNames[i], res[0].content[i])
         }
       }        
     })
-    Utilisateur.findUsers3(username, (res)=>{
 
-      if (res[0])
+    socket.username = username;
+    socket.room = chatRoomName;
+    all_users[username] = username;
+    socket.join(chatRoomName);
+
+   /* Utilisateur.findUsers3(username, (res)=>{
+
+      var myChatRooms = new Array();
+
+      if (res[0]){
         for (var i = 0; i < res[0].matchRoom.length; i++){
-          if (allChatRoom.indexOf(res[0].matchRoom[i]) == -1){
-            allChatRoom[i] = res[0].matchRoom[i];
+          console.log('TOUTE LES ROOMS---' + allChatRoom)
+          console.log('UTILISATEURS ROOMS----' + res[0].matchRoom)
+         // console.log(allChatRoom[i] + '----' + res[0].matchRoom[i])
+          if (allChatRoom.indexOf(res[0].matchRoom[i]) == 0){
+            console.log(res[0].matchRoom[i] + allChatRoom[i])
+            myChatRooms[i] = res[0].matchRoom[i]
           }
         }
+      }*/
+//      console.log('ROOMS FINAL DE L utilISATEUR' + myChatRooms)
 
-      socket.username = username;
+  /*    socket.username = username;
       socket.room = chatRoomName;
       all_users[username] = username;
-      socket.join(chatRoomName);
+      socket.join(chatRoomName);*/
    // socket.emit('updatechat', 'SERVER', 'You have connected to the new room');
    // socket.broadcast.to(allChatRoom).emit('updatechat','SERVER', username + ' has connected');
-      io.sockets.emit('updaterooms', allChatRoom, chatRoomName);  
-    })    
+    //  socket.emit('updaterooms', myChatRooms, chatRoomName);  
   })
 
-  socket.on('switchRoom', function(newroom){
+  /*socket.on('switchRoom', function(newroom){
+
     // leave the current room (stored in session)
     socket.leave(socket.room);
     // join new room, received as function parameter
@@ -172,7 +198,7 @@ io.on('connection', function (socket) {
     socket.room = newroom;
     socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username+' has joined this room');
     socket.emit('updaterooms', allChatRoom, newroom);
-  })
+  })*/
 
 // when the user disconnects.. perform this
   socket.on('disconnect', function(){

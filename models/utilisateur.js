@@ -175,13 +175,16 @@ class Utilisateur {
 
 	static		updateMatchUser(user, db, key) {
 
+		console.log('user----:'+ user.name);
+		console.log('key----:' + key)
+
 		db.collection("users").updateOne({"name": user.name}, {$push: {"matchRoom": key+user.name}}, (err)=> {
 			if (err)
 				throw err;
 			else
 				console.log("Update like OK !");
 		})
-		db.collection("users").updateOne({"name": key}, {$push: {"matchRoom": key+user.name}}, (err)=> {
+		db.collection("users").updateOne({"name": key}, {$push: {"matchRoom":key+user.name}}, (err)=> {
 			if (err)
 				throw err;
 			else
@@ -190,6 +193,9 @@ class Utilisateur {
 	}
 
 	static		updateUnMatchUser(user, db, key) {
+
+		console.log('user----:'+ user.name);
+		console.log('key----:' + key)
 
 		db.collection("users").updateOne({"name": user.name}, {$pull: {"matchRoom": key+user.name}}, (err)=> {
 			if (err)
@@ -317,7 +323,7 @@ class Utilisateur {
 					img: [],
 					orientation: "Bi",
 					geo: [],
-					matchRoom: ["test", "test2"],
+					matchRoom: [],
 					visit: [],
 					reported: false,
 					focus: []

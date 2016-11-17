@@ -38,7 +38,25 @@ router.post('/chat', requireLogin, function(req, res, next){
 			})
 
 			Utilisateur.GetDB((db)=>{
-				Utilisateur.updateMainChatRoom(db, req.body.name2, (req.body.name2 + req.body.name1))
+
+				var chatName;
+
+				console.log('-'+ req.body.name2 + req.body.name1+ '-')
+				Utilisateur.findUsers3(req.body.name2, (res)=>{
+					if (res[0]){
+						console.log(req.body.name1);
+						console.log(res[0].matchRoom.indexOf(req.body.name1))
+						console.log(res[0].matchRoom);
+						for (var i = 0; i<res[0].matchRoom.length; i++){
+							if (res[0].matchRoom[i].indexOf(req.body.name1) == 0){
+							chatName = res[0].matchRoom[i];
+							break
+							console.log('----' + chatName + '---')
+							}
+						}
+						Utilisateur.updateMainChatRoom(db, req.body.name2,chatName)
+					}	
+				})
 			})
 		}
 
