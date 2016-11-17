@@ -26,10 +26,30 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="<%= ret[0].img[i] %>" /></div>
+    <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="<%= ret[0].img[i] %>" />
+          <button id="deletebutton" class="btn btn-primary btn-block" onclick="deleteImg('<%= ret[0].img[i] %>')" type="button">
+               remove
+            </button>
+    </div>
   </div>
 </div>
-
 <% } %>
+
+<script>
+  $(document).ready(function() {
+     $('#uploadImgForm').submit(function() {
+        $("#status").empty().text("File is uploading...");
+        $(this).ajaxSubmit({
+            error: function(xhr) {
+              status('Error: ' + xhr.status);
+            },
+            success: function(response) {
+              console.log(response)
+            $("#status").empty().text(response);
+            }
+        });
+    return false;
+    });
+  </script>
 
 <% include footer %>

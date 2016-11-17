@@ -293,6 +293,21 @@ class Utilisateur {
 		})
 	}
 
+	static		deleteIMG(username, imgpath, callback){
+		let mongo = require('mongodb').MongoClient;
+
+		console.log('USER--:', username);
+		console.log('path--:', imgpath)
+
+		mongo.connect('mongodb://localhost/matcha', (err, db)=> {
+			db.collection("users").updateOne({"name": username}, {$pull: {"img": imgpath}}, (err, res)=> {
+				if (err) throw err
+				else
+					callback()
+			})
+		})
+	}
+
 	static      uploadImg2(username, imgpath, callback) {
 		let mongo = require('mongodb').MongoClient;
 

@@ -64,6 +64,8 @@ function requireLogin (req, res, next) {
 };
 
 router.get('/', requireLogin, (req, res, next)=>{
+
+
 	Utilisateur.findUsers3(req.user.name, (result)=>{
 		console.log(result[0].img.length)
 		res.render('upload_img', {ret: result});
@@ -71,17 +73,32 @@ router.get('/', requireLogin, (req, res, next)=>{
 })
 
 
+router.post('/delete_img', (req, res)=>{
+	Utilisateur.deleteIMG(req.user.name, req.body.path , ()=>{
+		req.flash('sucess', 'IMG DELETE')
+		res.redirect('/upload_img')
+	})
+})
 
 router.post('/upload_img', (req, res)=>{
 
-		upload(req, res, function(err){
-			 if (err){
-				return res.end("Error uploading file.");
-			}
-		
-			res.end("file is uploaded")
-		})
-	
+	Utilisateur.findUsers3(req.user.name, (result)=>{
+		if (result[0].img.length >=  5){
+			req.flash('error', '5 img ...');
+			res.redirect('/upload_img')
+		} else {
+			upload(req, res, function(err){
+				 if (err){
+					req.flash('error', err);
+					res.redirect('/upload_img')
+				} else{
+					 req.flash('sucess', 'IMG upload');
+						res.redirect('/upload_img')
+				}
+			})
+		}
+	})
+
 })
 
 module.exports = router;
