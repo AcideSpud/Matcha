@@ -46,14 +46,14 @@
                     $('#rooms').append('<div>' + value + '</div>');
                  }
                  else {
-                    $('#rooms').append('<div><a href="#" onclick="switchRoom(\''+ value + '\')">' + value + '</a></div>');
+                    $('#rooms').append('<div><a href="#" onclick="switchRoom(\''+ value + '\')">' + value + '</a></div>', '<%= ret[0].name %>');
                  }
               });
            });
 
 
-            function switchRoom(room){
-               socket.emit('switchRoom', room);
+            function switchRoom(room, name){
+               socket.emit('switchRoom', room, name);
             }
 
             $(function(){

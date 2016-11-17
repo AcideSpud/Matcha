@@ -65,6 +65,7 @@ function requireLogin (req, res, next) {
 
 router.get('/', requireLogin, (req, res, next)=>{
 	Utilisateur.findUsers3(req.user.name, (result)=>{
+		console.log(result[0].img.length)
 		res.render('upload_img', {ret: result});
 	})
 })

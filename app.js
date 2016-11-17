@@ -160,6 +160,15 @@ io.on('connection', function (socket) {
     socket.join(chatRoomName);
 
    /* Utilisateur.findUsers3(username, (res)=>{
+      var allChatRoom = new Array();
+      if (res[0]){
+        for (var i = 0; i< res[0].matchRoom.length; i++)
+          allChatRoom.push(res[0].matchRoom[i]);
+      }
+      socket.emit('updaterooms', allChatRoom, chatRoomName);
+    })*/
+
+   /* Utilisateur.findUsers3(username, (res)=>{
 
       var myChatRooms = new Array();
 
@@ -185,19 +194,29 @@ io.on('connection', function (socket) {
     //  socket.emit('updaterooms', myChatRooms, chatRoomName);  
   })
 
-  /*socket.on('switchRoom', function(newroom){
+  /*socket.on('switchRoom', function(newroom, name){
 
-    // leave the current room (stored in session)
+    console.log('NAME___:'+ name)
+
+    Utilisateur.findUsers3(name, (res)=>{
+      var allChatRoom = new Array();
+      if (res[0]){
+        for (var i = 0; i< res[0].matchRoom.length; i++)
+          allChatRoom.push(res[0].matchRoom[i]);
+      }
+      // leave the current room (stored in session)
     socket.leave(socket.room);
     // join new room, received as function parameter
     socket.join(newroom);
     socket.emit('updatechat', 'SERVER', 'you have connected to '+ newroom);
     // sent message to OLD room
-    socket.broadcast.to(socket.room).emit('updatechat', 'SERVER', socket.username+' has left this room');
+   // socket.broadcast.to(socket.room).emit('updatechat', 'SERVER', socket.username+' has left this room');
     // update socket session room title
     socket.room = newroom;
-    socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username+' has joined this room');
+   // socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username+' has joined this room');
     socket.emit('updaterooms', allChatRoom, newroom);
+    })
+
   })*/
 
 // when the user disconnects.. perform this
