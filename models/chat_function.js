@@ -12,6 +12,31 @@ class Chat {
 		})
 	}
 
+	static findAllRooms(callback){
+
+		let mongo = require('mongodb').MongoClient;
+
+		mongo.connect("mongodb://localhost/matcha", (err, db)=> {
+			let error;
+			if (err) {
+				throw err
+			} else{
+				db.collection('chatRoom').find().toArray((err, res)=>{
+					if (err){
+						callback(err)
+					} if (res){
+
+					} else{
+						result = undefined
+					}
+					callback(res)
+				})
+			}
+
+		})
+
+	}
+
 	static findChatRoom(name, callback) {
 
 		let mongo = require('mongodb').MongoClient;

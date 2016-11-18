@@ -34,7 +34,8 @@ router.get('/:userID', requireLogin, (req, res, next)=>{
                 ret: ret,
                 islike: islike,
                 time: time,
-                user: req.session.user.name
+                user: req.session.user.name,
+                autre: req.params.userID
             });
         });
     });

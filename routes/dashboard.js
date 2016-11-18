@@ -20,9 +20,6 @@ function dump(obj) {
 	for (var i in obj) {
 		out += i + ": " + obj[i] + "\n";
 	}
-
-	console.log(out);
-
 }
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -142,8 +139,6 @@ router.post('/sort', upload.array(), requireLogin, (req, res)=> {
 
 //					POST
 router.post('/filter', upload.array(),requireLogin, (req, res) =>{
-
-	console.log(req.body.ageMin + "BLABLABLAB!");
 	var ageMin = req.body.ageMin;
 	let ageMax = req.body.ageMax;
 	var popMin = req.body.popMin;
@@ -153,7 +148,6 @@ router.post('/filter', upload.array(),requireLogin, (req, res) =>{
 	if (req.body.data)
 	{
 		let data = JSON.parse(req.body.data);
-		console.log(data[0].name);
 		getProfile.SortPrefSexUser(req.session.user, data, (cb)=>{
 			getProfile.sortByAge(ageMin, ageMax, cb, (callB)=>{
 				getProfile.sortByPop(popMin, popMax, callB, (m_cb)=>{
@@ -173,7 +167,6 @@ router.post('/filter', upload.array(),requireLogin, (req, res) =>{
 		});
 	}
 	else {
-		console.log(ageMin);
 		User.Create_db((ret)=> {
             getProfile.sortReported(ret, (ret)=>{
 			getProfile.SortPrefSexUser(req.session.user, ret, (cb)=> {

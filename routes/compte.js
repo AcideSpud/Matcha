@@ -19,9 +19,20 @@ function requireLogin (req, res, next) {
   }
 };
 
+
 router.get('/', requireLogin, function(req, res, next) {
   Utilisateur.findUsers3(req.user.name, (result)=>{
-    res.render('compte', {ret : result, coucou : 'salut'});
+
+
+    if (result[0].tag){
+      var newTag = [];
+      for (var i = 0; i < result[0].tag.length; i++)
+        newTag[i] = '#' + result[0].tag[i];
+
+      console.log(newTag);
+    }
+    
+    res.render('compte', {ret : result, tag : newTag});
   })	  
 });
 
