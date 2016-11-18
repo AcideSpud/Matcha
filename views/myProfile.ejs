@@ -3,69 +3,32 @@
     <div class="row clearfix well">
         <% if(ret[0].img[0]) { %>
         <div class="col-md-2 column">
-            
-           <img class=" img-thumbnail" alt="140x140" src="<%= ret[0].img[0] %>" />
+
+            <img class=" img-thumbnail" alt="140x140" src="<%= ret[0].img[0] %>" />
         </div>
         <% } else { %>
         <div class="col-md-2 column">
-            
-           <img class=" img-thumbnail" alt="140x140" src="/img/no_image.png" />
+
+            <img class=" img-thumbnail" alt="140x140" src="/img/no_image.png" />
         </div>
         <% } %>
 
         <div class="col-md-8 column">
-                <p>
-                    <%= ret[0].name %>
-                    </p>
-                    <% if (ret[0].tag) { %>
-                <p>
-                <% for (var i = 0; i < ret[0].tag.length;  i++) { %>
-               <span class="label label-info"><%= ret[0].tag[i] %></span> &nbsp;
-                    <% if (i == 9){ %>
-                        </br>
-                    <% } %>
-                     <% } %></p>
-                    <% } %>
-
-        </div>
-        <div class="container">
-            <div class="row">
-        <div class="col-md-2 column">
             <p>
-            <% if (islike == false && ret[0].img[0]){ %>
-            <button id="mylikebutton" class="btn btn-primary btn-block" onclick="like_request('<%= ret[0].name %>')" type="button">
-                Like
-            </button>
-            <% } else if (islike == true && ret[0].img[0]) { %>
-            <button id="mylikebutton" class="btn btn-danger btn-outline btn-block" onclick="unlike_request('<%= ret[0].name %>')" type="button">
-                Unlike !
-            </button>
-            <% } else { %>
-            <button id="mylikebutton" class="btn btn-danger btn-outline btn-block"  type="button">
-                Can't like !
-            </button>
-            <% } %>
-            </p><p>
-            <a href="/chat/"><button class="btn btn-info btn-block" onclick="send_info_chat('<%= ret[0].name %>', '<%= user %>')" type="button">
-                Message
-            </button></a>
+                <%= ret[0].name %>
             </p>
+            <% if (ret[0].tag) { %>
             <p>
-            <% if (ret[0].reported == false){ %>
-            <form>
-            <button class="btn btn-warning btn-block" type="submit" formmethod="post" formaction="/profile/reporte/<%= ret[0].name %>" >
-                Report !
-            </button></form>
-            <% } else { %>
-            <button class="btn btn-danger btn-outline btn-block">
-                Alrd Report !
-            </button>
+                <% for (var i = 0; i < ret[0].tag.length;  i++) { %>
+                <span class="label label-info"><%= ret[0].tag[i] %></span> &nbsp;
+                <% if (i == 9){ %>
+                </br>
+                <% } %>
+                <% } %></p>
             <% } %>
 
         </div>
-            </div>
 
-        </div>
     </div>
     <div class="row clearfix">
         <div class="col-md-12 column">
@@ -76,6 +39,9 @@
                     </li>
                     <li>
                         <a href="#panel-567649" data-toggle="tab">Photos</a>
+                    </li>
+                    <li>
+                        <a href="#panel-424242" data-toggle="tab">Historique</a>
                     </li>
                 </ul>
                 <div class="tab-content">
@@ -95,9 +61,9 @@
                                         </th>
                                         <th>
                                             <% if (ret[0].genre == 'M'){ %>
-                                                His
+                                            His
                                             <% } else { %>
-                                                Her
+                                            Her
                                             <% } %>
                                         </th>
 
@@ -147,7 +113,7 @@
                                             <% } %>
                                         </td>
                                     </tr>
-                                    
+
                                     </tr>
                                     </tbody>
                                 </table>
@@ -157,10 +123,42 @@
                     <div class="tab-pane" id="panel-567649">
                         <div class="row clearfix">
                             <div class="col-md-8 column">
-                                
+
                                 <% for (var i = 0; i < ret[0].img.length; i++) { %>
                                 <img class="parent" alt="140x140" src="<%= ret[0].img[i] %>" />
                                 <% } %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="panel-424242">
+                        <div class="row clearfix">
+                            <div class="col-md-4 column">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                            USER
+                                        </th>
+                                        <th>
+                                           DATE
+                                        </th>
+
+                                    </tr>
+                                    <% for (var i = 0; i < visit.length; i++){ %>
+                                    <tr>
+
+                                        <td>
+                                            <%= visit[i].user %>
+                                        </td>
+                                        <td>
+                                            <%= visit[i].date %>
+
+                                        </td>
+
+
+                                    </tr>  <% } %>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

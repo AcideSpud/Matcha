@@ -18,12 +18,13 @@ let inscription2 = require('./routes/inscription2');
 let compte = require('./routes/compte');
 let dashboard = require('./routes/dashboard');
 let profile = require('./routes/profile');
+let myprofile = require('./routes/myprofile');
 let login = require('./routes/login');
 let upload_img = require('./routes/upload_img');
 let forgot_mail = require('./routes/forgot_mail');
 let logout = require('./routes/logout');
 let chat = require('./routes/chat');
-let header = require('./routes/header')
+let header = require('./routes/header');
 
 
 app.set('views', path.join(__dirname, 'views'));
@@ -256,10 +257,11 @@ app.use('/login', login);
 app.use('/dashboard', dashboard);
 app.use('/compte', compte);
 app.use('/profile', profile);
+app.use('/myprofile', myprofile);
 app.use('/chat', chat);
 app.use('/upload_img', upload_img);
 app.use('/forgot_mail', forgot_mail);
-app.use('/header', header)
+app.use('/header', header);
 app.use('/logout', logout);
 
 

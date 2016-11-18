@@ -106,14 +106,27 @@ class Utilisateur {
 		})
 	}
 
+	static		updateLastCo(db , date, userName, callback) {
+		console.log(date);
+		db.collection("users").updateOne({"name": userName.name}, {
+			$set: {
+				"lastCo" : date
+			}
+		}, (err)=> {
+			if (err) throw err;
+		})
+        callback(null);
+	}
+
 	static		updateVisit(user, db, key){
 		this.findUsers3(user, (res)=>{
 			if (res[0])
 				db.collection("users").updateOne({"name": user}, {
-					$push : {"visit": key}
+					$push : {"visit": { "user": key , "date" :Date.now() } }
 				}, (err, res)=>{
 					if (err) throw err;
 				})
+
 		})
 	}
 
@@ -303,7 +316,7 @@ class Utilisateur {
 					orientation: "Bi",
 					geo: [],
 					match: ["test", "test2"],
-					visit: [], reported: false
+					visit: [], reported: false, lastCo: new Date()
 				}
 
 				this.findUsers3(request.body.name, (result)=> {
