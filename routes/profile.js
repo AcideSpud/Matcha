@@ -5,7 +5,7 @@ var express = require('express');
 var router = express.Router();
 let Profile = require('../models/getDataUser');
 let User = require('../models/utilisateur');
-
+let timeAgo = require('node-time-ago');
 
 function requireLogin (req, res, next) {
     if (!req.user) {
@@ -29,9 +29,11 @@ router.get('/:userID', requireLogin, (req, res, next)=>{
                         }
                     }
                 }
+            let time = timeAgo(ret[0].lastCo);
             res.render('profile', {
                 ret: ret,
                 islike: islike,
+                time: time,
                 user: req.session.user.name,
                 autre: req.params.userID
             });

@@ -103,35 +103,51 @@ class Utilisateur {
 		})
 	}
 
-	static		updateMainChatRoom(db, username, focusName){
-		this.findUsers3(username, (res)=>{
-			if (res[0]){
-				for (var i = 0; i < res[0].matchRoom.length; i++){
-					if (res[0].matchRoom[i].indexOf(focusName) == 0){
+
+	static		updateLastCo(db , date, userName, callback) {
+		console.log(date);
+		db.collection("users").updateOne({"name": userName.name}, {
+			$set: {
+				"lastCo": date
+			}
+		}, (err)=> {
+			if (err) throw err;
+		})
+		callback(null);
+	}
+
+	static		updateMainChatRoom(db, username, focusName) {
+		this.findUsers3(username, (res)=> {
+			if (res[0]) {
+				for (var i = 0; i < res[0].matchRoom.length; i++) {
+					if (res[0].matchRoom[i].indexOf(focusName) == 0) {
 						var focus = res[0].matchRoom[i];
 						break;
 					}
 				}
-			}	
-				console.log('FOCUSSS----', focus);
+			}
+			console.log('FOCUSSS----', focus);
 
 			if (res[0] && focus)
 				db.collection("users").updateOne({"name": username}, {
-					$set : {"focus": focus}
-				}, (err, res)=>{
+					$set: {"focus": focus}
+				}, (err, res)=> {
 					if (err) throw err;
 				})
 		})
 	}
 
+
+
 	static		updateVisit(user, db, key){
 		this.findUsers3(user, (res)=>{
 			if (res[0])
 				db.collection("users").updateOne({"name": user}, {
-					$push : {"visit": key}
+					$push : {"visit": { "user": key , "date" :Date.now() } }
 				}, (err, res)=>{
 					if (err) throw err;
 				})
+
 		})
 	}
 
@@ -338,9 +354,9 @@ class Utilisateur {
 					img: [],
 					orientation: "Bi",
 					geo: [],
+					match: ["test", "test2"],
+					visit: [], reported: false, lastCo: new Date(),
 					matchRoom: [],
-					visit: [],
-					reported: false,
 					focus: []
 				}
 

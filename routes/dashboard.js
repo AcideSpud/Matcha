@@ -91,6 +91,7 @@ router.post('/sort', upload.array(), requireLogin, (req, res)=> {
         User.Create_db((array)=> {
             getProfile.sortReported(array, (array)=>{
             getProfile.SortPrefSexUser(req.session.user, array, (ret)=>{
+
                 if (req.body.mySort = 1) {
                     getProfile.sortAge(ret, (cb)=>{
                         res.contentType('json');
