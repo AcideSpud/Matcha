@@ -57,13 +57,26 @@
         <div class="form-group">
         	<label class="control-label col-sm-2">Genre </label>
         	<label class="radio-inline">
-        		<input type="radio" name="genre" value="M">Masculin
+            <% if (ret[0].genre == 'M') { %>
+        		<input type="radio" name="genre" value="M" checked="checked" />Masculin
+            <% } else { %>
+                <input type="radio" name="genre" value="M" />Masculin
+            <% } %>
+
         	</label>
 			<label class="radio-inline">
-				<input type="radio" name="genre" value="Mme">Feminin
+			<% if (ret[0].genre == 'Mme') { %>
+                <input type="radio" name="genre" value="Mme" checked="checked" />Feminin
+            <% } else { %>
+                <input type="radio" name="genre" value="Mme" />Feminin
+            <% } %>
 			</label>
 			<label class="radio-inline">
-				<input type="radio" name="genre" value="Tran">Indefini
+			<% if (ret[0].genre == 'Tran') { %>
+                <input type="radio" name="genre" value="Tran" checked="checked" />Indefini
+            <% } else { %>
+                <input type="radio" name="genre" value="Tran" />Indefini
+            <% } %>
 			</label>
         </div>
 
@@ -71,19 +84,31 @@
         <div class="form-group">
             <label class="control-label col-sm-2">Orientation</label>
             <label class="radio-inline">
-                <input type="radio" name="orientation" value="Ht">Hétérosexuel
+                <% if (ret[0].orientation == 'Ht') { %>
+                <input type="radio" name="orientation" value="Ht" checked="checked" />Heterosexuel
+            <% } else { %>
+                <input type="radio" name="orientation" value="Ht" />Heterosexuel
+            <% } %>
             </label>
             <label class="radio-inline">
-                <input type="radio" name="orientation" value="Hm">Homosexuel
+                <% if (ret[0].orientation == 'Hm') { %>
+                <input type="radio" name="orientation" value="Hm" checked="checked" />Homosexuel
+            <% } else { %>
+                <input type="radio" name="orientation" value="Hm" />Homosexuel
+            <% } %>
             </label>
             <label class="radio-inline">
-                <input type="radio" name="orientation" value="Bi">Bisexuel
+             <% if (ret[0].orientation == 'Bi') { %>
+                <input type="radio" name="orientation" value="Bi" checked="checked" />Bisexuel
+            <% } else { %>
+                <input type="radio" name="orientation" value="Bi" />Bisexuel
+            <% } %>
             </label>
         </div>
 
         <div class = "form-group">
             <label>Put some #hobbies</label>
-            <textarea class="form-control" rows="3" id="hastag" name="hashtag" maxlength="200" placeholder="Put some #hobbies (200 caractères)" value=""><%= tag %></textarea>
+            <textarea class="form-control" rows="3" id="hastag" name="hashtag" maxlength="200" placeholder="Put some #hobbies (200 caractères)" value=""><% for (var i = 0; i < tag.length; i++ ){ %> <%= tag[i] %> <% } %></textarea>
         </div>
 
         <div class="form-group">
