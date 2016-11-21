@@ -126,8 +126,6 @@ class Utilisateur {
 					}
 				}
 			}
-			console.log('FOCUSSS----', focus);
-
 			if (res[0] && focus)
 				db.collection("users").updateOne({"name": username}, {
 					$set: {"focus": focus}
