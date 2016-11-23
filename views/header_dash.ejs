@@ -28,12 +28,6 @@
     <div class="container">
         <a class="navbar-brand" href="/">Michto</a>
         <ul class="nav navbar-nav">
-            <li class="active">
-                <a href="/">DashBoard</a>
-            </li>
-            <li class="">
-                <a href="/compte">Mon compte</a>
-            </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li>
@@ -125,5 +119,19 @@
             </ul>
         </div>
 </nav>
+<% if (locals.flash && locals.flash.error) { %>
+<div class="alert alert-warning">
+<a href="#" class="close" data-dismiss="alert">&times;</a>
+    <strong>Warning!</strong>
+    <%= flash.error %>
+</div>
+  <% } %>
+<% if (locals.flash && locals.flash.success) { %>
+<div class="alert alert-success">
+<a href="#" class="close" data-dismiss="alert">&times;</a>
+
+  <%=  flash.success %>
+</div>
+  <% } %>
 
 

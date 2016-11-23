@@ -45,30 +45,41 @@ router.get('/', requireLogin, function(req, resu, next) {
     var lng = result[0].geo.longitude;
 
     console.log('geooo------:', lat, lng)
+    console.log('tag:', newTag)
 
-   geocoder.reverse({'lat':lat, 'lon':lng}, function(err, res) {
-    if (res[0])
-      var country = res[0].city;
-    else
-       var country = 'a definir';
-
-    resu.render('compte', {ret : result, tag : newTag, count: country});
-});
-
-    
+    if (lat && lng){
+      geocoder.reverse({'lat':lat, 'lon':lng}, function(err, res) {
+        if (res[0].city){
+          var city = res[0].city;
+          var country = res[0].country;
+        }
+        else{
+          var city = '';
+          var country = '';
+        }
+        resu.render('compte', {ret : result, tag : newTag, city: city, country: country});
+      });
+    }else{
+        var city = '';
+        var country = '';
+        newTag = ''
+        resu.render('compte', {ret : result, tag : newTag, city: city, country: country}); 
+      }
+ 
   })	  
 });
 
 
-router.post('/form_compte', upload.single('userFile'), (request, response)=>{
+router.post('/form_compte', (request, response)=>{
   
+
   Utilisateur.modifUser(request, (res, err)=>{
     if (err)
       request.flash('error', err)
     else
       request.flash('success', "informations bien enregistrées")
   })
-  response.redirect('/upload_img')
+  response.redirect('/dashboard')
 })
 
 
