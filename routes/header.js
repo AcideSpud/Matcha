@@ -9,4 +9,8 @@ router.get('/', (req, res, next)=>{
 	res.render('/header_dash', {user: req.user.name});
 })
 
+router.get('/header_dash', (req, res, next)=>{
+	res.render('/footer_dash', {user: req.user.name});
+})
+
 module.exports = router;

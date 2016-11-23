@@ -16,12 +16,10 @@ class Get_user {
         MongoC.connect(url, function (err, db) {
             if (err)
                 throw err;
-
-            console.log("Connecté à la base de données");
+            
             // Get the documents collection
             db.collection('users').find().toArray((error, results) => {
                 if (error) throw error;
-                console.log(results);
                 results.forEach((i)=> {
                     console.log(
                         "ID :" + i._id.toString() + "\n" +

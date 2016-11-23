@@ -3,7 +3,7 @@
 <div class="container">
 	<div class="col-sm-6 col-sm-offset-3">
     <div class="jumbotron text-center"  style="padding:40px;">
-      <h2><span class="fa fa-sign-in"></span>Uploadez vos photos</h2>
+      <h2>Uploadez vos photos</h2>
       <form class="" id="uploadImgForm" enctype="multipart/form-data" action="/upload_img/upload_img" method="post">
       <div class="form-group">
         <br>
@@ -19,21 +19,21 @@
       </div>
     </div>
    </form>
-  </div>
-</div>
-
-<% for (var i = 0 ; i < ret[0].img.length; i++) { %>
-
-<div class="container">
-  <div class="row">
-    <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="<%= ret[0].img[i] %>" />
-          <button id="deletebutton" class="btn btn-primary btn-block" onclick="deleteImg('<%= ret[0].img[i] %>')" type="button">
-               remove
-            </button>
+   <div class ="container" style="width:80%;margin:auto;">
+  <% for (var i = 0 ; i < ret[0].img.length; i++) { %>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="<%= ret[0].img[i] %>"  />
+            <button id="deletebutton" class="btn btn-primary btn-block" onclick="deleteImg('<%= ret[  0].img[i] %>')" type="button">
+                 remove
+              </button>
+      </div>
     </div>
   </div>
+  <% } %>
 </div>
-<% } %>
+  </div>
+</div>
 
 <script>
   $(document).ready(function() {
@@ -52,4 +52,4 @@
     });
   </script>
 
-<% include footer %>
+<% include footer_dash %>
