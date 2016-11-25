@@ -186,11 +186,18 @@
             socket.emit('notification_newMsg', '<%= user[0].name %>');
 
          socket.on('notif_like', (res)=>{
+             for (var i = 0; i < res.length; i++) {
+                 $('#notifliking').append('<li><a href="#">' +  res[i] + '</a></li>');
+             }
+
          })
 
          socket.on('notif_unlike', (res)=>{
          })
-
+            socket.on('notif_match', (res)=>{
+                $('#notifmatching').append('<li><a href="#">' +  res + '</a></li>');
+                console.log(res);
+            })
          socket.on('notif_newMsg', (res)=>{
             console.log('coucou ', res);
          })
