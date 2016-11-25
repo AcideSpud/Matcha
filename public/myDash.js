@@ -101,7 +101,7 @@ function showTable(data){
             Dist:
     </td>
         <td>` +
-         data[i].geo.dist + `Km
+         data[i].dist + `Km
             </td>
             </tr>
             <tr>
@@ -119,7 +119,7 @@ function showTable(data){
 
         </div>
         </div>'
-            '<p id="b_view"><a href="/profile/`  + data[i].name + '" class="btn btn-default" role="button">View profil</a></p>' +
+            '<p id="b_view"><a href="/profile/`  + data[i].name + '" class="btn btn-primary" role="button">View profil</a></p>' +
                 '</div></div></div>');
 
     }
@@ -139,7 +139,7 @@ var onReady = function(e) {
             console.log(status);
         }
     }
-    console.log("good");
+    console.log(data);
 };
 
 var onError = function(err) {

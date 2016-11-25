@@ -70,7 +70,7 @@ app.use(function(req, res, next){
   }
 })
 
-var all_users = {}
+var all_users = {};
 var rooms = ['room1', 'room2', 'room3'];
 var chatRoom = [];
 var historique_message =[];
@@ -119,7 +119,7 @@ socket.on('sendchat', function(data){
         }
       }
     })
-  })
+  });
 
   socket.on('notification_visit', function(data){
     Utilisateur.findUsers3(data, (res)=>{
@@ -131,7 +131,7 @@ socket.on('sendchat', function(data){
         }
       }
     })
-  })
+  });
 
 
   socket.on('adduser2', function(username, chatRoomName){
@@ -147,6 +147,7 @@ socket.on('sendchat', function(data){
         allChatRoom[i] = res[i].chatRoomName
     })
 
+
     chat.findChatRoom(chatRoomName, (res)=>{
       if (res){
 
@@ -156,7 +157,7 @@ socket.on('sendchat', function(data){
       }        
     })
     
-    console.log('SOCKEt:', socket.username)
+    socket.username = username;
     socket.room = chatRoomName;
     all_users[username] = username;
     socket.join(chatRoomName);
@@ -187,6 +188,10 @@ app.use('/logout', logout);
 
 /*
 app.get('*', function(req, res, next) {
+=======
+
+/*app.get('*', function(req, res, next) {
+>>>>>>> 555f0d8511a26c6e1a267fb922f5faa32af5388a
   var err = new Error();
   err.status = 404;
   next(err);

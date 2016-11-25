@@ -27,8 +27,6 @@ router.get('/:userID', requireLogin, (req, res, next)=>{
                     }
                 }
             }
-            console.log("DATE NOW ::: "+ ret[0].visit[18].date);
-            console.log("GET TIME AGO ::::"+ timeAgo(ret[0].visit[18].date));
             let visit = [];
             let cmp = 0;
             for (var i = 0; i < ret[0].visit.length; i++){
