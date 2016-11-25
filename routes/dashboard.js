@@ -34,25 +34,21 @@ router.get('/', requireLogin,  function(req, res, next) {
 
 	User.Create_db((ret)=>{
         getProfile.sortReported(ret, (ret)=>{
-		getProfile.SortPrefSexUser(req.session.user, ret, (cb)=> {
-            getProfile.GetDistance(req.session.user, cb, (geo)=> {
+		    getProfile.SortPrefSexUser(req.session.user, ret, (cb)=> {
+                getProfile.GetDistance(req.session.user, cb, (geo)=> {
 
-                getProfile.findUsers3(req.session.user.name, (resu)=>{
+                    getProfile.findUsers3(req.session.user.name, (resu)=>{
 
-                    res.render('dashboard', {
-                    ret: cb,
-                    geo: geo,
-                    user: resu
+                            res.render('dashboard', {
+                                ret: cb,
+                                geo: geo,
+                                user: resu
+                        });
+                    })
                 });
-
-                })
-
-                
             });
-        });
 		});
 	});
-
 });
 
 router.post('/sort', upload.array(), requireLogin, (req, res)=> {

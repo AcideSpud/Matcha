@@ -89,6 +89,7 @@ socket.on('sendchat', function(data){
 
 
   socket.on('notification_like', function(data){
+      console.log("");
     Utilisateur.findUsers3(data, (res)=>{
       if (res && res[0].liker){
             if (res[0].liker.length > likeLength){
@@ -112,6 +113,7 @@ socket.on('sendchat', function(data){
 
   socket.on('notification_match', function(data){
     Utilisateur.findUsers3(data, (res)=>{
+
       if (res){
         if (res[0].matchRoom.length > matchLength){
           console.log('ON TA MATCHH');
@@ -135,12 +137,12 @@ socket.on('sendchat', function(data){
 
 
   socket.on('adduser2', function(username, chatRoomName){
-    var chat = require('./models/chat_function.js')
+    var chat = require('./models/chat_function.js');
     var allChatRoom = new Array();
     socket.username = username;
 
-    console.log('----CHat ROOM NAME'+ '-' + chatRoomName + '-')
-    console.log('----USERNAME'+ '-' + username + '-')
+    console.log('----CHat ROOM NAME'+ '-' + chatRoomName + '-');
+    console.log('----USERNAME'+ '-' + username + '-');
 
     chat.findAllRooms((res)=>{
       for (var i = 0; i<res.length; i++)

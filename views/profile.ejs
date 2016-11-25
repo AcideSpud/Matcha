@@ -33,7 +33,7 @@
         <div class="col-md-2 column">
             <p>
             <% if (islike == false && ret[0].img[0]){ %>
-            <button id="mylikebutton" class="btn btn-primary btn-block" onclick="like_request('<%= ret[0].name %>')" type="button">
+            <button id="mylikebutton" class="btn btn-primary btn-block" onclick="like_request('<%= ret[0].name %>');" type="button">
                 Like
             </button>
             <% } else if (islike == true && ret[0].img[0]) { %>
@@ -179,16 +179,16 @@
       console.log('coucou NOTIFFFFFF');
       console.log('<%= user.name %>');
         socket.on('connect', function(){
-            socket.emit('notification_like', '<%= user.name %>');
+                socket.emit('notification_like', '<%= user.name %>');
             socket.emit('notification_match', '<%= user.name %>');
             socket.emit('notification_visit', '<%= user.name %>');
 
          socket.on('notif_like', (res)=>{
-          console.log('NOTIiiiiiiifof', res[res[0].liker.length - 1].liker)
+
          })
 
          socket.on('notif_unlike', (res)=>{
-          console.log('NOTIiiiiiiifof', res[res[0].liker.length - 1].liker)
+
          })
      })
      </script> 
