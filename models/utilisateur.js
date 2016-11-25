@@ -85,7 +85,8 @@ class Utilisateur {
 				"popularite": user.popularite, "genre": user.genre,
 				"orientation": user.orientation, "age": user.age,
 				"bio": user.bio, "tag": user.tag,
-				"geo": user.geo
+				"geo": user.geo,
+				"city": user.city
 			}
 		}, (err, res)=> {
 			if (err) throw err
@@ -126,8 +127,6 @@ class Utilisateur {
 					}
 				}
 			}
-			console.log('FOCUSSS----', focus);
-
 			if (res[0] && focus)
 				db.collection("users").updateOne({"name": username}, {
 					$set: {"focus": focus}
@@ -263,6 +262,19 @@ class Utilisateur {
         this.sendNotif(user, key, 'UnLike from', db);
 	}
 
+	static		updateLocalisation(loca, name){
+		let mongo = require('mongodb').MongoClient;
+
+		mongo.connect("mongodb://localhost/matcha", (err, db)=> {
+			db.collection("users").find({name: name}, {$set: {"country": loca}}, (err)=>{
+				if (err)
+					throw err;
+				else;
+			})
+		})
+
+	}
+
 
 	static		modifUser(request, callback) {
 		let mongo = require('mongodb').MongoClient;
@@ -273,7 +285,7 @@ class Utilisateur {
 			let bcrypt = require('bcryptjs')
 			var hashtag = require('find-hashtags')
 			var hash = bcrypt.hashSync(request.body.pwd);
-			var hobbies = hashtag(request.body.hashtag)
+			var hobbies = hashtag(request.body.hashtag);
 
 			if (err) {
 				throw err
@@ -287,7 +299,9 @@ class Utilisateur {
 					bio: request.body.bio,
 					like: [], liker: [], popularite: 0,
 					tag: hobbies,
-					geo: JSON.parse(request.body.geo)
+					geo: JSON.parse(request.body.geo),
+					country: request.body.country,
+					city: request.body.city
 				}
 				this.updateUser(user, db, request.user.name, (res)=> {
 				})
@@ -315,10 +329,7 @@ class Utilisateur {
 
 	static		deleteIMG(username, imgpath, callback){
 		let mongo = require('mongodb').MongoClient;
-
-		console.log('USER--:', username);
-		console.log('path--:', imgpath)
-
+		
 		mongo.connect('mongodb://localhost/matcha', (err, db)=> {
 			db.collection("users").updateOne({"name": username}, {$pull: {"img": imgpath}}, (err, res)=> {
 				if (err) throw err

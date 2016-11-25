@@ -89,27 +89,33 @@ io.on('connection', function (socket) {
 
   socket.on('notification_like', function(data){
 
-  /*  Utilisateur.findUsers3(data, (res)=>{
-      if (res[0].liker){
+    console.log('data'+ data[0])
+
+    Utilisateur.findUsers3(data, (res)=>{
+      if (res){
             if (res[0].liker.length > likeLength){
               console.log('liker DATABASE:' + res[0].liker.length)
               console.log('liker ARRAY:' + likeLength)
               console.log('ON TA LIKER');
+              
               likeLength = res[0].liker.length;
+              socket.emit('notif_like', res);
             } else if (res[0].liker.length < likeLength){
               console.log('ON TA DELIKER');
+              
               likeLength = res[0].liker.length;
+              socket.emit('notif_unlike', res);
             }
         console.log(likeLength)
       }
       else console.log('NO USER (NOTIFICATION')
-    })*/
+    })
   })
 
   socket.on('notification_match', function(data){
 
     Utilisateur.findUsers3(data, (res)=>{
-      if (res[0].match){
+      if (res){
         if (res[0].match.length > matchLength){
           console.log('ON TA MATCHH');
           matchLength = res[0].match.length;
@@ -120,7 +126,7 @@ io.on('connection', function (socket) {
 
   socket.on('notification_visit', function(data){
     Utilisateur.findUsers3(data, (res)=>{
-      if (res[0].visit){
+      if (res){
         if (res[0].visit.length > visitLength){
           console.log('ON TA VISITER');
           visitLength = res[0].visit.length;
@@ -159,66 +165,9 @@ io.on('connection', function (socket) {
     socket.room = chatRoomName;
     all_users[username] = username;
     socket.join(chatRoomName);
-
-   /* Utilisateur.findUsers3(username, (res)=>{
-      var allChatRoom = new Array();
-      if (res[0]){
-        for (var i = 0; i< res[0].matchRoom.length; i++)
-          allChatRoom.push(res[0].matchRoom[i]);
-      }
-      socket.emit('updaterooms', allChatRoom, chatRoomName);
-    })*/
-
-   /* Utilisateur.findUsers3(username, (res)=>{
-
-      var myChatRooms = new Array();
-
-      if (res[0]){
-        for (var i = 0; i < res[0].matchRoom.length; i++){
-          console.log('TOUTE LES ROOMS---' + allChatRoom)
-          console.log('UTILISATEURS ROOMS----' + res[0].matchRoom)
-         // console.log(allChatRoom[i] + '----' + res[0].matchRoom[i])
-          if (allChatRoom.indexOf(res[0].matchRoom[i]) == 0){
-            console.log(res[0].matchRoom[i] + allChatRoom[i])
-            myChatRooms[i] = res[0].matchRoom[i]
-          }
-        }
-      }*/
-//      console.log('ROOMS FINAL DE L utilISATEUR' + myChatRooms)
-
-  /*    socket.username = username;
-      socket.room = chatRoomName;
-      all_users[username] = username;
-      socket.join(chatRoomName);*/
-   // socket.emit('updatechat', 'SERVER', 'You have connected to the new room');
-   // socket.broadcast.to(allChatRoom).emit('updatechat','SERVER', username + ' has connected');
-    //  socket.emit('updaterooms', myChatRooms, chatRoomName);  
+ 
   })
 
-  /*socket.on('switchRoom', function(newroom, name){
-
-    console.log('NAME___:'+ name)
-
-    Utilisateur.findUsers3(name, (res)=>{
-      var allChatRoom = new Array();
-      if (res[0]){
-        for (var i = 0; i< res[0].matchRoom.length; i++)
-          allChatRoom.push(res[0].matchRoom[i]);
-      }
-      // leave the current room (stored in session)
-    socket.leave(socket.room);
-    // join new room, received as function parameter
-    socket.join(newroom);
-    socket.emit('updatechat', 'SERVER', 'you have connected to '+ newroom);
-    // sent message to OLD room
-   // socket.broadcast.to(socket.room).emit('updatechat', 'SERVER', socket.username+' has left this room');
-    // update socket session room title
-    socket.room = newroom;
-   // socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username+' has joined this room');
-    socket.emit('updaterooms', allChatRoom, newroom);
-    })
-
-  })*/
 
 // when the user disconnects.. perform this
   socket.on('disconnect', function(){
@@ -234,11 +183,8 @@ io.on('connection', function (socket) {
 });
 
 
-
-
 app.use(require('./middlewares/flash'));
 app.use('/', routes);
-//app.use('/inscription', inscription);
 app.use('/inscription2', inscription2);
 app.use('/users', users);
 app.use('/login', login);
@@ -248,7 +194,6 @@ app.use('/profile', profile);
 app.use('/myprofile', myprofile);
 app.use('/chat', chat);
 app.use('/upload_img', upload_img);
-app.use('/forgot_mail', forgot_mail);
 app.use('/header', header);
 app.use('/logout', logout);
 

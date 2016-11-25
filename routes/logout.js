@@ -20,16 +20,15 @@ function requireLogin (req, res, next) {
 router.get('/', requireLogin, (req, res, next)=>{
     Ut.GetDB((db)=>{
         Ut.updateLastCo(db, Date.now(), req.session.user, (nothing) =>{
-	    req.session.destroy((err)=> {
-        if (err) {
-            throw err
-        }
-        else {
-
-            res.redirect('/')
-        }
-    });
-	});
+	       req.session.destroy((err)=> {
+            if (err) {
+             throw err
+            }
+            else {
+                res.redirect('/')
+            }
+         });
+	   });
     });
 })
 

@@ -49,6 +49,15 @@
             <input type="text" class="form-control" id="prenom" name="prenom" required="required" placeholder="Prénom" value="<%= ret[0].prenom %>">
         </div>
 
+
+        <% if (city && country && ret[0].geo) { %>
+        <div class="form-group">
+            <p style="{font-size: 0.3em;}"> (<%= city %> / <%= country %> )</p>
+            <p style="{font-size: 0.3em;}"> (<%= ret[0].geo.latitude %> / <%= ret[0].geo.longitude %> )</p>
+        </div>
+    <% } %>
+
+
         <div class="form-group">
             <label class="control-label col-sm-2">Age *</label>
             <input type="number" name="age" min="18" max="100" required="required" value="<%= ret[0].age %>">
@@ -57,13 +66,26 @@
         <div class="form-group">
         	<label class="control-label col-sm-2">Genre </label>
         	<label class="radio-inline">
-        		<input type="radio" name="genre" value="M">Masculin
+            <% if (ret[0].genre == 'M') { %>
+        		<input type="radio" name="genre" value="M" checked="checked" />Masculin
+            <% } else { %>
+                <input type="radio" name="genre" value="M" />Masculin
+            <% } %>
+
         	</label>
 			<label class="radio-inline">
-				<input type="radio" name="genre" value="Mme">Feminin
+			<% if (ret[0].genre == 'Mme') { %>
+                <input type="radio" name="genre" value="Mme" checked="checked" />Feminin
+            <% } else { %>
+                <input type="radio" name="genre" value="Mme" />Feminin
+            <% } %>
 			</label>
 			<label class="radio-inline">
-				<input type="radio" name="genre" value="Tran">Indefini
+			<% if (ret[0].genre == 'Tran') { %>
+                <input type="radio" name="genre" value="Tran" checked="checked" />Indefini
+            <% } else { %>
+                <input type="radio" name="genre" value="Tran" />Indefini
+            <% } %>
 			</label>
         </div>
 
@@ -71,19 +93,31 @@
         <div class="form-group">
             <label class="control-label col-sm-2">Orientation</label>
             <label class="radio-inline">
-                <input type="radio" name="orientation" value="Ht">Hétérosexuel
+                <% if (ret[0].orientation == 'Ht') { %>
+                <input type="radio" name="orientation" value="Ht" checked="checked" />Heterosexuel
+            <% } else { %>
+                <input type="radio" name="orientation" value="Ht" />Heterosexuel
+            <% } %>
             </label>
             <label class="radio-inline">
-                <input type="radio" name="orientation" value="Hm">Homosexuel
+                <% if (ret[0].orientation == 'Hm') { %>
+                <input type="radio" name="orientation" value="Hm" checked="checked" />Homosexuel
+            <% } else { %>
+                <input type="radio" name="orientation" value="Hm" />Homosexuel
+            <% } %>
             </label>
             <label class="radio-inline">
-                <input type="radio" name="orientation" value="Bi">Bisexuel
+             <% if (ret[0].orientation == 'Bi') { %>
+                <input type="radio" name="orientation" value="Bi" checked="checked" />Bisexuel
+            <% } else { %>
+                <input type="radio" name="orientation" value="Bi" />Bisexuel
+            <% } %>
             </label>
         </div>
 
         <div class = "form-group">
             <label>Put some #hobbies</label>
-            <textarea class="form-control" rows="3" id="hastag" name="hashtag" maxlength="200" placeholder="Put some #hobbies (200 caractères)" value=""><%= tag %></textarea>
+            <textarea class="form-control" rows="3" id="hastag" name="hashtag" maxlength="200" placeholder="Put some #hobbies (200 caractères)" value=""><% for (var i = 0; i < tag.length; i++ ){ %> <%= tag[i] %> <% } %></textarea>
         </div>
 
         <div class="form-group">
@@ -96,10 +130,6 @@
         </div>
         <div class="form-group">
         <button type="submit" class="btn btn-warning btn-lg">Enregistrer</button>
-        </div>
-            <div class="form-group">
-            <a class="btn btn-primary" href="/myprofile/<%= ret[0].name %>">Mon Profile</a>
-        </div>
     </form>
 </div>
 </div>
@@ -107,4 +137,4 @@
 
 
 
-<%include footer %>
+<%include footer_dash %>

@@ -28,7 +28,7 @@ router.post('/form_log', (request, response)=>{
           request.flash('error', "mauvais mdp")
       }
     }
-    response.redirect('/');
+    response.redirect('/compte');
   })
 })
 
