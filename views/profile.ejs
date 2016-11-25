@@ -177,18 +177,21 @@
     
         var socket = io.connect('http://localhost:3000');
       console.log('coucou NOTIFFFFFF');
-      console.log('<%= user.name %>');
+      console.log('<%= user[0].name %>');
         socket.on('connect', function(){
-            socket.emit('notification_like', '<%= user.name %>');
-            socket.emit('notification_match', '<%= user.name %>');
-            socket.emit('notification_visit', '<%= user.name %>');
+            socket.emit('notification_like', '<%= user[0].name %>');
+            socket.emit('notification_match', '<%= user[0].name %>');
+            socket.emit('notification_visit', '<%= user[0].name %>');
+            socket.emit('notification_newMsg', '<%= user[0].name %>');
 
          socket.on('notif_like', (res)=>{
-          console.log('NOTIiiiiiiifof', res[res[0].liker.length - 1].liker)
          })
 
          socket.on('notif_unlike', (res)=>{
-          console.log('NOTIiiiiiiifof', res[res[0].liker.length - 1].liker)
+         })
+
+         socket.on('notif_newMsg', (res)=>{
+            console.log('coucou ', res);
          })
      })
      </script> 

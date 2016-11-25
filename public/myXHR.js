@@ -33,6 +33,13 @@ function send_info_chat(name1, name2){
     request.send("name1="+name1+"&name2="+name2);
 }
 
+function send_info_chat2(chatRoomName, username){
+    var request = new XMLHttpRequest();
+    request.open('POST', '/chat/chat', true);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    request.send("crn="+chatRoomName+"&name="+username);
+}
+
 function    deleteImg(path){
     var request = new XMLHttpRequest();
     request.open('POST', '/upload_img/delete_img', true);

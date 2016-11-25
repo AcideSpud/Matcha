@@ -26,6 +26,8 @@ router.get('/', requireLogin,  function(req, res, next) {
 router.post('/chat', requireLogin, function(req, res, next){
 
 
+	console.log('chat', req.body.crn);
+
 		if (req.body.name1 &&  req.body.name2){
 
 		chatRoom.findChatRoom((req.body.name2 + req.body.name1), (res)=>{
@@ -43,7 +45,7 @@ router.post('/chat', requireLogin, function(req, res, next){
 
 				console.log('-'+ req.body.name2 + req.body.name1+ '-')
 				Utilisateur.findUsers3(req.body.name2, (res)=>{
-					if (res[0]){
+					if (res){
 						console.log(req.body.name1);
 						console.log('index---oOF:',res[0].matchRoom[0].indexOf(req.body.name1))
 						console.log(res[0].matchRoom);
@@ -59,6 +61,13 @@ router.post('/chat', requireLogin, function(req, res, next){
 						Utilisateur.updateMainChatRoom(db, req.body.name2,chatName)
 					}	
 				})
+			})
+		}
+		else if (req.body.crn && req.body.name){
+
+			Utilisateur.GetDB((db)=>{
+				console.log('coucou chat footer:', req.body.name, req.body.crn)
+				Utilisateur.updateMainChatRoom(db, req.body.name, req.body.crn)
 			})
 		}
 

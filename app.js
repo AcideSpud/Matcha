@@ -77,8 +77,10 @@ var historique_message =[];
 var likeLength = 0;
 var matchLength = 0;
 var visitLength = 0;
+var messageLength = 0;
 
 var Utilisateur = require('./models/utilisateur.js');
+var chatRoom = require('./models/chat_function')
 
 io.on('connection', function (socket) {
   
@@ -133,6 +135,30 @@ socket.on('sendchat', function(data){
     })
   });
 
+  socket.on('notification_newMsg', function(data){
+    console.log('noootif: - ', data)
+    var nb_matchRoom;
+
+    Utilisateur.findUsers3(data, (res)=>{
+      nb_matchRoom = res[0].matchRoom.length;
+      if (res){
+        for(var i = 0; i<res[0].matchRoom.length; i++){
+          chatRoom.findChatRoom(res[0].matchRoom[i], (chat)=>{
+            console.log('FIND CHAT ROOM NOTIF NEW MSG')
+            if (chat[0]){
+              console.log('CHAT CONtent LENGth:', chat[0].content.length, "messageLength: ", messageLength);
+              if(chat[0].content.length > messageLength){
+                console.log('FIND CHAT ROOM NOTIF NEW MSG3')
+                socket.emit('notif_newMsg', chat[0])
+                messageLength = chat[0].content.length;
+              }
+            }
+            })
+          }
+        }
+      })
+    })
+
 
   socket.on('adduser2', function(username, chatRoomName){
     var chat = require('./models/chat_function.js')
@@ -150,7 +176,6 @@ socket.on('sendchat', function(data){
 
     chat.findChatRoom(chatRoomName, (res)=>{
       if (res){
-
         for (var i = 0; i < res[0].userNames.length; i++){
             socket.emit('oldMess', res[0].userNames[i], res[0].content[i])
         }
@@ -166,7 +191,7 @@ socket.on('sendchat', function(data){
   socket.on('disconnect', function(){
     delete all_users[socket.username];
     io.sockets.emit('updateusers', all_users);
-    socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
+   // socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
     socket.leave(socket.room);
   });
 });
@@ -187,11 +212,8 @@ app.use('/header', header);
 app.use('/logout', logout);
 
 /*
-app.get('*', function(req, res, next) {
-=======
 
-/*app.get('*', function(req, res, next) {
->>>>>>> 555f0d8511a26c6e1a267fb922f5faa32af5388a
+app.get('*', function(req, res, next) {
   var err = new Error();
   err.status = 404;
   next(err);
