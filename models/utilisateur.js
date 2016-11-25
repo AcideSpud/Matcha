@@ -119,6 +119,8 @@ class Utilisateur {
 
 	static		updateMainChatRoom(db, username, focusName) {
 		this.findUsers3(username, (res)=> {
+			console.log('username----:', username);
+			console.log('focusName---:', focusName);
 			if (res[0]) {
 				for (var i = 0; i < res[0].matchRoom.length; i++) {
 					if (res[0].matchRoom[i].indexOf(focusName) == 0) {

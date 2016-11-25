@@ -24,6 +24,7 @@
       
          socket.on('connect', function(){
             console.log('Un utilisateur de connecte-----------');
+            console.log('<%= ret[0].name %>', '<%= ret[0].focus %>')
             socket.emit('adduser2', '<%= ret[0].name %>', '<%= ret[0].focus %>');
          });
 
@@ -32,11 +33,12 @@
          })
 
          socket.on('updatechat', function(username, data){
+          console.log('updatechat---', username, data)
+          $('#messages').append('<div class="message"><div class="info"><p><strong>' + username + ':</p></strong>' + data + '</div></div>');
             var request = new XMLHttpRequest();
                             request.open('POST', '/chat/chat', true);
                             request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
                             request.send("userName="+username+"&content="+data+"&roomName="+"<%= ret[0].focus %>");
-            $('#messages').append('<div class="message"><div class="info"><p><strong>' + username + ':</p></strong>' + data + '</div></div>');
          })
 
          socket.on('updaterooms', function(rooms, current_room) {
@@ -60,6 +62,7 @@
             $('#datasend').click( function() {
                var message = $('#data').val();
                $('#data').val('');
+               console.log('MMMMEESSSAGE',message)
                socket.emit('sendchat', message);
             });
             $('#data').keypress(function(e) {
@@ -110,4 +113,4 @@
    		})*/
    		
    	</script>
-<% include footer %>
+<% include footer_dash %>

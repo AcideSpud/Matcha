@@ -82,17 +82,15 @@ var Utilisateur = require('./models/utilisateur.js');
 
 io.on('connection', function (socket) {
   
-
-  socket.on('sendchat', function(data){
+socket.on('sendchat', function(data){
+  console.log('SENDCHAT:::', socket.username)
     io.sockets.in(socket.room).emit('updatechat', socket.username, data);
   });
 
+
   socket.on('notification_like', function(data){
-
-    console.log('data'+ data[0])
-
     Utilisateur.findUsers3(data, (res)=>{
-      if (res){
+      if (res && res[0].liker){
             if (res[0].liker.length > likeLength){
               console.log('liker DATABASE:' + res[0].liker.length)
               console.log('liker ARRAY:' + likeLength)
@@ -113,12 +111,11 @@ io.on('connection', function (socket) {
   })
 
   socket.on('notification_match', function(data){
-
     Utilisateur.findUsers3(data, (res)=>{
       if (res){
-        if (res[0].match.length > matchLength){
+        if (res[0].matchRoom.length > matchLength){
           console.log('ON TA MATCHH');
-          matchLength = res[0].match.length;
+          matchLength = res[0].matchRoom.length;
         }
       }
     })
@@ -138,10 +135,9 @@ io.on('connection', function (socket) {
 
 
   socket.on('adduser2', function(username, chatRoomName){
-
     var chat = require('./models/chat_function.js')
     var allChatRoom = new Array();
-    
+    socket.username = username;
 
     console.log('----CHat ROOM NAME'+ '-' + chatRoomName + '-')
     console.log('----USERNAME'+ '-' + username + '-')
@@ -149,7 +145,6 @@ io.on('connection', function (socket) {
     chat.findAllRooms((res)=>{
       for (var i = 0; i<res.length; i++)
         allChatRoom[i] = res[i].chatRoomName
-     // console.log(allChatRoom)
     })
 
     chat.findChatRoom(chatRoomName, (res)=>{
@@ -160,26 +155,19 @@ io.on('connection', function (socket) {
         }
       }        
     })
-
-    socket.username = username;
+    
+    console.log('SOCKEt:', socket.username)
     socket.room = chatRoomName;
     all_users[username] = username;
     socket.join(chatRoomName);
- 
   })
 
-
-// when the user disconnects.. perform this
   socket.on('disconnect', function(){
-    // remove the username from global usernames list
     delete all_users[socket.username];
-    // update list of users in chat, client-side
     io.sockets.emit('updateusers', all_users);
-    // echo globally that this client has left
     socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
     socket.leave(socket.room);
   });
-
 });
 
 
@@ -197,7 +185,7 @@ app.use('/upload_img', upload_img);
 app.use('/header', header);
 app.use('/logout', logout);
 
-
+/*
 app.get('*', function(req, res, next) {
   var err = new Error();
   err.status = 404;
@@ -210,6 +198,6 @@ app.use(function(err, req, res, next) {
   }
   res.status(404);
   res.render('page_error')
-});
+});*/
 
 module.exports = app;

@@ -11,26 +11,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<script src="socket.io/socket.io.js"></script>
-    <script>
-        var socket = io.connect('http://localhost:3000');
-      console.log('coucou NOTIFFFFFF')
-      console.log('<%= ret[0].name %>')
-        socket.on('connect', function(){
-            socket.emit('notification_like', '<%= ret[0].name %>');
-            socket.emit('notification_match', '<%= ret[0].name %>');
-            socket.emit('notification_visit', '<%= ret[0].name %>');
-
-         socket.on('notif_like', (res)=>{
-          console.log('NOTIiiiiiiifof', res[res[0].liker.length - 1].liker)
-         })
-
-         socket.on('notif_unlike', (res)=>{
-          console.log('NOTIiiiiiiifof', res[res[0].liker.length - 1].liker)
-         })
-     })
-     </script>
-
 </head>
 </head>
 <body style="background-image: linear-gradient(90deg,rgb(200, 255, 255), rgb(127, 18, 47) );">

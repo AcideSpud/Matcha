@@ -34,10 +34,18 @@ router.get('/', requireLogin, function(req, res, next) {
         getProfile.sortReported(ret, (ret)=>{
 		getProfile.SortPrefSexUser(req.session.user, ret, (cb)=> {
             getProfile.GetDistance(req.session.user, cb, (geo)=> {
-                res.render('dashboard', {
+
+                getProfile.findUsers3(req.session.user.name, (resu)=>{
+
+                    res.render('dashboard', {
                     ret: cb,
-                    geo: geo
+                    geo: geo,
+                    user: resu
                 });
+
+                })
+
+                
             });
         });
 		});

@@ -28,9 +28,9 @@
   						</div>
 					</li>
                     <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> <span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-heart" aria-hidden="true">3</span> <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="#">Action</a></li>
+                    <li><a href="#"><%= user[0].name %></a></li>
                     <li><a href="#">Another action</a></li>
                     <li><a href="#">Something else here</a></li>
                     <li role="separator" class="divider"></li>
@@ -38,7 +38,7 @@
                 </ul>
             </li>
 					 <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> <span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-comment" aria-hidden="true">3</span> <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="#">Action</a></li>
                     <li><a href="#">Another action</a></li>
@@ -53,15 +53,16 @@
 	</div>
 </footer>
 
-<script src="socket.io/socket.io.js"></script>
+<!-- <script src="socket.io/socket.io.js"></script>
     <script>
+    
         var socket = io.connect('http://localhost:3000');
-      console.log('coucou NOTIFFFFFF')
-      console.log('<%= user %>')
+      console.log('coucou NOTIFFFFFF');
+      console.log('<%= user.name %>');
         socket.on('connect', function(){
-            socket.emit('notification_like', '<%= user %>');
-            socket.emit('notification_match', '<%= user %>');
-            socket.emit('notification_visit', '<%= user %>');
+            socket.emit('notification_like', '<%= user.name %>');
+            socket.emit('notification_match', '<%= user.name %>');
+            socket.emit('notification_visit', '<%= user.name %>');
 
          socket.on('notif_like', (res)=>{
           console.log('NOTIiiiiiiifof', res[res[0].liker.length - 1].liker)
@@ -71,7 +72,7 @@
           console.log('NOTIiiiiiiifof', res[res[0].liker.length - 1].liker)
          })
      })
-     </script>
+     </script> -->
 
 </body>
 </html>

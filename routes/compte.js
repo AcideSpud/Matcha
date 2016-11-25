@@ -57,13 +57,13 @@ router.get('/', requireLogin, function(req, resu, next) {
           var city = '';
           var country = '';
         }
-        resu.render('compte', {ret : result, tag : newTag, city: city, country: country});
+        resu.render('compte', {ret : result, tag : newTag, city: city, country: country, user: result});
       });
     }else{
         var city = '';
         var country = '';
         newTag = ''
-        resu.render('compte', {ret : result, tag : newTag, city: city, country: country}); 
+        resu.render('compte', {ret : result, tag : newTag, city: city, country: country, user: result}); 
       }
  
   })	  

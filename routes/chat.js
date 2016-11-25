@@ -18,7 +18,7 @@ function requireLogin (req, res, next) {
 router.get('/', requireLogin,  function(req, res, next) {
 
 	Utilisateur.findUsers3(req.user.name, (result)=>{
-    	res.render('chat2', {ret : result});
+    	res.render('chat2', {ret : result, user: result});
   })
 });
 
@@ -45,10 +45,12 @@ router.post('/chat', requireLogin, function(req, res, next){
 				Utilisateur.findUsers3(req.body.name2, (res)=>{
 					if (res[0]){
 						console.log(req.body.name1);
-						console.log(res[0].matchRoom.indexOf(req.body.name1))
+						console.log('index---oOF:',res[0].matchRoom[0].indexOf(req.body.name1))
 						console.log(res[0].matchRoom);
 						for (var i = 0; i<res[0].matchRoom.length; i++){
-							if (res[0].matchRoom[i].indexOf(req.body.name1) == 0){
+							console.log('matchroom[i]', res[0].matchRoom[i]);
+							if (res[0].matchRoom[i].indexOf(req.body.name1) >= 0){
+
 							chatName = res[0].matchRoom[i];
 							break
 							console.log('----' + chatName + '---')
@@ -60,12 +62,15 @@ router.post('/chat', requireLogin, function(req, res, next){
 			})
 		}
 
+
+		console.log('CHATSerVer:::', req.body.roomName)
+
 		if (req.body.roomName){
 			chatRoom.findChatRoom(req.body.roomName, (res)=>{
 			if (res)
 				chatRoom.modifContent(req.body.roomName, req.body.userName, req.body.content, ()=>{
 				})
-		})
+			})
 		}
 })
 
