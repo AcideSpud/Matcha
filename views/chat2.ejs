@@ -1,22 +1,18 @@
 <% include header2 %>
 
-<div id="messages">
+<div class="container">
+    <div class="well"  style="padding:40px;">
+      <h2 style="width:20%; margin:auto;">CHAT</h2>
+      <h3 style="width:20%; margin:auto;""> <p>Vous Parlez avec </p></h3>
+      <div id="messages" style="">
+      </div>
+      <div style="float:left;width:300px;height:250px;overflow:scroll-y;padding:10px;">
+      <div id="conversation"></div>
+       <input id="data" style="width:200px;" />
+       <input type="button" id="datasend" value="send" />
+      </div>
+    </div>
 </div>
-<div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow:scroll-y;">
-   <b>ROOMS</b>
-   <div id="rooms"></div>
-</div>
-<div style="float:left;width:300px;height:250px;overflow:scroll-y;padding:10px;">
-   <div id="conversation"></div>
-   <input id="data" style="width:200px;" />
-   <input type="button" id="datasend" value="send" />
-</div>
-<!--<form action="" id="chat_form">
-	<input type="text"  id="message" class="text" />
-	<input type="hidden" id="user_name" value="<%= ret[0].name %>"/>
-	<input type="hidden" id="user_img" value="<%= ret[0].img[0] %>"/>
-	<input type="submit" id="send" value="Envoyer mon message" class="submit"/>
-</form>-->
 
   <script src="socket.io/socket.io.js"></script>
 	<script>
@@ -34,7 +30,7 @@
 
          socket.on('updatechat', function(username, data){
           console.log('updatechat---', username, data)
-          $('#messages').append('<div class="message"><div class="info"><p><strong>' + username + ':</p></strong>' + data + '</div></div>');
+          $('#messages').append('<div class="well"><div class="info"><p><strong>' + username + ':</p></strong>' + data + '</div></div>');
             var request = new XMLHttpRequest();
                             request.open('POST', '/chat/chat', true);
                             request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
@@ -73,44 +69,5 @@
             });
          });
 
-
-
-
-   		//Gestion Connection
-   	/*	socket.on('logged', function(){
-   			alert('Un utilisateur vien de se logger')
-   		})
-
-
-   		$('#chat_form').submit((event)=>{
-   			event.preventDefault();
-   			socket.emit('mes', {
-   				user_name: $('#user_name').val(),
-   				user_img: $('#user_img').val()
-   			})
-   			socket.emit('newmsg', {
-   				message: $('#message').val(),
-   				user_name: $('#user_name').val(),
-   			})
-   			$('#message').val('');
-   			$('#message').focus();
-   		})
-
-   		socket.on('newmess', function(message){
-   			console.log('coucou new message')
-   			$('#messages').append('<div class="message"> <div class="info"><p><strong>' + message.user_name + ':</p></strong>' + message.message + '</div></div>')
-
-   		})
-
-   		//Gestion DECONNECTION
-
-   		socket.on('newuser', function(user){
-   			//alert('Nouvel user');
-   		})
-
-   		socket.on('disuser', function(user){
-   			alert('Utilisateur c deco');
-   		})*/
-   		
    	</script>
 <% include footer_dash %>

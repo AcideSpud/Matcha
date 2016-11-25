@@ -29,14 +29,16 @@ router.get('/:userID', requireLogin, (req, res, next)=>{
                         }
                     }
                 }
-            let time = timeAgo(ret[0].lastCo);
-            res.render('profile', {
-                ret: ret,
-                islike: islike,
-                time: time,
-                user: req.session.user.name,
-                autre: req.params.userID
-            });
+                User.findUsers3(req.session.user.name, (resu)=>{
+                    let time = timeAgo(ret[0].lastCo);
+                    res.render('profile', {
+                        ret: ret,
+                        islike: islike,
+                        time: time,
+                        user: resu,
+                        autre: req.params.userID
+                    });
+                })
         });
     });
 });
