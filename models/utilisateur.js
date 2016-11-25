@@ -149,6 +149,7 @@ class Utilisateur {
 				})
 
 		})
+        this.sendNotif(user, key, 'Visit from', db);
 	}
 
 	static		checkMatch(user, db, key){
@@ -206,6 +207,7 @@ class Utilisateur {
 			else
 				console.log("Update liker OK!");
 		})
+        this.sendNotif(user, key, 'Match with', db);
 	}
 
 	static		updateUnMatchUser(user, db, key) {
@@ -242,6 +244,7 @@ class Utilisateur {
 			else
 				console.log("Update liker OK!");
 		})
+        this.sendNotif(user, key, 'Like from', db);
 	}
 
 	static		updateUnlikeUser(user, db, key) {
@@ -257,6 +260,7 @@ class Utilisateur {
 			else
 				console.log("remove liker OK ! ");
 		})
+        this.sendNotif(user, key, 'UnLike from', db);
 	}
 
 
@@ -354,10 +358,10 @@ class Utilisateur {
 					img: [],
 					orientation: "Bi",
 					geo: [],
-					match: ["test", "test2"],
-					visit: [], reported: false, lastCo: new Date(),
+					visit: [], reported: false, lastCo: Date.now(),
 					matchRoom: [],
-					focus: []
+					focus: [],
+                    notif: []
 				}
 
 				this.findUsers3(request.body.name, (result)=> {
@@ -464,6 +468,7 @@ class Utilisateur {
 		}
 		callback(res);
 	}
+
 	static		sortAge(otherUserArray, callback){
 		var byAge = otherUserArray.slice(0);
 		byAge.sort(function(a,b) {
@@ -516,7 +521,26 @@ class Utilisateur {
 		callback(res);
 	}
 
+	static		sendNotif(userReceve, userSend, notifType,db){
+	    db.collection("users").updateOne({"name": userReceve}, {$push: {"notif": {"type": notifType, "userSend": userSend, "date": Date.now(), "isRead" : false}}}, (err)=>{
+	        if (err)
+	            throw err;
+            else
+                console.log("Receve notif");
+        });
 
+    }
+
+    static      updateNotif(user, db)
+    {
+            db.collection("users").update({"name": user}, {
+                $set: {
+                    "notif.isRead": true
+                }
+            }, {multi: true}, (err)=> {
+                if (err) throw err;
+            })
+    }
 
 	static      updatePop(nbScore, userToUp, db) {
 		db.collection("users").updateOne({"name": userToUp[0].name}, {$set: {"popularite": nbScore}}, (err)=> {
@@ -526,7 +550,7 @@ class Utilisateur {
 				console.log("popularite update OK !");
 		});
 	}
-	static      tcheckIf(user , otherUserArray)
+	static      tcheckIf(user, otherUserArray)
 	{
 		let mbool = true;
 		if (user.geo.latitude){
@@ -568,7 +592,7 @@ class Utilisateur {
                     otherpos = {latitude: otherLatitude, longitude: otherLongitude};
                     dist = geolib.getDistance(userpos, otherpos);
                     dist = geolib.convertUnit('km', dist, 0);
-                    ret[i] = {dist: dist};
+                    ret[i] = {"dist": dist};
                 }
             }
             callback(ret);
@@ -583,7 +607,7 @@ class Utilisateur {
         let cmp = 0;
         this.GetDistance(user, otherUserArray, (cb)=>{
             for (let i = 0, len = otherUserArray.length; i < len; i++) {
-               if (cb[i].dist <= distance){
+               if (cb && cb[i].dist <= distance){
                    res[cmp] = otherUserArray[i];
                    cmp++;
                }
@@ -600,7 +624,7 @@ class Utilisateur {
         callback(byTag);
     }
 
-    static      nbTag(user , otherUserArray, callback){
+    static      nbTag(user, otherUserArray, callback){
         let comTag = new Array;
         let cmp2 = 0;
         let cmp = 0;

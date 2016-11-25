@@ -14,13 +14,15 @@ function requireLogin (req, res, next) {
 		next();
 	}
 };
+function tcheckNotif (req){
+    Utilisateur.findUsers3(req.session.user.name, (cb)=>{
+        var nbNotif = 0;
+        for (var i = 0; i < cb.notif.length; i++){
+            if (cb.notif[i].isRead == false)
+                nbNotif++;
+        }
+})}
 
-function dump(obj) {
-	var out = '';
-	for (var i in obj) {
-		out += i + ": " + obj[i] + "\n";
-	}
-}
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 //router.use(bodyParser.json());
@@ -28,7 +30,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 
 
 //					GET
-router.get('/', requireLogin, function(req, res, next) {
+router.get('/', requireLogin,  function(req, res, next) {
 
 	User.Create_db((ret)=>{
         getProfile.sortReported(ret, (ret)=>{
@@ -94,20 +96,31 @@ router.post('/sort', upload.array(), requireLogin, (req, res)=> {
 
                 if (req.body.mySort = 1) {
                     getProfile.sortAge(ret, (cb)=>{
-                        res.contentType('json');
-                        res.send(JSON.stringify(cb));
-                    });
+                        getProfile.GetDistance(req.session.user, cb, (geo)=> {
+                            for (let i = 0, len = cb.length; i < len; i++) {
+                                cb[i].dist = geo[i].dist;
+                            }
+
+                            res.contentType('json');
+                            res.send(JSON.stringify(cb));
+                        });
+                        });
                 }
                 else if (req.body.mySort = 2) {
                     getProfile.sortPop(ret, (cb)=>{
-                        res.contentType('json');
-                        res.send(JSON.stringify(cb));
+                        getProfile.GetDistance(req.session.user, cb, (geo)=> {
+                            for (let i = 0, len = cb.length; i < len; i++) {
+                                cb[i].dist = geo[i].dist;
+                            }
+                            res.contentType('json');
+                            res.send(JSON.stringify(cb));
+                        });
                     });
                 }
                 else if (req.body.mySort = 3) {
-                    getProfile.GetDistance(req.sessios.user, ret, (cb)=>{
+                    getProfile.GetDistance(req.session.user, ret, (cb)=>{
                         for (let i = 0, len = ret.length; i < len; i++){
-                            ret[i].push({geo : cb[i]});
+                            ret[i].dist = cb[i].dist;
                         }
                         getProfile.sortDist(ret , (cb)=>{
                             res.contentType('json');
@@ -118,16 +131,21 @@ router.post('/sort', upload.array(), requireLogin, (req, res)=> {
                 }
                 else if (req.body.mySort = 4) {
                     getProfile.nbTag(req.session.user, ret, (cb)=>{
-                        for (let i = 0, len = ret.length; i < len; i++){
-                            for (let j = 0, lon = cb.length; i < lon; j++){
-                                if (ret[i] == cb[j].name){
-                                    ret[i].push({nTag : cb[j].size});
+                        getProfile.GetDistance(req.session.user, cb, (geo)=> {
+                            for (let i = 0, len = cb.length; i < len; i++) {
+                                cb[i].dist = geo[i].dist;
+                            }
+                            for (let i = 0, len = ret.length; i < len; i++) {
+                                for (let j = 0, lon = cb.length; i < lon; j++) {
+                                    if (ret[i] == cb[j].name) {
+                                        ret[i].nTag = cb[j].size;
+                                    }
                                 }
                             }
-                        }
-                        getProfile.sortByTag(ret, (mcb)=>{
-                            res.contentType('json');
-                            res.send(JSON.stringify(mcb));
+                            getProfile.sortByTag(ret, (mcb)=> {
+                                res.contentType('json');
+                                res.send(JSON.stringify(mcb));
+                            })
                         })
                     })
                 }
@@ -143,6 +161,7 @@ router.post('/filter', upload.array(),requireLogin, (req, res) =>{
 	let ageMax = req.body.ageMax;
 	var popMin = req.body.popMin;
 	var popMax = req.body.popMax;
+    let arr = [];
 	var tag = req.body.tag;
 	var dist = req.body.dist;
 	if (req.body.data)
@@ -154,8 +173,8 @@ router.post('/filter', upload.array(),requireLogin, (req, res) =>{
 					getProfile.SortDistance(req.session.user, m_cb, dist, (my_cb)=>{
 						getProfile.SortTag(req.session.user, my_cb, tag, (mylastcb)=> {
 							getProfile.GetDistance(req.session.user, mylastcb, (geo)=> {
-								for (let i = 0, len = mylastcb.lentgh; len < i; i++) {
-									mylastcb[i].push({geo : geo[i]});
+								for (let i = 0, len = mylastcb.length; i < len; i++) {
+                                    mylastcb[i].dist = geo[i].dist;
 								}
  								res.contentType('json');
 								res.send(JSON.stringify(mylastcb));
@@ -175,8 +194,8 @@ router.post('/filter', upload.array(),requireLogin, (req, res) =>{
                         getProfile.SortDistance(req.session.user, m_cb, dist, (my_cb)=> {
                             getProfile.SortTag(req.session.user, my_cb, tag, (mylastcb)=> {
                                 getProfile.GetDistance(req.session.user, mylastcb, (geo)=> {
-                                    for (let i = 0, len = mylastcb.lentgh; len < i; i++) {
-                                        mylastcb[i].push({geo: geo[i]});
+                                    for (let i = 0, len = mylastcb.length; i < len; i++) {
+                                        mylastcb[i].dist = geo[i].dist;
                                     }
                                     res.contentType('json');
                                     res.send(JSON.stringify(mylastcb));

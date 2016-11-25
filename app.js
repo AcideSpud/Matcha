@@ -70,7 +70,7 @@ app.use(function(req, res, next){
   }
 })
 
-var all_users = {}
+var all_users = {};
 var rooms = ['room1', 'room2', 'room3'];
 var chatRoom = [];
 var historique_message =[];
@@ -116,7 +116,7 @@ io.on('connection', function (socket) {
         }
       }
     })
-  })
+  });
 
   socket.on('notification_visit', function(data){
     Utilisateur.findUsers3(data, (res)=>{
@@ -128,7 +128,7 @@ io.on('connection', function (socket) {
         }
       }
     })
-  })
+  });
 
 
   socket.on('adduser2', function(username, chatRoomName){
@@ -144,7 +144,7 @@ io.on('connection', function (socket) {
       for (var i = 0; i<res.length; i++)
         allChatRoom[i] = res[i].chatRoomName
      // console.log(allChatRoom)
-    })
+    });
 
     chat.findChatRoom(chatRoomName, (res)=>{
       if (res){
@@ -153,7 +153,7 @@ io.on('connection', function (socket) {
             socket.emit('oldMess', res[0].userNames[i], res[0].content[i])
         }
       }        
-    })
+    });
 
     socket.username = username;
     socket.room = chatRoomName;
@@ -253,7 +253,7 @@ app.use('/header', header);
 app.use('/logout', logout);
 
 
-app.get('*', function(req, res, next) {
+/*app.get('*', function(req, res, next) {
   var err = new Error();
   err.status = 404;
   next(err);
@@ -265,6 +265,6 @@ app.use(function(err, req, res, next) {
   }
   res.status(404);
   res.render('page_error')
-});
+});*/
 
 module.exports = app;
