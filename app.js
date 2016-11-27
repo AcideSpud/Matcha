@@ -135,29 +135,42 @@ socket.on('sendchat', function(data){
     })
   });
 
-  socket.on('notification_newMsg', function(data){
-    console.log('noootif: - ', data)
-    var nb_matchRoom;
-
+  socket.on('notification_newMsg_unread', function(data){
     Utilisateur.findUsers3(data, (res)=>{
-      nb_matchRoom = res[0].matchRoom.length;
       if (res){
         for(var i = 0; i<res[0].matchRoom.length; i++){
           chatRoom.findChatRoom(res[0].matchRoom[i], (chat)=>{
-            console.log('FIND CHAT ROOM NOTIF NEW MSG')
-            if (chat[0]){
-              console.log('CHAT CONtent LENGth:', chat[0].content.length, "messageLength: ", messageLength);
-              if(chat[0].content.length > messageLength){
-                console.log('FIND CHAT ROOM NOTIF NEW MSG3')
-                socket.emit('notif_newMsg', chat[0])
-                messageLength = chat[0].content.length;
-              }
+            if(chat){
+              chatRoom.checkNbNotif(chat[0].chatRoomName, res[0].name, (nb)=>{
+                console.log('NB', nb)
+                socket.emit('nb_msg_unread', nb)
+              })
             }
-            })
-          }
+          })
         }
-      })
+      }
     })
+  })
+
+  socket.on('notification_newMsg', function(data){
+
+    Utilisateur.findUsers3(data, (res)=>{
+      if (res){
+        for(var i = 0; i<res[0].matchRoom.length; i++){
+          chatRoom.findChatRoom(res[0].matchRoom[i], (chat)=>{
+            if (chat && chat[0].cont){
+              for(var i =0; i<chat[0].cont.length; i++){
+                if((chat[0].cont[i].user != res[0].name) && (chat[0].cont[i].isRead == false)){
+                  console.log('USER:', chat[0].cont[i].user, 'MOI',res[0].name, 'isread', chat[0].cont[i].isRead)
+                  socket.emit('notif_newMsg', chat[0].cont[i])
+                } 
+              }
+            }    
+          })
+        }
+      }
+    })
+  })
 
 
   socket.on('adduser2', function(username, chatRoomName){
@@ -175,9 +188,9 @@ socket.on('sendchat', function(data){
 
 
     chat.findChatRoom(chatRoomName, (res)=>{
-      if (res){
-        for (var i = 0; i < res[0].userNames.length; i++){
-            socket.emit('oldMess', res[0].userNames[i], res[0].content[i])
+      if (res && res[0].cont){
+        for (var i = 0; i < res[0].cont.length; i++){
+            socket.emit('oldMess', res[0].cont[i].user, res[0].cont[i].content, res[0].cont[i].date)
         }
       }        
     })

@@ -3,7 +3,7 @@
 <div class="container">
     <div class="well"  style="padding:40px;">
       <h2 style="width:20%; margin:auto;">CHAT</h2>
-      <h3 style="width:20%; margin:auto;""> <p>Vous Parlez avec </p></h3>
+      <h3 style="width:20%; margin:auto;""> <p>Vous etes dans la room : <%= ret[0].focus %> </p></h3>
       <div id="messages" style="">
       </div>
       <div style="float:left;width:300px;height:250px;overflow:scroll-y;padding:10px;">
@@ -24,8 +24,8 @@
             socket.emit('adduser2', '<%= ret[0].name %>', '<%= ret[0].focus %>');
          });
 
-         socket.on('oldMess', (username, data)=>{
-            $('#messages').append('<div class="message"><div class="info"><p><strong>' + username + ':</p></strong>' + data + '</div></div>');
+         socket.on('oldMess', (username, data, date)=>{
+            $('#messages').append('<div class="well"><div class="info"><p><strong>' + username + '(' + date + ')' + ':</p></strong>' + data + '</div></div>');
          })
 
          socket.on('updatechat', function(username, data){

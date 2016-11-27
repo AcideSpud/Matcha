@@ -18,7 +18,9 @@ function requireLogin (req, res, next) {
 router.get('/', requireLogin,  function(req, res, next) {
 
 	Utilisateur.findUsers3(req.user.name, (result)=>{
-    	res.render('chat2', {ret : result, user: result});
+		if (result[0]){
+				res.render('chat2', {ret : result, user: result});
+		}	
   })
 });
 
@@ -26,36 +28,43 @@ router.get('/', requireLogin,  function(req, res, next) {
 router.post('/chat', requireLogin, function(req, res, next){
 
 
-	console.log('chat', req.body.crn);
+		/*Utilisateur.findUsers3(req.session.user.name, (result)=>{
+			if (result){
+				console.log("ROOMNAME reAD ALL",req.body.roomName )
+				if (req.body.roomName){
+					chatRoom.readAllMsg(req.body.roomName, ()=>{
+						console.log("ROOMNAME reAD ALL")
+					})
+				} else if (result[0].focus){
+					console.log("FOCUS reAD ALL", result[0].focus)
+					chatRoom.readAllMsg(result[0].focu, ()=>{
+						console.log("FOCUS reAD ALL")
+					})
+				}
+			}
+
+		})*/
 
 		if (req.body.name1 &&  req.body.name2){
-
-		chatRoom.findChatRoom((req.body.name2 + req.body.name1), (res)=>{
-					if (res === undefined)
+			chatRoom.findChatRoom((req.body.name2 + req.body.name1), (res)=>{
+				if (res === undefined)
 						chatRoom.createChatroom((req.body.name2 + req.body.name1), ()=>{
 							console.log('chatroom created');
 				})
-					else
-						console.log('existe deja')
+				else
+					console.log('existe deja')
 			})
 
 			Utilisateur.GetDB((db)=>{
-
 				var chatName;
 
-				console.log('-'+ req.body.name2 + req.body.name1+ '-')
 				Utilisateur.findUsers3(req.body.name2, (res)=>{
 					if (res){
-						console.log(req.body.name1);
-						console.log('index---oOF:',res[0].matchRoom[0].indexOf(req.body.name1))
 						console.log(res[0].matchRoom);
 						for (var i = 0; i<res[0].matchRoom.length; i++){
-							console.log('matchroom[i]', res[0].matchRoom[i]);
 							if (res[0].matchRoom[i].indexOf(req.body.name1) >= 0){
-
-							chatName = res[0].matchRoom[i];
-							break
-							console.log('----' + chatName + '---')
+								chatName = res[0].matchRoom[i];
+								break
 							}
 						}
 						Utilisateur.updateMainChatRoom(db, req.body.name2,chatName)
@@ -66,19 +75,17 @@ router.post('/chat', requireLogin, function(req, res, next){
 		else if (req.body.crn && req.body.name){
 
 			Utilisateur.GetDB((db)=>{
-				console.log('coucou chat footer:', req.body.name, req.body.crn)
 				Utilisateur.updateMainChatRoom(db, req.body.name, req.body.crn)
 			})
 		}
 
-
-		console.log('CHATSerVer:::', req.body.roomName)
-
 		if (req.body.roomName){
+			console.log('REQBODYROOMNAME', req.body.roomName)
 			chatRoom.findChatRoom(req.body.roomName, (res)=>{
-			if (res)
-				chatRoom.modifContent(req.body.roomName, req.body.userName, req.body.content, ()=>{
-				})
+				if (res){
+						chatRoom.modifContent(req.body.roomName, req.body.userName, req.body.content, ()=>{
+					})
+				}
 			})
 		}
 })
