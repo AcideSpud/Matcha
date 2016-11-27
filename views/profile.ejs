@@ -33,7 +33,7 @@
         <div class="col-md-2 column">
             <p>
             <% if (islike == false && ret[0].img[0]){ %>
-            <button id="mylikebutton" class="btn btn-primary btn-block" onclick="like_request('<%= ret[0].name %>')" type="button">
+            <button id="mylikebutton" class="btn btn-primary btn-block" onclick="like_request('<%= ret[0].name %>');" type="button">
                 Like
             </button>
             <% } else if (islike == true && ret[0].img[0]) { %>
@@ -179,6 +179,7 @@
       console.log('coucou NOTIFFFFFF');
       console.log('<%= user[0].name %>');
         socket.on('connect', function(){
+
             socket.emit('notification_like', '<%= user[0].name %>');
             socket.emit('notification_match', '<%= user[0].name %>');
             socket.emit('notification_visit', '<%= user[0].name %>');
@@ -186,15 +187,24 @@
             socket.emit('notification_newMsg_unread', '<%= user[0].name %>');
 
          socket.on('notif_like', (res)=>{
+             for (var i = 0; i < res.length; i++) {
+                 $('#notifliking').append('<li><a href="#">' +  res[i] + '</a></li>');
+             }
+
          })
 
          socket.on('notif_unlike', (res)=>{
          })
 
+
          socket.on('nb_msg_unread', (res)=>{
             $('#notif_msg_nb').text(res);
          })
 
+            socket.on('notif_match', (res)=>{
+                $('#notifmatching').append('<li><a href="#">' +  res + '</a></li>');
+                console.log(res);
+            })
          socket.on('notif_newMsg', (res)=>{
             console.log('res', res)
             $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="return send_info_chat2(\'<%= user[0].matchRoom[i] %>\', \'<%= user[0].name %>\')"><strong>' + res.user + '</strong>: le ' + res.date  +'</a></li>');

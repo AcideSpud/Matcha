@@ -91,15 +91,17 @@ socket.on('sendchat', function(data){
 
 
   socket.on('notification_like', function(data){
+      console.log("");
     Utilisateur.findUsers3(data, (res)=>{
       if (res && res[0].liker){
-            if (res[0].liker.length > likeLength){
-              console.log('liker DATABASE:' + res[0].liker.length)
-              console.log('liker ARRAY:' + likeLength)
+
+            if (res[0].liker.length >= likeLength){
+              console.log('liker DATABASE:' + res[0].liker.length);
+              console.log('liker ARRAY:' + likeLength);
               console.log('ON TA LIKER');
               
               likeLength = res[0].liker.length;
-              socket.emit('notif_like', res);
+              socket.emit('notif_like', res[0].liker);
             } else if (res[0].liker.length < likeLength){
               console.log('ON TA DELIKER');
               
@@ -114,10 +116,12 @@ socket.on('sendchat', function(data){
 
   socket.on('notification_match', function(data){
     Utilisateur.findUsers3(data, (res)=>{
+
       if (res){
-        if (res[0].matchRoom.length > matchLength){
+        if (res[0].matchRoom.length >= matchLength){
           console.log('ON TA MATCHH');
           matchLength = res[0].matchRoom.length;
+            socket.emit('notif_match', res[0].matchRoom[res[0].matchRoom.length - 1]);
         }
       }
     })
@@ -129,7 +133,6 @@ socket.on('sendchat', function(data){
         if (res[0].visit.length > visitLength){
           console.log('ON TA VISITER');
           visitLength = res[0].visit.length;
-
         }
       }
     })
@@ -174,12 +177,12 @@ socket.on('sendchat', function(data){
 
 
   socket.on('adduser2', function(username, chatRoomName){
-    var chat = require('./models/chat_function.js')
+    var chat = require('./models/chat_function.js');
     var allChatRoom = new Array();
     socket.username = username;
 
-    console.log('----CHat ROOM NAME'+ '-' + chatRoomName + '-')
-    console.log('----USERNAME'+ '-' + username + '-')
+    console.log('----CHat ROOM NAME'+ '-' + chatRoomName + '-');
+    console.log('----USERNAME'+ '-' + username + '-');
 
     chat.findAllRooms((res)=>{
       for (var i = 0; i<res.length; i++)
