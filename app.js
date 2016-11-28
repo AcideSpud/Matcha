@@ -85,8 +85,9 @@ var chatRoom = require('./models/chat_function')
 io.on('connection', function (socket) {
   
 socket.on('sendchat', function(data){
-  console.log('SENDCHAT:::', socket.username)
-    io.sockets.in(socket.room).emit('updatechat', socket.username, data);
+  console.log('SENDCHAT:::', socket.username, data)
+    socket.emit(socket.room).emit('updatechat', socket.username, data);
+    io.sockets.in(socket.room).emit('afficher_message', socket.username, data);
   });
 
 

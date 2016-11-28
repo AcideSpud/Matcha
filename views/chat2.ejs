@@ -28,9 +28,13 @@
             $('#messages').append('<div class="well"><div class="info"><p><strong>' + username + '(' + date + ')' + ':</p></strong>' + data + '</div></div>');
          })
 
-         socket.on('updatechat', function(username, data){
+
+         socket.on('afficher_message', function(username, data){
           console.log('updatechat---', username, data)
           $('#messages').append('<div class="well"><div class="info"><p><strong>' + username + ':</p></strong>' + data + '</div></div>');
+         })
+
+         socket.on('updatechat', function(username, data){
             var request = new XMLHttpRequest();
                             request.open('POST', '/chat/chat', true);
                             request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
@@ -58,7 +62,6 @@
             $('#datasend').click( function() {
                var message = $('#data').val();
                $('#data').val('');
-               console.log('MMMMEESSSAGE',message)
                socket.emit('sendchat', message);
             });
             $('#data').keypress(function(e) {

@@ -68,9 +68,11 @@ class Chat {
 		var d = new Date();
     	var n = d.toLocaleDateString("en-GB");
 
+    	var message = {user: user, content: conten, date: n, isRead: false};
+
 		this.GetDB((db)=>{
 			db.collection("chatRoom").updateOne({"chatRoomName": name}, {
-				$push: {"cont": {"user": user, "content": conten, "date": n, "isRead": false}}},
+				$push: {"conte": message}},
 				(err)=>{
 					if (err)
 						throw err;
@@ -79,36 +81,6 @@ class Chat {
 				})
 			})
 		}
-
-	static modifMyContent(name, me, mycontent, callback) {
-
-		console.log('USERNAMES----', usernames, 'CONTENT---', content)
-
-		this.GetDB(function(db){
-				db.collection("chatRoom").updateOne({"chatRoomName": name},{
-				$push: {"me": me, "mycontent": mycontent}
-			},(err, res)=>{
-				if (err) throw err
-					callback()
-			})
-
-		})
-	}
-
-	static modifYourContent(name, you, yourcontent, callback) {
-
-		console.log('USERNAMES----', usernames, 'CONTENT---', content)
-
-		this.GetDB(function(db){
-				db.collection("chatRoom").updateOne({"chatRoomName": name},{
-				$push: {"you": you, "yourcontent": yourcontent}
-			},(err, res)=>{
-				if (err) throw err
-					callback()
-			})
-
-		})
-	}
 
 
 	static	checkNbNotif(name, user, callback){
@@ -128,7 +100,7 @@ class Chat {
 	static	readAllMsg(name, callback){
 		this.GetDB(function(db){
 			db.collection("chatRoom").updateOne({"chatRoomName": name},
-				{"cont": {"isRead": true}}, (err)=>{
+				{$set: {"conte.isRead": true}}, (err)=>{
 					if(err) throw err;
 					else
 						callback()
@@ -136,20 +108,25 @@ class Chat {
 			})
 	}
 
+	static	readAllMsg2(name, callback){
+		this.GetDB(function(db){
+			db.collection("chatRoom").find({"chatRoomName": name})
+  				.forEach(function (doc) {
+    				doc.conte.forEach(function (conte) {
+      					//if (conte.profile === 10) {
+        				//conte.handled=0;
+      					//}
+      					conte.isRead = true;
+    				});
+   		 		db.collection("chatRoom").save(doc);
+  			});
+		})
+	}
+
 	static createChatroom(name, callback){
 		
 		var chatRoom = {chatRoomName: name,
-						/*cont: {
-							user: [],
-							content: [],
-							date: [],
-							isRead: []
-						},*/
-						notif:[],
-						me: [],
-						you: [],
-						mycontent: [],
-						yourcontent: []
+						conte:[]
 						}
 		this.GetDB(function(db){
 			db.collection("chatRoom").insert(chatRoom, null, (err, res)=>{

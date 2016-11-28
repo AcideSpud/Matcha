@@ -289,6 +289,8 @@ class Utilisateur {
 			var hash = bcrypt.hashSync(request.body.pwd);
 			var hobbies = hashtag(request.body.hashtag);
 
+			console.log("GEO::::", request.body.geo)
+
 			if (err) {
 				throw err
 			} else {
