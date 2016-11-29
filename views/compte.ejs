@@ -25,9 +25,13 @@
         $.getJSON("http://ip-api.com/json/?callback=?", function(data) {
             $("#geoResult").val(JSON.stringify(data));
         });
+
+    
     }
     </script>
-
+<script type="text/javascript">
+    
+</script>
     <!-- LOGIN FORM -->
     <form class="form-horizontal" action="compte/form_compte" method="post">
 
@@ -48,11 +52,18 @@
         <div class="form-group">
             <input type="text" class="form-control" id="prenom" name="prenom" required="required" placeholder="Prénom" value="<%= ret[0].prenom %>">
         </div>
-        
         <% if (city && country && ret[0].geo) { %>
         <div class="form-group">
+            <span>Latitude</span>
+            <input name="lat" style="width:100%;" type="number" step="0.05" value="<%= ret[0].geo.latitude %>" min="-85" max="85">
+        </div>
+         <div class="form-group">
+            <span>Longitude</span>
+            <input name="long" style="width:100%;" type="number" step="0.05" value="<%= ret[0].geo.longitude %>" min="-180" max="180">
+        </div>
+        
+        <div class="form-group">
             <p style="{font-size: 0.3em;}"> (<%= city %> / <%= country %> )</p>
-            <p style="{font-size: 0.3em;}"> (<%= ret[0].geo.latitude %> / <%= ret[0].geo.longitude %> )</p>
         </div>
     <% } %>
 

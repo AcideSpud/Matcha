@@ -288,8 +288,14 @@ class Utilisateur {
 			var hashtag = require('find-hashtags')
 			var hash = bcrypt.hashSync(request.body.pwd);
 			var hobbies = hashtag(request.body.hashtag);
+			var geoo = JSON.parse(request.body.geo);
 
 			console.log("GEO::::", request.body.geo)
+
+			if (request.body.lat && request.body.long)
+				geoo = {latitude: request.body.lat,
+						longitude: request.body.long};
+
 
 			if (err) {
 				throw err
@@ -303,7 +309,7 @@ class Utilisateur {
 					bio: request.body.bio,
 					like: [], liker: [], popularite: 0,
 					tag: hobbies,
-					geo: JSON.parse(request.body.geo),
+					geo: geoo,
 					country: request.body.country,
 					city: request.body.city
 				}
