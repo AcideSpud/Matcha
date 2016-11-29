@@ -88,8 +88,8 @@ class Chat {
 
 		this.findChatRoom(name, (res)=>{
 			if (res[0]){
-				for (var i = 0; i<res[0].cont.length; i++){
-					if (res[0].cont[i].isRead == false && res[0].cont[i].user != user)
+				for (var i = 0; i<res[0].conte.length; i++){
+					if (res[0].conte[i].isRead == false && res[0].conte[i].user != user)
 						nb++;
 				}
 				callback(nb);
@@ -108,15 +108,15 @@ class Chat {
 			})
 	}
 
-	static	readAllMsg2(name, callback){
+	static	readAllMsg2(name, autre, callback){
 		this.GetDB(function(db){
 			db.collection("chatRoom").find({"chatRoomName": name})
   				.forEach(function (doc) {
     				doc.conte.forEach(function (conte) {
-      					//if (conte.profile === 10) {
-        				//conte.handled=0;
-      					//}
-      					conte.isRead = true;
+      					if (conte.user === autre) {
+        				conte.isRead = true;
+      					}
+      					
     				});
    		 		db.collection("chatRoom").save(doc);
   			});

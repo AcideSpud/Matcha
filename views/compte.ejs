@@ -48,8 +48,7 @@
         <div class="form-group">
             <input type="text" class="form-control" id="prenom" name="prenom" required="required" placeholder="Prénom" value="<%= ret[0].prenom %>">
         </div>
-
-
+        
         <% if (city && country && ret[0].geo) { %>
         <div class="form-group">
             <p style="{font-size: 0.3em;}"> (<%= city %> / <%= country %> )</p>

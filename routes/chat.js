@@ -29,16 +29,14 @@ router.post('/chat', requireLogin, function(req, res, next){
 
 
 		Utilisateur.findUsers3(req.session.user.name, (result)=>{
-
 			if (result[0]){
-				console.log("ROOMNAME reAD ALL",req.body.roomName)
 				if (req.body.roomName){
-					chatRoom.readAllMsg2(req.body.roomName, ()=>{
-						console.log("ROOMNAME reAD ALL")
+					var autre = req.body.roomName.replace(result[0].name, "");
+					chatRoom.readAllMsg2(req.body.roomName, autre, ()=>{
 					})
 				} else if (result[0].focus){
-					chatRoom.readAllMsg2(result[0].focus, ()=>{
-						console.log("FOCUS reAD ALL")
+					var autre = result[0].focus.replace(result[0].name, "");
+					chatRoom.readAllMsg2(result[0].focus, autre,  ()=>{
 					})
 				}
 			}
@@ -46,11 +44,9 @@ router.post('/chat', requireLogin, function(req, res, next){
 		})
 
 		if (req.body.name1 &&  req.body.name2){
-			console.log('PASSAGE PAR LE PROFILE')
 			chatRoom.findChatRoom((req.body.name2 + req.body.name1), (res)=>{
 				if (res === undefined)
 						chatRoom.createChatroom((req.body.name2 + req.body.name1), ()=>{
-							console.log('chatroom created');
 				})
 				else
 					console.log('existe deja')

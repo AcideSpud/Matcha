@@ -92,10 +92,8 @@ socket.on('sendchat', function(data){
 
 
   socket.on('notification_like', function(data){
-      console.log("");
     Utilisateur.findUsers3(data, (res)=>{
       if (res && res[0].liker){
-
             if (res[0].liker.length >= likeLength){
               console.log('liker DATABASE:' + res[0].liker.length);
               console.log('liker ARRAY:' + likeLength);
@@ -146,7 +144,6 @@ socket.on('sendchat', function(data){
           chatRoom.findChatRoom(res[0].matchRoom[i], (chat)=>{
             if(chat){
               chatRoom.checkNbNotif(chat[0].chatRoomName, res[0].name, (nb)=>{
-                console.log('NB', nb)
                 socket.emit('nb_msg_unread', nb)
               })
             }
@@ -162,11 +159,10 @@ socket.on('sendchat', function(data){
       if (res){
         for(var i = 0; i<res[0].matchRoom.length; i++){
           chatRoom.findChatRoom(res[0].matchRoom[i], (chat)=>{
-            if (chat && chat[0].cont){
-              for(var i =0; i<chat[0].cont.length; i++){
-                if((chat[0].cont[i].user != res[0].name) && (chat[0].cont[i].isRead == false)){
-                  console.log('USER:', chat[0].cont[i].user, 'MOI',res[0].name, 'isread', chat[0].cont[i].isRead)
-                  socket.emit('notif_newMsg', chat[0].cont[i])
+            if (chat && chat[0].conte){
+              for(var i =0; i<chat[0].conte.length; i++){
+                if((chat[0].conte[i].user != res[0].name) && (chat[0].conte[i].isRead == false)){
+                  socket.emit('notif_newMsg', chat[0].conte[i])
                 } 
               }
             }    
@@ -182,19 +178,15 @@ socket.on('sendchat', function(data){
     var allChatRoom = new Array();
     socket.username = username;
 
-    console.log('----CHat ROOM NAME'+ '-' + chatRoomName + '-');
-    console.log('----USERNAME'+ '-' + username + '-');
-
     chat.findAllRooms((res)=>{
       for (var i = 0; i<res.length; i++)
         allChatRoom[i] = res[i].chatRoomName
     })
 
-
     chat.findChatRoom(chatRoomName, (res)=>{
-      if (res && res[0].cont){
-        for (var i = 0; i < res[0].cont.length; i++){
-            socket.emit('oldMess', res[0].cont[i].user, res[0].cont[i].content, res[0].cont[i].date)
+      if (res && res[0].conte){
+        for (var i = 0; i < res[0].conte.length; i++){
+            socket.emit('oldMess', res[0].conte[i].user, res[0].conte[i].content, res[0].conte[i].date)
         }
       }        
     })
@@ -228,7 +220,6 @@ app.use('/upload_img', upload_img);
 app.use('/header', header);
 app.use('/logout', logout);
 
-/*
 
 app.get('*', function(req, res, next) {
   var err = new Error();
@@ -242,6 +233,6 @@ app.use(function(err, req, res, next) {
   }
   res.status(404);
   res.render('page_error')
-});*/
+});
 
 module.exports = app;
