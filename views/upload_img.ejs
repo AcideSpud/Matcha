@@ -50,6 +50,7 @@
         });
     return false;
     });
+  })
   </script>
 
   <script src="../socket.io/socket.io.js"></script>
@@ -66,6 +67,7 @@
             socket.emit('notification_visit', '<%= user[0].name %>');
             socket.emit('notification_newMsg', '<%= user[0].name %>');
             socket.emit('notification_newMsg_unread', '<%= user[0].name %>');
+
 
          socket.on('notif_like', (res)=>{
              for (var i = 0; i < res.length; i++) {

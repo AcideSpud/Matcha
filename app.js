@@ -24,6 +24,7 @@ let forgot_mail = require('./routes/forgot_mail');
 let logout = require('./routes/logout');
 let chat = require('./routes/chat');
 let header = require('./routes/header');
+let async = require('async')
 
 
 app.set('views', path.join(__dirname, 'views'));
@@ -172,7 +173,7 @@ socket.on('sendchat', function(data){
   })
 
 
-  socket.on('adduser2', function(username, chatRoomName){
+  /*socket.on('adduser2', function(username, chatRoomName){
     var chat = require('./models/chat_function.js');
     var allChatRoom = new Array();
     socket.username = username;
@@ -194,15 +195,51 @@ socket.on('sendchat', function(data){
     socket.room = chatRoomName;
     all_users[username] = username;
     socket.join(chatRoomName);
-  })
+  })*/
 
   socket.on('disconnect', function(){
     delete all_users[socket.username];
     io.sockets.emit('updateusers', all_users);
-   // socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
     socket.leave(socket.room);
   });
+
+  socket.on('adduser3', function(username, chatRoomName){
+    var chat = require('./models/chat_function.js');
+    var allChatRoom = new Array();
+    socket.username = username;
+
+
+    async.series({
+      one: function(callback) {
+          chat.findAllRooms((res)=>{
+            for (var i = 0; i<res.length; i++)
+            allChatRoom[i] = res[i].chatRoomName;
+            return callback(null, 'find all rooms ok');
+        })
+      },
+      two: function(callback){
+        chat.findChatRoom(chatRoomName, (res)=>{
+          if (res && res[0].conte){
+            for (var i = 0; i < res[0].conte.length; i++){
+                socket.emit('oldMess', res[0].conte[i].user, res[0].conte[i].content, res[0].conte[i].date) 
+            }
+            return callback(null, 'emit old mess ok')
+          } 
+        })
+      }
+    }, function(err, results) {
+      socket.username = username;
+      socket.room = chatRoomName;
+      all_users[username] = username;
+      socket.join(chatRoomName);
+    });
+
+  })
+
+
+
 });
+
 
 
 app.use(require('./middlewares/flash'));
