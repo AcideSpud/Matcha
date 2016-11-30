@@ -91,27 +91,40 @@ socket.on('sendchat', function(data){
   });
 
 
-  socket.on('notification_like', function(data){
-    Utilisateur.findUsers3(data, (res)=>{
-      if (res && res[0].liker){
-            if (res[0].liker.length >= likeLength){
-              console.log('liker DATABASE:' + res[0].liker.length);
-              console.log('liker ARRAY:' + likeLength);
-              console.log('ON TA LIKER');
-              
-              likeLength = res[0].liker.length;
-              socket.emit('notif_like', res[0].liker);
-            } else if (res[0].liker.length < likeLength){
-              console.log('ON TA DELIKER');
-              
-              likeLength = res[0].liker.length;
-              socket.emit('notif_unlike', res);
+  socket.on('notification_like', function(data) {
+      Utilisateur.findUsers3(data, (res)=> {
+          Utilisateur.checkNbNotif(res[0].name, (cb)=> {
+              socket.emit('nb_notif_unread', cb);
+
+          });
+        for (let i = 0; i < res[0].notif.length; i++){
+            if (res[0].notif[i].isRead == false){
+                socket.emit('notif_like', res[0].notif[i]);
             }
-        console.log(likeLength)
-      }
-      else console.log('NO USER (NOTIFICATION')
-    })
-  })
+        }
+          /*if (res[0].liker.length >= likeLength){
+           let response = [];
+           response[0] = {"Liker": res[0].liker};
+           response[1] = {"src" : res[0].img[0]};
+           response[2] = {"name" : res[0].name};
+           console.log('liker DATABASE:' + res[0].liker.length);
+           console.log('liker ARRAY:' + likeLength);
+           console.log('ON TA LIKER');
+
+           likeLength = res[0].liker.length;
+
+           } else if (res[0].liker.length < likeLength){
+           console.log('ON TA DELIKER');
+
+           likeLength = res[0].liker.length;
+           socket.emit('notif_unlike', res);
+           }
+           console.log(likeLength)
+           }
+           else console.log('NO USER (NOTIFICATION')
+           })*/
+      });
+  });
 
   socket.on('notification_match', function(data){
     Utilisateur.findUsers3(data, (res)=>{

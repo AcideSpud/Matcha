@@ -404,6 +404,19 @@ class Utilisateur {
 			}
 		})
 	}
+	static	checkNbNotif(name, callback){
+		var nb = 0;
+
+		this.findUsers3(name, (res)=>{
+			if (res[0]){
+				for (var i = 0; i<res[0].notif.length; i++){
+					if (res[0].notif[i].isRead == false )
+						nb++;
+				}
+				callback(nb);
+			}
+		})
+	}
 
 	static      deleteImg(request, response){
 		var async = require('async');
