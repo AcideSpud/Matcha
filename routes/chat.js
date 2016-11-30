@@ -19,7 +19,7 @@ router.get('/', requireLogin,  function(req, res, next) {
 
 	Utilisateur.findUsers3(req.user.name, (result)=>{
 		if (result[0]){
-				res.render('chat2', {ret : result, user: result});
+			res.render('chat2', {ret : result, user: result});
 		}	
   })
 });
@@ -40,7 +40,6 @@ router.post('/chat', requireLogin, function(req, res, next){
 					})
 				}
 			}
-
 		})
 
 		if (req.body.name1 &&  req.body.name2){
@@ -69,15 +68,12 @@ router.post('/chat', requireLogin, function(req, res, next){
 			})
 		}
 		else if (req.body.crn && req.body.name){
-			console.log('PASSAGE PAR LE FOotEr')
-
 			Utilisateur.GetDB((db)=>{
 				Utilisateur.updateMainChatRoom(db, req.body.name, req.body.crn)
 			})
 		}
 
 		if (req.body.roomName){
-			console.log('REQBODYROOMNAME',req.body.userName, req.body.roomName, req.body.content)
 			chatRoom.findChatRoom(req.body.roomName, (res)=>{
 				if (res){
 						chatRoom.modifContent(req.body.roomName, req.body.userName, req.body.content, ()=>{

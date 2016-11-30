@@ -21,7 +21,7 @@
          socket.on('connect', function(){
             console.log('Un utilisateur de connecte-----------');
             console.log('<%= ret[0].name %>', '<%= ret[0].focus %>')
-            socket.emit('adduser2', '<%= ret[0].name %>', '<%= ret[0].focus %>');
+            socket.emit('adduser3', '<%= ret[0].name %>', '<%= ret[0].focus %>');
          });
 
          socket.on('oldMess', (username, data, date)=>{
