@@ -18,6 +18,7 @@ function requireLogin (req, res, next) {
 
 router.get('/:userID', requireLogin, (req, res, next)=>{
     Profile.findUsers4(req.params.userID, (ret)=> {
+        console.log(ret[0]);
         User.GetDB((db)=> {
             User.updateVisit(req.params.userID, db, req.session.user.name);
             User.updatePop(ret[0].popularite + 1, ret, db);

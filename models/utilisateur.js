@@ -376,6 +376,7 @@ class Utilisateur {
 					pwd: hash,
 					question: request.body.questionSecrete,
 					reponse: request.body.repQuestion,
+					popularite: 0,
 					img: [],
 					orientation: "Bi",
 					geo: [],
@@ -500,7 +501,7 @@ class Utilisateur {
 	}
 
 	static		sortPop(otherUserArray, callback){
-		var byPop = otherUserArray.slice(0);
+		var byPop = otherUserArray.popularite.slice(0);
 		byPop.sort(function(a,b) {
 			return a.popularite - b.popularite;
 		});
