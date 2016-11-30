@@ -376,6 +376,7 @@ class Utilisateur {
 					pwd: hash,
 					question: request.body.questionSecrete,
 					reponse: request.body.repQuestion,
+					popularite: 0,
 					img: [],
 					orientation: "Bi",
 					geo: [],
@@ -400,6 +401,19 @@ class Utilisateur {
 					}
 					db.close;
 				})
+			}
+		})
+	}
+	static	checkNbNotif(name, callback){
+		var nb = 0;
+
+		this.findUsers3(name, (res)=>{
+			if (res[0]){
+				for (var i = 0; i<res[0].notif.length; i++){
+					if (res[0].notif[i].isRead == false )
+						nb++;
+				}
+				callback(nb);
 			}
 		})
 	}
@@ -500,7 +514,7 @@ class Utilisateur {
 	}
 
 	static		sortPop(otherUserArray, callback){
-		var byPop = otherUserArray.slice(0);
+		var byPop = otherUserArray.popularite.slice(0);
 		byPop.sort(function(a,b) {
 			return a.popularite - b.popularite;
 		});

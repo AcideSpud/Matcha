@@ -21,11 +21,6 @@ class Get_user {
             db.collection('users').find().toArray((error, results) => {
                 if (error) throw error;
                 results.forEach((i)=> {
-                    console.log(
-                        "ID :" + i._id.toString() + "\n" +
-                        "nom :" + i.nom + "\n" +
-                        "desc :" + i.img_path + "\n"
-                    )
                 });
                 cb(results)
             });

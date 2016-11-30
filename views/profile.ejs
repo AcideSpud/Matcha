@@ -188,9 +188,8 @@
             socket.emit('notification_newMsg_unread', '<%= user[0].name %>');
 
          socket.on('notif_like', (res)=>{
-             for (var i = 0; i < res.length; i++) {
-                 $('#notifliking').append('<li><a href="#">' +  res[i] + '</a></li>');
-             }
+             $('#notifliking').prepend('<div class="media"> <div class="media-left media-middle"> <a href="#"> <img class="media-object" src="..." alt="..."> </a> </div> <div class="media-body"> <h4 class="media-heading">' + res.type + res.userSend + ' </h4> </div> </div>');
+
 
          })
 
@@ -201,6 +200,9 @@
          socket.on('nb_msg_unread', (res)=>{
             $('#notif_msg_nb').text(res);
          })
+            socket.on('nb_notif_unread', (res)=>{
+                $('#notif_nb').text(res);
+            })
 
             socket.on('notif_match', (res)=>{
                 $('#notifmatching').append('<li><a href="#">' +  res + '</a></li>');
