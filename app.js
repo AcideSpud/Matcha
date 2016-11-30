@@ -10,6 +10,7 @@ let logger = require('morgan');
 let session = require('express-session');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
+let timeAgo = require('node-time-ago');
 
 let routes = require('./routes/index');
 let users = require('./routes/users');
@@ -96,11 +97,11 @@ socket.on('sendchat', function(data){
               socket.emit('nb_notif_unread', cb);
 
           });
-        for (let i = 0; i < res[0].notif.length; i++){
-            if (res[0].notif[i].isRead == false){
-                socket.emit('notif_like', res[0].notif[i]);
-            }
-        }
+                for (let j = 0; j < res[0].notif.length; j++){
+                    res[0].notif[j].date = timeAgo(res[0].notif[j].date);
+                }
+                socket.emit('notif_like', res[0]);
+
           /*if (res[0].liker.length >= likeLength){
            let response = [];
            response[0] = {"Liker": res[0].liker};

@@ -188,7 +188,12 @@
             socket.emit('notification_newMsg_unread', '<%= user[0].name %>');
 
          socket.on('notif_like', (res)=>{
-             $('#notifliking').prepend('<div class="media"> <div class="media-left media-middle"> <a href="#"> <img class="media-object" src="..." alt="..."> </a> </div> <div class="media-body"> <h4 class="media-heading">' + res.type + res.userSend + ' </h4> </div> </div>');
+             for (var i = 0; i < res.notif.length && i < 9; i++){
+                 if (res.notif[i].isRead == false) {
+                     $('#notifliking').prepend('<div class="media"> <div class="media-left media-middle"> <a href="#"> <img id="med-ob" class="media-object" src="' + res.img[0] + '" alt="..."> </a> </div> <div class="media-body"> <h4 class="media-heading">' + res.notif[i].type + ' ' + res.notif[i].userSend + ' </h4> </div> '+ res.notif[i].date + ' </div>');
+                     $('#notifliking').prepend('   <li role="separator" class="divider"></li>');
+                 }
+                 }
 
 
          })
