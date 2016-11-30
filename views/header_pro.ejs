@@ -13,35 +13,29 @@
 
 </head>
 <body style="background-image: linear-gradient(90deg,rgb(200, 255, 255), rgb(127, 18, 47) );">
-
-<nav class="navbar navbar-inverse navbar-static-top">
-    <body style="background-image: linear-gradient(90deg,rgb(200, 255, 255), rgb(127, 18, 47) );">
-    <div class="container">
-        <a class="navbar-brand" href="/">Michto</a>
-        <ul class="nav navbar-nav">
-            <li class="active">
-                <a href="/">DashBoard</a>
-            </li>
-            <li class="">
-                <a href="/e">Mon compte</a>
-            </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li>
-                <a href="/logout">logout</a>
-            </li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-bell" aria-hidden="true"></span> <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                </ul>
-            </li>
-
-        </ul>
-    </div>
-    </body>
+    <nav class="navbar navbar-inverse navbar-static-top">
+  <div class="container">
+    <a class="navbar-brand" href="/">Michto</a>
+    <ul class="nav navbar-nav navbar-right">
+      <li>
+              <a href="/logout">
+                  <div class="glyphicon glyphicon-remove-circle" style="font-size:1.5em; color:grey;">Logout</div>
+                </button>
+              </a>
+      </li>
+    </ul>
+  </div>
 </nav>
+<% if (locals.flash && locals.flash.error) { %>
+<div class="alert alert-warning">
+<a href="#" class="close" data-dismiss="alert">&times;</a>
+    <strong>Warning!</strong>
+    <%= flash.error %>
+</div>
+  <% } %>
+<% if (locals.flash && locals.flash.success) { %>
+<div class="alert alert-success">
+<a href="#" class="close" data-dismiss="alert">&times;</a>
+  <%=  flash.success %>
+</div>
+  <% } %>

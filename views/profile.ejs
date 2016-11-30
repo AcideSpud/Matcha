@@ -1,4 +1,4 @@
-<% include header2 %>
+<% include header_pro %>
 <div class="container">
     <div class="row clearfix well">
         <% if(ret[0].img[0]) { %>
@@ -172,7 +172,8 @@
     </div>
 </div>
 
-<script src="../socket.io/socket.io.js"></script>
+  <script src="../socket.io/socket.io.js"></script>
+
     <script>
     
         var socket = io.connect('http://localhost:3000');
@@ -210,5 +211,5 @@
             $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="return send_info_chat2(\'<%= user[0].matchRoom[i] %>\', \'<%= user[0].name %>\')"><strong>' + res.user + '</strong>: le ' + res.date  +'</a></li>');
          })
      })
-     </script> 
+     </script>
 <% include footer_dash %>
