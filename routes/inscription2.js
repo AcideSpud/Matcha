@@ -11,11 +11,12 @@ router.use(require('../middlewares/flash'));
 
 //GET
 router.get('/', (req, res, next) => {
-    res.render('inscription');
+    res.render('inscription2');
 });
 
 //POST
 router.post('/form_inscription2', (req, res, next)=>{
+
 
   if (req.body.name.length <= 4){
         req.flash('error', "Votre pseudo doit comporter au minimum 5 lettres")

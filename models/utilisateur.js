@@ -1,4 +1,6 @@
+
 class Utilisateur {
+
 
 	static		GetDB(callback) {
 		let mongo = require('mongodb').MongoClient;
@@ -142,7 +144,7 @@ class Utilisateur {
 		this.findUsers3(user, (res)=>{
 			if (res[0])
 				db.collection("users").updateOne({"name": user}, {
-					$push : {"visit": { "user": key , "date" :Date.now() } }
+					$push : {"visit": { "user": key, "date" :Date.now() } }
 				}, (err, res)=>{
 					if (err) throw err;
 				})
@@ -230,7 +232,7 @@ class Utilisateur {
 
 
 	static		updateLikeUser(user, db, key) {
-
+		this.sendNotif(key, user.name, 'Like from', db);
 		db.collection("users").updateOne({"name": user.name}, {$push: {"like": key}}, (err)=> {
 			if (err)
 				throw err;
@@ -243,10 +245,11 @@ class Utilisateur {
 			else
 				console.log("Update liker OK!");
 		})
-        this.sendNotif(user, key, 'Like from', db);
+
 	}
 
 	static		updateUnlikeUser(user, db, key) {
+		this.sendNotif(key, user.name, 'UnLike from', db);
 		db.collection("users").updateOne({"name": user.name}, {$pull: {"like": key}}, (err)=> {
 			if (err)
 				throw err;
@@ -259,7 +262,7 @@ class Utilisateur {
 			else
 				console.log("remove liker OK ! ");
 		})
-        this.sendNotif(user, key, 'UnLike from', db);
+
 	}
 
 	static		updateLocalisation(loca, name){
@@ -404,6 +407,7 @@ class Utilisateur {
 							if (err) throw err;
 							else {
 								request.flash('success', "Vous êtes bien enregistré!")
+								console.log('coucoucoucoucoucoo')
 								response.redirect('/login')
 							}
 						})
@@ -413,12 +417,12 @@ class Utilisateur {
 			}
 		})
 	}
-	static	checkNbNotif(name, callback){
+	static		checkNbNotif(name, callback){
 		var nb = 0;
 
 		this.findUsers3(name, (res)=>{
 			if (res[0]){
-				for (var i = 0; i<res[0].notif.length; i++){
+ 				for (var i = 0; i<res[0].notif.length; i++){
 					if (res[0].notif[i].isRead == false )
 						nb++;
 				}
@@ -565,7 +569,7 @@ class Utilisateur {
 		callback(res);
 	}
 
-	static		sendNotif(userReceve, userSend, notifType,db){
+	static		sendNotif(userReceve, userSend, notifType, db){
 	    db.collection("users").updateOne({"name": userReceve}, {$push: {"notif": {"type": notifType, "userSend": userSend, "date": Date.now(), "isRead" : false}}}, (err)=>{
 	        if (err)
 	            throw err;

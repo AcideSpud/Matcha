@@ -89,17 +89,18 @@ io.on('connection', function (socket) {
   
 socket.on('sendchat', function(data){
   var clean = sanitizeHtml(data);
-
     socket.emit(socket.room).emit('updatechat', socket.username, clean);
     io.sockets.in(socket.room).emit('afficher_message', socket.username, clean);
   });
 
+    let info = 0;
 
   socket.on('notification_like', function(data) {
       Utilisateur.findUsers3(data, (res)=> {
-        if (res){
+
+        if (res) {
           Utilisateur.checkNbNotif(res[0].name, (cb)=> {
-              socket.emit('nb_notif_unread', cb);
+            socket.emit('nb_notif_unread', cb);
 
           });
           for (let j = 0; j < res[0].notif.length; j++){
@@ -109,30 +110,6 @@ socket.on('sendchat', function(data){
         }
 
       });
-  });
-
-  socket.on('notification_match', function(data){
-    Utilisateur.findUsers3(data, (res)=>{
-
-      if (res){
-        if (res[0].matchRoom.length >= matchLength){
-          console.log('ON TA MATCHH');
-          matchLength = res[0].matchRoom.length;
-            socket.emit('notif_match', res[0].matchRoom[res[0].matchRoom.length - 1]);
-        }
-      }
-    })
-  });
-
-  socket.on('notification_visit', function(data){
-    Utilisateur.findUsers3(data, (res)=>{
-      if (res){
-        if (res[0].visit.length > visitLength){
-          console.log('ON TA VISITER');
-          visitLength = res[0].visit.length;
-        }
-      }
-    })
   });
 
   socket.on('notification_newMsg_unread', function(data){
@@ -170,30 +147,6 @@ socket.on('sendchat', function(data){
     })
   })
 
-
-  /*socket.on('adduser2', function(username, chatRoomName){
-    var chat = require('./models/chat_function.js');
-    var allChatRoom = new Array();
-    socket.username = username;
-
-    chat.findAllRooms((res)=>{
-      for (var i = 0; i<res.length; i++)
-        allChatRoom[i] = res[i].chatRoomName
-    })
-
-    chat.findChatRoom(chatRoomName, (res)=>{
-      if (res && res[0].conte){
-        for (var i = 0; i < res[0].conte.length; i++){
-            socket.emit('oldMess', res[0].conte[i].user, res[0].conte[i].content, res[0].conte[i].date)
-        }
-      }        
-    })
-    
-    socket.username = username;
-    socket.room = chatRoomName;
-    all_users[username] = username;
-    socket.join(chatRoomName);
-  })*/
 
   socket.on('disconnect', function(){
     delete all_users[socket.username];
@@ -252,7 +205,7 @@ app.use('/header', header);
 app.use('/forgot_mail', forgot_mail);
 app.use('/logout', logout);
 
-
+/*
 app.get('*', function(req, res, next) {
   var err = new Error();
   err.status = 404;
@@ -265,6 +218,6 @@ app.use(function(err, req, res, next) {
   }
   res.status(404);
   res.render('page_error')
-});
+});*/
 
 module.exports = app;
