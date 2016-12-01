@@ -10,5 +10,9 @@ img {
 img:hover {
   filter: none; /* IE6-9 */
   -webkit-filter: grayscale(0); /* Google Chrome, Safari 6+ & Opera 15+ */
- 
+}
+
+img {
+	max-width: 100%;
+	height: auto;
 }

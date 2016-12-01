@@ -3,6 +3,7 @@ var router = express.Router();
 var Utilisateur = require('../models/utilisateur')
 var chatRoom = require('../models/chat_function')
 let bodyParser = require('body-parser');
+var sanitizeHtml = require('sanitize-html');
 
 router.use(bodyParser.urlencoded({ extended: false }));
 
@@ -14,6 +15,7 @@ function requireLogin (req, res, next) {
 		next();
 	}
 };
+
 
 router.get('/', requireLogin,  function(req, res, next) {
 
@@ -76,7 +78,10 @@ router.post('/chat', requireLogin, function(req, res, next){
 		if (req.body.roomName){
 			chatRoom.findChatRoom(req.body.roomName, (res)=>{
 				if (res){
-						chatRoom.modifContent(req.body.roomName, req.body.userName, req.body.content, ()=>{
+					var clean = sanitizeHtml(req.body.content);
+						console.log(req.body.content)
+						console.log('---'+ clean);
+						chatRoom.modifContent(req.body.roomName, req.body.userName, clean, ()=>{
 					})
 				}
 			})

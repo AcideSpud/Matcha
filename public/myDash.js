@@ -13,7 +13,9 @@ $(function () {
             startTime()
         }, 500);
     }
-    startTime();
+    if (document.getElementById('time')){
+       startTime(); 
+    }
 });
 
 

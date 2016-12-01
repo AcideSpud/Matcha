@@ -7,7 +7,7 @@
 
         <% for (var i=0; i < ret.length; i++) { %>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xs-12" id="datbox">
-                <div class="thumbnail" style="background-image:     linear-gradient(90deg,rgb(127, 18, 47), rgb(200, 255, 255) );"  id="mybox">
+                <div class="thumbnail" style="background-image:linear-gradient(90deg,rgb(127, 18, 47), rgb(200, 255, 255));box-shadow: 1px 10px 22px #555; "  id="mybox">
                     <div>
                     <% if (ret[i].img[0]){ %>
                     <img class="parent" src="<%= ret[i].img[0] %>"  alt="">
@@ -70,8 +70,10 @@
 
                         </div>
                     </div>
-                        <p id="b_view"><a href="/profile/<%= ret[i].name %>" class="btn btn-primary" role="button">View profil</a></p>
-
+                    <div>
+                        <p id="b_view" style="display: inline"><a href="/profile/<%= ret[i].name %>" class="btn btn-primary" role="button">View profil</a></p>
+                    </div>
+                        
                 </div>
             </div>
 

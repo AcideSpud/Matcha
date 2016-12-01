@@ -119,8 +119,6 @@ class Utilisateur {
 
 	static		updateMainChatRoom(db, username, focusName) {
 		this.findUsers3(username, (res)=> {
-			console.log('username----:', username);
-			console.log('focusName---:', focusName);
 			if (res[0]) {
 				for (var i = 0; i < res[0].matchRoom.length; i++) {
 					if (res[0].matchRoom[i].indexOf(focusName) == 0) {
@@ -287,26 +285,33 @@ class Utilisateur {
 			let bcrypt = require('bcryptjs')
 			var hashtag = require('find-hashtags')
 			var hash = bcrypt.hashSync(request.body.pwd);
-			var hobbies = hashtag(request.body.hashtag);
 			var geoo = JSON.parse(request.body.geo);
+			var sanitizeHtml = require('sanitize-html');
 
-			console.log("GEO::::", request.body.geo)
+			var cleanPrenom = sanitizeHtml(request.body.prenom)
+			var cleanNom = sanitizeHtml(request.body.nom)
+			var cleanBio = sanitizeHtml(request.body.bio)
+			var cleanHobbies = sanitizeHtml(request.body.hashtag);
+			var hobbies = hashtag(cleanHobbies);
+
+
 
 			if (request.body.lat && request.body.long)
 				geoo = {latitude: request.body.lat,
 						longitude: request.body.long};
 
-
 			if (err) {
 				throw err
 			} else {
 				var user = {
-					email: request.body.email, pwd: hash, nom: request.body.nom,
-					prenom: request.body.prenom,
+					email: request.body.email,
+					pwd: hash,
+					nom: cleanNom,
+					prenom: cleanPrenom,
 					age: parseInt(request.body.age),
 					genre: request.body.genre,
 					orientation: request.body.orientation,
-					bio: request.body.bio,
+					bio: cleanBio,
 					like: [], liker: [], popularite: 0,
 					tag: hobbies,
 					geo: geoo,
@@ -364,18 +369,22 @@ class Utilisateur {
 
 	static      create(request, response) {
 		let mongo = require('mongodb').MongoClient
-		let bcrypt = require('bcryptjs')
+		let bcrypt = require('bcryptjs');
+		var sanitizeHtml = require('sanitize-html');
+
+		var cleanName = sanitizeHtml(request.body.name);
+		var cleanReponse = sanitizeHtml(request.body.repQuestion);
 
 		mongo.connect("mongodb://localhost/matcha", (err, db)=> {
 			if (err) throw err
 			else {
 				var hash = bcrypt.hashSync(request.body.pwd);
 				var user = {
-					name: request.body.name,
+					name: cleanName,
 					email: request.body.email,
 					pwd: hash,
 					question: request.body.questionSecrete,
-					reponse: request.body.repQuestion,
+					reponse: cleanReponse,
 					popularite: 0,
 					img: [],
 					orientation: "Bi",

@@ -44,9 +44,6 @@ router.get('/', requireLogin, function(req, resu, next) {
     var lat = result[0].geo.latitude;
     var lng = result[0].geo.longitude;
 
-    console.log('geooo------:', lat, lng)
-    console.log('tag:', newTag)
-
     if (lat && lng){
       geocoder.reverse({'lat':lat, 'lon':lng}, function(err, res) {
         if (res[0].city){
@@ -72,7 +69,6 @@ router.get('/', requireLogin, function(req, resu, next) {
 
 router.post('/form_compte', (request, response)=>{
   
-
   Utilisateur.modifUser(request, (res, err)=>{
     if (err)
       request.flash('error', err)

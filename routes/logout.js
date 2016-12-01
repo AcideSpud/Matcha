@@ -2,11 +2,11 @@ let express = require('express');
 let router = express.Router();
 let bodyParser = require('body-parser');
 var timeAgo = require('node-time-ago');
+let Ut = require('../models/utilisateur');
 
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(require('../middlewares/flash'));
-let Ut = require('../models/utilisateur');
-let User = require('../models/getDataUser');
+
 
 function requireLogin (req, res, next) {
     if (!req.user) {

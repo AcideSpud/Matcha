@@ -7,7 +7,7 @@
       <form class="" id="uploadImgForm" enctype="multipart/form-data" action="/upload_img/upload_img" method="post">
       <div class="form-group">
         <br>
-    	  <input class="btn btn-info" type="file" name="userImg" multiple/>
+    	  <input class="btn btn-info" type="file" name="userImg" multiple style="display:inline;"/>
         <br>
       </div>
       <div class="form-group">
@@ -19,12 +19,12 @@
       </div>
     </div>
    </form>
-   <div class ="container" style="width:80%;margin:auto;">
+   <div class ="container" style="width:80%;margin:auto; display:block;">
   <% for (var i = 0 ; i < ret[0].img.length; i++) { %>
   <div class="container">
     <div class="row">
       <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="<%= ret[0].img[i] %>"  />
-            <button id="deletebutton" class="btn btn-primary btn-block" onclick="deleteImg('<%= ret[  0].img[i] %>')" type="button">
+            <button id="deletebutton" class="btn btn-primary btn-block" onclick="deleteImg('<%= ret[0].img[i] %>')" type="button">
                  remove
               </button>
       </div>
@@ -44,7 +44,6 @@
               status('Error: ' + xhr.status);
             },
             success: function(response) {
-              console.log(response)
             $("#status").empty().text(response);
             }
         });

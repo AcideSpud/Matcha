@@ -16,8 +16,7 @@ var storage = multer.diskStorage({
 
 		if (file.mimetype == 'image/png'){
 	
-			
-		var	path =  file.fieldname + '-' + Date.now() + '.png'
+		var	path =  file.fieldname + '-' + Date.now() + '.png';
 		Utilisateur.uploadImg2(req.user.name, path, (res, err)=>{
 
 				if (err)
@@ -37,6 +36,7 @@ var storage = multer.diskStorage({
 					{throw err}
 				else{
 					req.flash('sucess',"Votre Image est upload")
+					callback('OOK');
 				}
 				
 			})
@@ -45,9 +45,8 @@ var storage = multer.diskStorage({
 
 		}
 		else{
-			req.flash('error',"Verifiez que c'est bien du jpeg ou png")
-				var err = 'NEED PNG'
-				callback(err)
+			var err = 'NEED PNG'
+			callback(err)
 		}
 	}
 });
@@ -64,10 +63,7 @@ function requireLogin (req, res, next) {
 };
 
 router.get('/', requireLogin, (req, res, next)=>{
-
-
 	Utilisateur.findUsers3(req.user.name, (result)=>{
-		console.log(result[0].img.length)
 		res.render('upload_img', {ret: result, user: result});
 	})
 })
@@ -93,7 +89,7 @@ router.post('/upload_img', (req, res)=>{
 					res.redirect('/upload_img')
 				} else{
 					 req.flash('sucess', 'IMG upload');
-						res.redirect('/upload_img')
+					 res.redirect('/upload_img')
 				}
 			})
 		}

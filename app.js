@@ -11,6 +11,8 @@ let session = require('express-session');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 let timeAgo = require('node-time-ago');
+let async = require('async')
+var sanitizeHtml = require('sanitize-html');
 
 let routes = require('./routes/index');
 let users = require('./routes/users');
@@ -25,7 +27,7 @@ let forgot_mail = require('./routes/forgot_mail');
 let logout = require('./routes/logout');
 let chat = require('./routes/chat');
 let header = require('./routes/header');
-let async = require('async')
+
 
 
 app.set('views', path.join(__dirname, 'views'));
@@ -86,44 +88,26 @@ var chatRoom = require('./models/chat_function')
 io.on('connection', function (socket) {
   
 socket.on('sendchat', function(data){
-  console.log('SENDCHAT:::', socket.username, data)
-    socket.emit(socket.room).emit('updatechat', socket.username, data);
-    io.sockets.in(socket.room).emit('afficher_message', socket.username, data);
+  var clean = sanitizeHtml(data);
+
+    socket.emit(socket.room).emit('updatechat', socket.username, clean);
+    io.sockets.in(socket.room).emit('afficher_message', socket.username, clean);
   });
 
 
   socket.on('notification_like', function(data) {
       Utilisateur.findUsers3(data, (res)=> {
+        if (res){
           Utilisateur.checkNbNotif(res[0].name, (cb)=> {
               socket.emit('nb_notif_unread', cb);
 
           });
-                for (let j = 0; j < res[0].notif.length; j++){
+          for (let j = 0; j < res[0].notif.length; j++){
                     res[0].notif[j].date = timeAgo(res[0].notif[j].date);
                 }
                 socket.emit('notif_like', res[0]);
+        }
 
-          /*if (res[0].liker.length >= likeLength){
-           let response = [];
-           response[0] = {"Liker": res[0].liker};
-           response[1] = {"src" : res[0].img[0]};
-           response[2] = {"name" : res[0].name};
-           console.log('liker DATABASE:' + res[0].liker.length);
-           console.log('liker ARRAY:' + likeLength);
-           console.log('ON TA LIKER');
-
-           likeLength = res[0].liker.length;
-
-           } else if (res[0].liker.length < likeLength){
-           console.log('ON TA DELIKER');
-
-           likeLength = res[0].liker.length;
-           socket.emit('notif_unlike', res);
-           }
-           console.log(likeLength)
-           }
-           else console.log('NO USER (NOTIFICATION')
-           })*/
       });
   });
 
@@ -250,10 +234,7 @@ socket.on('sendchat', function(data){
 
   })
 
-
-
 });
-
 
 
 app.use(require('./middlewares/flash'));
@@ -268,10 +249,10 @@ app.use('/myprofile', myprofile);
 app.use('/chat', chat);
 app.use('/upload_img', upload_img);
 app.use('/header', header);
+app.use('/forgot_mail', forgot_mail);
 app.use('/logout', logout);
 
 
-/*
 app.get('*', function(req, res, next) {
   var err = new Error();
   err.status = 404;
@@ -284,6 +265,6 @@ app.use(function(err, req, res, next) {
   }
   res.status(404);
   res.render('page_error')
-});*/
+});
 
 module.exports = app;
