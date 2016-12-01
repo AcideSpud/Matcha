@@ -90,19 +90,27 @@ socket.on('sendchat', function(data){
     socket.emit(socket.room).emit('updatechat', socket.username, data);
     io.sockets.in(socket.room).emit('afficher_message', socket.username, data);
   });
+    let info = 0;
+    //Utilisateur.findUsers3(socket.username, (ret)=>{
+      //  info = ret[0].notif.length;
+    //});
 
 
   socket.on('notification_like', function(data) {
       Utilisateur.findUsers3(data, (res)=> {
+        if (res) {
+           // if (info > res[0].notif.length)
+             //   socket.emit('notif_like', res[0]);
           Utilisateur.checkNbNotif(res[0].name, (cb)=> {
-              socket.emit('nb_notif_unread', cb);
+            socket.emit('nb_notif_unread', cb);
 
           });
-                for (let j = 0; j < res[0].notif.length; j++){
-                    res[0].notif[j].date = timeAgo(res[0].notif[j].date);
-                }
-                socket.emit('notif_like', res[0]);
 
+          for (let j = 0; j < res[0].notif.length; j++) {
+            res[0].notif[j].date = timeAgo(res[0].notif[j].date);
+          }
+          socket.emit('notif_like', res[0]);
+        }
           /*if (res[0].liker.length >= likeLength){
            let response = [];
            response[0] = {"Liker": res[0].liker};
