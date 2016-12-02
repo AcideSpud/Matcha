@@ -55,7 +55,6 @@ class Utilisateur {
 
 	static		modifPwd(username, pwd, callback) {
 		let mongo = require('mongodb').MongoClient;
-
 		mongo.connect("mongodb://localhost/matcha", (err, db)=> {
 			db.collection("users").updateOne({"name": username}, {$set: {"pwd": pwd}}, (err, res)=> {
 				if (err) callback(err)
@@ -193,8 +192,6 @@ class Utilisateur {
 
 	static		updateMatchUser(user, db, key) {
 
-		console.log('user----:'+ user.name);
-		console.log('key----:' + key)
 
 		db.collection("users").updateOne({"name": user.name}, {$push: {"matchRoom": key+user.name}}, (err)=> {
 			if (err)
@@ -354,6 +351,23 @@ class Utilisateur {
 				else
 					callback()
 			})
+			callback()
+		})
+	}
+
+	static		changeProfilePic(username, imgpath, i, callback){
+
+		this.GetDB(function(db){
+			db.collection("users").find({"name": username})
+  				.forEach(function (doc) {
+  					var swap;
+  					console.log('-------', doc.img[0], imgpath, i);
+  					swap = doc.img[0];
+    				doc.img[0] = imgpath;
+    				doc.img[i] = swap;
+   		 		db.collection("users").save(doc);
+  			});
+  			callback();
 		})
 	}
 

@@ -3,6 +3,7 @@ let bodyParser = require('body-parser');
 let router = express.Router()
 let nodemailer = require('nodemailer')
 let prompt = require('prompt');
+let bcrypt = require('bcryptjs')
 
 
 String.prototype.shuffle = function (){
@@ -27,14 +28,17 @@ router.get('/', (req, res, next)=>{
 
 router.post('/forgot_mail', (req, res)=>{
 	let Utilisateur = require('../models/utilisateur')
+	
 
 	Utilisateur.queryUserByMail(req.body.email, (result, err)=>{
 		if (err) throw err
 		else if (result){
-			var newpass = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+			var newpass = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".shuffle();
+			console.log('NNNNN', newpass)
+			var hash = bcrypt.hashSync(newpass);
+			console.log('HASHH', hash)
 
-
-			Utilisateur.modifPwd(result[0].name, newpass.shuffle(), (err, res)=>{
+			Utilisateur.modifPwd(result[0].name, hash, (err, res)=>{
 				if (err) throw err
 
 				var transporter = nodemailer.createTransport({
@@ -52,7 +56,7 @@ router.post('/forgot_mail', (req, res)=>{
 					to: req.body.email,
 					subject: 'forgot mdp',
 					generateTextFromHTML: true,
-					html:'<p>votre nouveau pwd: </p></br>' + result[0].pwd + '</br><a href=\"'+ textLink.toString() + '\">Click here to activate your account.</a>'
+					html:'<p>votre nouveau pwd: </p></br>' + newpass + '</br><a href=\"'+ textLink.toString() + '\"> </br>Click here to activate your account.</a>'
 				}
 
 				transporter.sendMail(mailOptions, (err, info)=>{
@@ -66,6 +70,7 @@ router.post('/forgot_mail', (req, res)=>{
 			})
 		}
 	})
+	req.flash('sucess', 'Nous vous avons envoyé un nouveau pwd')
 	res.redirect('/')
 })
 

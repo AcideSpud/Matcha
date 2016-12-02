@@ -45,7 +45,7 @@ var storage = multer.diskStorage({
 
 		}
 		else{
-			var err = 'NEED PNG'
+			var err = 'NEED PNG';
 			callback(err)
 		}
 	}
@@ -69,10 +69,11 @@ router.get('/', requireLogin, (req, res, next)=>{
 })
 
 
-router.post('/delete_img', (req, res)=>{
+router.post('/delete_img', (req, resu)=>{
 	Utilisateur.deleteIMG(req.user.name, req.body.path , ()=>{
+		console.log('DELETe IMG')
 		req.flash('sucess', 'IMG DELETE')
-		res.redirect('/upload_img')
+		resu.redirect('/upload_img')
 	})
 })
 
@@ -93,6 +94,17 @@ router.post('/upload_img', (req, res)=>{
 				}
 			})
 		}
+	})
+
+})
+
+router.post('/change_img', (req, resu, next)=>{
+	
+	Utilisateur.findUsers3(req.user.name, (res)=>{
+		Utilisateur.changeProfilePic(req.user.name, req.body.path, req.body.i, ()=>{
+			console.log('ook')
+			resu.redirect('/upload_img')
+		})
 	})
 
 })

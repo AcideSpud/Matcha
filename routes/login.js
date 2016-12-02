@@ -16,10 +16,13 @@ router.post('/form_log', (request, response)=>{
   Utilisateur.findUsers3(request.body.name, (result, err)=>{
     if (err) throw err
     else{
+      console.log('JE REntre ICI')
       if (result === undefined){
         request.flash('error', "Pseudo inconnu")
       }else{
+        console.log('jjjj', request.body.password, '/////', result[0].pwd, '------>', bcrypt.compareSync(request.body.password, result[0].pwd))
         if (bcrypt.compareSync(request.body.password, result[0].pwd)){
+          console.log('CA RENTRE PAS ?')
         
           request.flash('success', "bien Connecte")
           request.session.user = result[0];

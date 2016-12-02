@@ -206,6 +206,7 @@ app.use('/forgot_mail', forgot_mail);
 app.use('/logout', logout);
 
 /*
+
 app.get('*', function(req, res, next) {
   var err = new Error();
   err.status = 404;
@@ -218,6 +219,6 @@ app.use(function(err, req, res, next) {
   }
   res.status(404);
   res.render('page_error')
-});*/
-
+});
+*/
 module.exports = app;

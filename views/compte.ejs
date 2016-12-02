@@ -5,6 +5,30 @@
 <div class="col-sm-6 col-sm-offset-3">
     <div class="jumbotron text-center"  style="padding:40px;">
     <h2><span class="fa fa-sign-in">Votre Profile</span></h2>
+    <hr>
+    <div>
+            <% if (ret[0].img[0]) { %>
+            <img src="<%= ret[0].img[0] %>" alt="Profile picture" height="100" width="100">
+            <% } else { %>
+            <img src="/img/no_image.png" alt="Pas encore de photo de profile" height="100" width="100">
+            <% } %>
+            <br>
+    </div>
+    <div>
+        <% if (ret[0].liker && ret[0].visit) { %>
+        <span><%= ret[0].liker.length %> vous aimes,</span>
+        <span><%= ret[0].visit.length %> vous as visité</span>
+        <% } else { %>
+    </div>
+    <div>
+        <span> 0 vous aimes</span>
+        <span> 0 vous as visité</span>
+        <% } %>
+    </div>
+    <br>
+    <hr>
+
+    
     
     <script>
     function cloneAsObject(obj) {
@@ -34,6 +58,9 @@
 </script>
     <!-- LOGIN FORM -->
     <form class="form-horizontal" action="compte/form_compte" method="post">
+        
+        
+        
 
         <div class="form-group">
             <input type="text" class="form-control" name="email" required="required"
@@ -144,6 +171,7 @@
 </div>
 </div>
 </div>
+
 
 <script src="../socket.io/socket.io.js"></script>
 

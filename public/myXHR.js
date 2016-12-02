@@ -58,4 +58,13 @@ function    deleteImg(path){
     request.open('POST', '/upload_img/delete_img', true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
     request.send("path="+path);
+    $("#status").empty().text("Modification ok");
+}
+
+function    changeProfilePicture(path, i){
+    var request = new XMLHttpRequest();
+    request.open('POST', '/upload_img/change_img', true);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    request.send("path="+path+"&i="+i);
+    $("#status").empty().text("Modification ok");
 }

@@ -11,7 +11,7 @@ router.use(require('../middlewares/flash'));
 
 //GET
 router.get('/', (req, res, next) => {
-    res.render('inscription2');
+    res.render('inscription');
 });
 
 //POST

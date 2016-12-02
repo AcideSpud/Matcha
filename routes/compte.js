@@ -14,9 +14,7 @@ router.use(require('../middlewares/flash'));
 
 var options = {
   provider: 'google',
- 
-  // Optional depending on the providers 
-  httpAdapter: 'https', // Default  
+  httpAdapter: 'https', 
   apiKey: 'AIzaSyD147j2Z24YygItMAkU4OrYnnnsICOGtlU',
   formatter: null
 };
