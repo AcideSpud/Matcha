@@ -14,7 +14,7 @@ $(function () {
         }, 500);
     }
     if (document.getElementById('time')){
-       startTime(); 
+       startTime();
     }
 });
 

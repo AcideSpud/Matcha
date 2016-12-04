@@ -97,18 +97,32 @@ socket.on('sendchat', function(data){
 
   socket.on('notification_like', function(data) {
       Utilisateur.findUsers3(data, (res)=> {
+        var allVisit = [];
 
         if (res) {
           Utilisateur.checkNbNotif(res[0].name, (cb)=> {
             socket.emit('nb_notif_unread', cb);
 
           });
+          for (var i = 0; i < res[0].liker.length; i++){
+            console.log("dddddd:  ", res[0].liker[i])
+            socket.emit('notif_all_like', res[0].liker[i]);
+          }
+          for (var i = 0; i < res[0].visit.length; i++){
+            if (allVisit.indexOf(res[0].visit[i].user) == -1){
+              allVisit.push(res[0].visit[i].user)
+              socket.emit('notif_all_visit', res[0].visit[i].user);
+            }
+          }
           for (let j = 0; j < res[0].notif.length; j++){
-                    res[0].notif[j].date = timeAgo(res[0].notif[j].date);
-                }
-                socket.emit('notif_like', res[0]);
+                if (res[0].notif[j].userSend != res[0].name){
+                  res[0].notif[j].date = timeAgo(res[0].notif[j].date);
+                    Utilisateur.findUsers3(res[0].notif[j].userSend, (resu)=>{
+                      socket.emit('notif_like', res[0].notif[j], resu[0].img[0]);
+                    })
+                }  
+            }  
         }
-
       });
   });
 

@@ -9,6 +9,7 @@
           </li>
         <li>
           <div style="color:grey; margin-right: 5%;">bonjour <%= user[0].name %> </div>
+          <div id ="bonjour"></div>
         </li>
          
           <li>
@@ -46,13 +47,31 @@
 
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="notif_nb" class="glyphicon glyphicon-heart" aria-hidden="true">0</span> <span class="caret"></span></a>
 
-                <ul class="dropdown-menu scrollable-menu" role="menu" style = "height:auto;max-height:400px;overflow-x:hidden;font-size:0.8em" id="notifliking">
-
+                <ul class="dropdown-menu scrollable-menu" role="menu" style = "background-image: linear-gradient(90deg,rgb(200, 255, 255), rgb(227, 118, 147));height:auto;max-height:300px;overflow-x:hidden;font-size:0.8em" >
+                  <li>
+                      <p><strong>Vos Notifications</strong></p>
+                    </li>
+                    <ul id="notifliking">
+                     </ul>
+                    <li id="" role="separator" class="divider">
+                
+                    </li>
+                    <li><p><strong>Ils vous aimes:</strong></p></li>
+                    <ul id ="all_like">
+                     </ul>
+                    <li>
+                    </li>
+                    <li role="separator" class="divider"></li>
+                    <li>
+                      <p><strong>Ils vous ont visités</strong></p>
+                    </li>
+                    <ul id ="all_visit">
+                     </ul>
                 </ul>
           </li>
-					 <li class="dropdown" id="notifMatching" >
+					 <li class="dropdown" id="notifMatching" style="">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span  id="notif_msg_nb" class="glyphicon glyphicon-comment" aria-hidden="true">0</span> <span class="caret"></span></a>
-                <ul id="notif_msg" class="dropdown-menu scrollable-menu" role="menu" style="height:auto;max-height:300px;overflow-x:hidden;font-size:0.8em">
+                <ul id="notif_msg" class="dropdown-menu scrollable-menu" role="menu" style="background-image: linear-gradient(90deg,rgb(200, 255, 255), rgb(227, 118, 147));height:auto;max-height:300px;overflow-x:hidden;font-size:0.8em">
                 <li>
                       <p><strong>Vos messages non lu</strong></p>
                     </li>

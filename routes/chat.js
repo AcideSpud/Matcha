@@ -30,7 +30,46 @@ router.get('/', requireLogin,  function(req, res, next) {
 router.post('/chat', requireLogin, function(req, res, next){
 
 
-		Utilisateur.findUsers3(req.session.user.name, (result)=>{
+		if (req.body.name1 &&  req.body.name2){
+			console.log('PAR PrOFILE' + req.body.name2 + req.body.name1)
+			chatRoom.findChatRoom((req.body.name2 + req.body.name1), (res)=>{
+				if (res === undefined)
+						chatRoom.createChatroom((req.body.name2 + req.body.name1), ()=>{
+				})
+				else
+					console.log('existe deja')
+			})
+
+			Utilisateur.GetDB((db)=>{
+				var chatName;
+				console.log('reewqq', req.body.name1)
+				Utilisateur.findUsers3(req.body.name2, (res)=>{
+					console.log('sapjfpisadfpisdfj', res[0])
+					if (res){
+						console.log('coucoucouco')
+						for (var i = 0; i<res[0].matchRoom.length; i++){
+							console.log('reewqq', req.body.name1)
+							if (res[0].matchRoom[i].indexOf(req.body.name1) >= 0){
+								chatName = res[0].matchRoom[i];
+								break
+							}
+						}
+						console.log('coucou1')
+						Utilisateur.updateMainChatRoom(db, req.body.name2,chatName)
+					}	
+				})
+			})
+		}
+		else if (req.body.crn && req.body.name){
+			console.log('PAR FOOTER')
+			Utilisateur.GetDB((db)=>{
+				console.log('coucou2')
+				Utilisateur.updateMainChatRoom(db, req.body.name, req.body.crn)
+			})
+		}
+
+
+	/*	Utilisateur.findUsers3(req.session.user.name, (result)=>{
 			if (result[0]){
 				if (req.body.roomName){
 					var autre = req.body.roomName.replace(result[0].name, "");
@@ -42,38 +81,9 @@ router.post('/chat', requireLogin, function(req, res, next){
 					})
 				}
 			}
-		})
+		})*/
 
-		if (req.body.name1 &&  req.body.name2){
-			chatRoom.findChatRoom((req.body.name2 + req.body.name1), (res)=>{
-				if (res === undefined)
-						chatRoom.createChatroom((req.body.name2 + req.body.name1), ()=>{
-				})
-				else
-					console.log('existe deja')
-			})
-
-			Utilisateur.GetDB((db)=>{
-				var chatName;
-
-				Utilisateur.findUsers3(req.body.name2, (res)=>{
-					if (res){
-						for (var i = 0; i<res[0].matchRoom.length; i++){
-							if (res[0].matchRoom[i].indexOf(req.body.name1) >= 0){
-								chatName = res[0].matchRoom[i];
-								break
-							}
-						}
-						Utilisateur.updateMainChatRoom(db, req.body.name2,chatName)
-					}	
-				})
-			})
-		}
-		else if (req.body.crn && req.body.name){
-			Utilisateur.GetDB((db)=>{
-				Utilisateur.updateMainChatRoom(db, req.body.name, req.body.crn)
-			})
-		}
+		
 
 		if (req.body.roomName){
 			chatRoom.findChatRoom(req.body.roomName, (res)=>{

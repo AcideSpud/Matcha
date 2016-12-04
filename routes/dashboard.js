@@ -25,11 +25,8 @@ function tcheckNotif (req){
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
-//router.use(bodyParser.json());
 
 
-
-//					GET
 router.get('/', requireLogin,  function(req, res, next) {
 
 	User.Create_db((ret)=>{

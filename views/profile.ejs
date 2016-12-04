@@ -187,15 +187,22 @@
             socket.emit('notification_newMsg', '<%= user[0].name %>');
             socket.emit('notification_newMsg_unread', '<%= user[0].name %>');
 
-         socket.on('notif_like', (res)=>{
-             for (var i = 0; i < res.notif.length; i++){
-                    $('#notifliking').prepend('<div class="media"> <div class="media-left media-middle"> <a href="#"> <img id="med-ob" class="media-object" src="' + res.img[0] + '" alt="..."> </a> </div> <div class="media-body"> <h4 class="media-heading">' + res.notif[i].type + ' ' + res.notif[i].userSend + ' </h4> </div><p style="text-align: right"> '+ res.notif[i].date + ' </p></div>');
-                    if ((i + 1) != res.notif.length) {
+         socket.on('notif_like', (res, img)=>{
+
+           $('#notifliking').prepend('<li><a class="dropdown-item" href="/profile/'+res.userSend+'"> <strong><i>'+ res.type + '</i> ' + res.userSend + ' </strong> <p>'+ res.date + '</p></a></li>');
+                   /* if ((i + 1) != res.notif.length) {
                         $('#notifliking').prepend('   <li role="separator" class="divider"></li>');
-                    }
-             }
+                    }*/
+             
+         })
+         socket.on('notif_all_like', (res)=>{
+            console.log('NOTIF ALL LIKE')
+            $('#all_like').prepend('<li><a class="dropdown-item" href="/profile/'+res+'"> <strong>'+ res  + ' </strong></a></li>');
+         })
 
-
+         socket.on('notif_all_visit', (res)=>{
+            console.log('NOTIF ALL LIKE')
+            $('#all_visit').prepend('<li><a class="dropdown-item" href="/profile/'+res+'"> <strong>'+ res  + ' </strong></a></li>');
          })
 
          socket.on('notif_unlike', (res)=>{

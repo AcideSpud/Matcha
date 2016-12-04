@@ -119,11 +119,15 @@ class Utilisateur {
 	}
 
 	static		updateMainChatRoom(db, username, focusName) {
+		console.log('usernae::::', username)
 		this.findUsers3(username, (res)=> {
 			if (res[0]) {
+				console.log('WTFFF', res[0].name)
 				for (var i = 0; i < res[0].matchRoom.length; i++) {
 					if (res[0].matchRoom[i].indexOf(focusName) == 0) {
+
 						var focus = res[0].matchRoom[i];
+						console.log('WTF', focus)
 						break;
 					}
 				}
@@ -205,13 +209,14 @@ class Utilisateur {
 			else
 				console.log("Update liker OK!");
 		})
-        this.sendNotif(user, key, 'Match with', db);
+        this.sendNotif(user.name, key, 'Match with', db);
 	}
 
 	static		updateUnMatchUser(user, db, key) {
 
 		console.log('user----:'+ user.name);
 		console.log('key----:' + key)
+		this.sendNotif(user.name, key, 'UnMatch with', db);
 
 		db.collection("users").updateOne({"name": user.name}, {$pull: {"matchRoom": key+user.name}}, (err)=> {
 			if (err)
@@ -361,7 +366,6 @@ class Utilisateur {
 			db.collection("users").find({"name": username})
   				.forEach(function (doc) {
   					var swap;
-  					console.log('-------', doc.img[0], imgpath, i);
   					swap = doc.img[0];
     				doc.img[0] = imgpath;
     				doc.img[i] = swap;
@@ -584,6 +588,7 @@ class Utilisateur {
 	}
 
 	static		sendNotif(userReceve, userSend, notifType, db){
+		console.log('NOTIF TYPE---', notifType, userSend, userReceve)
 	    db.collection("users").updateOne({"name": userReceve}, {$push: {"notif": {"type": notifType, "userSend": userSend, "date": Date.now(), "isRead" : false}}}, (err)=>{
 	        if (err)
 	            throw err;
