@@ -18,13 +18,13 @@ router.get('/', (req, res, next) => {
 router.post('/form_inscription2', (req, res, next)=>{
 
 
-  if (req.body.name.length <= 4){
-        req.flash('error', "Votre pseudo doit comporter au minimum 5 lettres")
-        res.redirect('/inscription')
+  if (req.body.name.length <= 2){
+        req.flash('error', "Votre pseudo doit comporter au minimum 3 lettres")
+        res.redirect('/inscription2')
     }
     else if (req.body.pwd.length <= 4){
         req.flash('error', "le mot de passe doit comporter au minimum 5 lettres")
-        res.redirect('/inscription')
+        res.redirect('/inscription2')
     }
     else
         Utilisateur.create(req, res);
