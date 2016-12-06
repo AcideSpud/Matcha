@@ -47,9 +47,15 @@
             <% } %>
             </p>
             <p>
+                <% if (imlike == true && islike == true && ret[0].img[0]){ %>
             <a href="/chat"><button class="btn btn-info btn-block" onclick="send_info_chat('<%= ret[0].name %>', '<%= user[0].name %>')" type="button">
                 Message
             </button></a>
+                <% } else { %>
+                <button id="" class="btn btn-danger btn-outline btn-block"  type="button">
+                    No Match !
+                </button>
+                <% } %>
             </p>
             <p>
             <% if (ret[0].reported == false){ %>

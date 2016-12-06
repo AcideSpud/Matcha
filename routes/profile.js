@@ -17,32 +17,48 @@ function requireLogin (req, res, next) {
 };
 
 router.get('/:userID', requireLogin, (req, res, next)=>{
-    Profile.findUsers4(req.params.userID, (ret)=> {
-        if(ret) {
-            User.GetDB((db)=> {
-                User.updateVisit(req.params.userID, db, req.session.user.name);
-                User.updatePop(ret[0].popularite + 1, ret, db);
-                var islike = false;
-                if (ret[0].liker) {
-                    for (var i = 0, len = ret[0].liker.length; i < len; i++) {
-                        if (ret[0].liker[i] == req.session.user.name) {
-                            islike = true;
+    if (req.params.userID === req.session.user.name){
+        res.status(404);
+        res.redirect('page_error');
+    }
+    else {
+        Profile.findUsers4(req.params.userID, (ret)=> {
+            if (ret) {
+                User.GetDB((db)=> {
+                    User.updateVisit(req.params.userID, db, req.session.user.name);
+                    User.updatePop(ret[0].popularite + 1, ret, db);
+                    var islike = false;
+                    var imlike = false;
+                    if (ret[0].liker) {
+                        for (var i = 0, len = ret[0].liker.length; i < len; i++) {
+                            if (ret[0].liker[i] == req.session.user.name) {
+                                islike = true;
+                            }
                         }
                     }
-                }
-                User.findUsers3(req.session.user.name, (resu)=> {
-                    let time = timeAgo(ret[0].lastCo);
-                    res.render('profile', {
-                        ret: ret,
-                        islike: islike,
-                        time: time,
-                        user: resu,
-                        autre: req.params.userID
-                    });
-                })
-            });
-        }
-    });
+                    if (ret[0].like) {
+                        for (var i = 0, len = ret[0].like.length; i < len; i++) {
+                            if (ret[0].like[i] == req.session.user.name) {
+                                imlike = true;
+                            }
+                        }
+                    }
+                    User.checkMatch(req.session.user, db, req.params.userID)
+                    User.findUsers3(req.session.user.name, (resu)=> {
+                        let time = timeAgo(ret[0].lastCo);
+                        res.render('profile', {
+                            ret: ret,
+                            islike: islike,
+                            imlike: imlike,
+                            time: time,
+                            user: resu,
+                            autre: req.params.userID
+                        });
+                    })
+                });
+            }
+        });
+    }
 });
 
 router.post('/reporte/:name', requireLogin, (req, res)=>{
