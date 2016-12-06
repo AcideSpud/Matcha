@@ -302,8 +302,8 @@ class Utilisateur {
 
 
 			if (request.body.lat && request.body.long)
-				geoo = {latitude: request.body.lat,
-						longitude: request.body.long};
+				geoo = {latitude: parseFloat(request.body.lat),
+						longitude: parseFloat(request.body.long)};
 
 			if (err) {
 				throw err
@@ -634,6 +634,9 @@ class Utilisateur {
 	static      GetDistance(user, otherUserArray, callback) {
 	    if (this.tcheckIf(user, otherUserArray)){
 		    let geolib = require('geolib');
+			console.log("ICI ====> LATI : " + user.geo.latitude);
+			console.log("ICI ====> LONG : " + user.geo.longitude);
+
 		    let userLatitude = user.geo.latitude.toString();
 		    userLatitude = userLatitude.substring(0, 8);
 		    let userLongitude = user.geo.longitude.toString();
@@ -651,6 +654,8 @@ class Utilisateur {
                     userpos = null;
                     otherpos = null;
                     dist = null;
+					console.log("ICI OTHER ====> LATI : " + otherUserArray[i].geo.latitude);
+					console.log("ICI OTHER ====> LONG : " + otherUserArray[i].geo.longitude);
                     otherLatitude = otherUserArray[i].geo.latitude.toString();
                     otherLatitude = otherLatitude.substring(0, 8);
                     otherLongitude = otherUserArray[i].geo.longitude.toString();
@@ -659,6 +664,7 @@ class Utilisateur {
                     otherpos = {latitude: otherLatitude, longitude: otherLongitude};
                     dist = geolib.getDistance(userpos, otherpos);
                     dist = geolib.convertUnit('km', dist, 0);
+					console.log("ICI DIST ====> RES : " + dist);
                     ret[i] = {"dist": dist};
                 }
             }

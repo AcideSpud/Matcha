@@ -101,6 +101,7 @@ socket.on('sendchat', function(data){
 
         if (res) {
           Utilisateur.checkNbNotif(res[0].name, (cb)=> {
+            console.log("NBSIVUIUSVBISUVN")
             socket.emit('nb_notif_unread', cb);
 
           });
