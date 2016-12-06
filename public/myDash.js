@@ -146,15 +146,18 @@ var onReady = function(e) {
     var status;
     // https://xhr.spec.whatwg.org/#dom-xmlhttprequest-readystate
     if (xhr.readyState == 4) { // `DONE`
+        console.log("test");
         status = xhr.status;
         if (status == 200) {
             data = JSON.parse(xhr.responseText);
             showTable(data);
+            console.log("test4000");
         } else {
             console.log(status);
         }
     }
     console.log(data);
+    console.log("test");
 };
 
 var onError = function(err) {

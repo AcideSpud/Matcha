@@ -21,7 +21,7 @@ router.get('/:userID', requireLogin, (req, res, next)=>{
         if(ret) {
             User.GetDB((db)=> {
                 User.updateVisit(req.params.userID, db, req.session.user.name);
-                //User.updatePop(ret[0].popularite + 1, ret, db);
+                User.updatePop(ret[0].popularite + 1, ret, db);
                 var islike = false;
                 if (ret[0].liker) {
                     for (var i = 0, len = ret[0].liker.length; i < len; i++) {

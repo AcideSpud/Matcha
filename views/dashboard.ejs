@@ -41,8 +41,9 @@
                                     Dist:
                                 </td>
                                 <td>
-                                    <% if(geo) { %>
-                                    <% geo[i].dist } %> Km
+                                    <% if(geo[i]) { %>
+                                    <%= geo[i].dist  %> Km
+                                    <% } %>
                                 </td>
                             </tr>
                             <tr>

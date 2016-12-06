@@ -33,9 +33,8 @@ router.get('/', requireLogin,  function(req, res, next) {
         getProfile.sortReported(ret, (ret)=>{
 		    getProfile.SortPrefSexUser(req.session.user, ret, (cb)=> {
                 getProfile.GetDistance(req.session.user, cb, (geo)=> {
-
                     getProfile.findUsers3(req.session.user.name, (resu)=>{
-
+                            console.log("ICI +=====> GEO : " + geo[0].dist)
                             res.render('dashboard', {
                                 ret: cb,
                                 geo: geo,
