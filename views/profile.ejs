@@ -176,6 +176,10 @@
 
     <script>
     
+    var myVar = setInterval(notif, 2000);
+
+
+    function notif(){
         var socket = io.connect('http://localhost:3000');
       console.log('coucou NOTIFFFFFF');
       console.log('<%= user[0].name %>');
@@ -225,5 +229,7 @@
             $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="return send_info_chat2(\'<%= user[0].matchRoom[i] %>\', \'<%= user[0].name %>\')"><strong>' + res.user + '</strong>: le ' + res.date  +'</a></li>');
          })
      })
+    }
+        
      </script>
 <% include footer_dash %>

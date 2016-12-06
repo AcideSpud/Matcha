@@ -99,15 +99,16 @@ socket.on('sendchat', function(data){
       Utilisateur.findUsers3(data, (res)=> {
         var allVisit = [];
 
-        if (res) {
+        if (res[0]) {
           Utilisateur.checkNbNotif(res[0].name, (cb)=> {
             socket.emit('nb_notif_unread', cb);
 
           });
-          for (var i = 0; i < res[0].liker.length; i++){
-            console.log("dddddd:  ", res[0].liker[i])
-            socket.emit('notif_all_like', res[0].liker[i]);
-          }
+          if (res[0].liker)
+            for (var i = 0; i < res[0].liker.length; i++){
+              console.log("dddddd:  ", res[0].liker[i])
+              socket.emit('notif_all_like', res[0].liker[i]);
+            }
           for (var i = 0; i < res[0].visit.length; i++){
             if (allVisit.indexOf(res[0].visit[i].user) == -1){
               allVisit.push(res[0].visit[i].user)
