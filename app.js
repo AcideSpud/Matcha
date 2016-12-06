@@ -73,6 +73,8 @@ app.use(function(req, res, next){
   }
 })
 
+
+
 var all_users = {};
 var rooms = ['room1', 'room2', 'room3'];
 var chatRoom = [];
@@ -97,35 +99,30 @@ socket.on('sendchat', function(data){
 
   socket.on('notification_like', function(data) {
       Utilisateur.findUsers3(data, (res)=> {
+        
         var allVisit = [];
+        var allNotif = [];
 
-        if (res) {
+        if (res[0].liker && res[0].visit && res[0].notif) {
           Utilisateur.checkNbNotif(res[0].name, (cb)=> {
-            console.log("NBSIVUIUSVBISUVN")
             socket.emit('nb_notif_unread', cb);
 
           });
-          if (res[0].liker && res[0].notif && res[0].visit) {
-            for (var i = 0; i < res[0].liker.length; i++) {
-              console.log("dddddd:  ", res[0].liker[i])
-              socket.emit('notif_all_like', res[0].liker[i]);
-            }
-            for (var i = 0; i < res[0].visit.length; i++) {
-              if (allVisit.indexOf(res[0].visit[i].user) == -1) {
-                allVisit.push(res[0].visit[i].user)
-                socket.emit('notif_all_visit', res[0].visit[i].user);
-              }
-            }
-            for (let j = 0; j < res[0].notif.length; j++) {
-              if (res[0].notif[j].userSend != res[0].name) {
-                res[0].notif[j].date = timeAgo(res[0].notif[j].date);
-                Utilisateur.findUsers3(res[0].notif[j].userSend, (resu)=> {
-                  socket.emit('notif_like', res[0].notif[j], resu[0].img[0]);
-                })
-              }
+          socket.emit('notif_all_like', res[0].liker);
+          for (var i = 0; i < res[0].visit.length; i++){
+            if (allVisit.indexOf(res[0].visit[i].user) === -1){
+              allVisit.push(res[0].visit[i].user)
             }
           }
+          socket.emit('notif_all_visit', allVisit);
+          for (let j = 0; j < res[0].notif.length; j++){
+            if (allNotif.indexOf(res[0].notif[j].userSend) === -1){
+              res[0].notif[j].date = timeAgo(res[0].notif[j].date);
+              allNotif.push(res[0].notif[j])
+            }  
           }
+          socket.emit('notif_like', allNotif)
+        }
       });
   });
 
