@@ -47,7 +47,6 @@ class Chat {
 				throw err
 			}
 			else {
-				console.log('FINDCHATROOM(CHAT_FUNCTION:)', name)
 				db.collection('chatRoom').find({chatRoomName: name}).toArray(function (err, result) {
 					if (err) {
 						callback(err);
@@ -108,12 +107,12 @@ class Chat {
 			})
 	}
 
-	static	readAllMsg2(name, autre, callback){
+	static	readAllMsg2(name, moi, callback){
 		this.GetDB(function(db){
 			db.collection("chatRoom").find({"chatRoomName": name})
   				.forEach(function (doc) {
     				doc.conte.forEach(function (conte) {
-      					if (conte.user === autre) {
+      					if (conte.user !== moi) {
         				conte.isRead = true;
       					}
       					
@@ -123,9 +122,62 @@ class Chat {
 		})
 	}
 
+	static	createChatroom2(m, o, callback){
+		var name = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".shuffle();
+
+		var chatRoom = {chatRoomName: name,
+						conte:[],
+						other: o,
+						me: m
+						}
+		this.GetDB((db)=>{
+			db.collection("chatRoom").insert(chatRoom, null, (err, res)=>{
+				if (err) throw err;
+				else{
+					callback(name);
+				}
+			})
+		})
+	}
+
+	static	findSameRoom(user, key, callback){
+		let mongo = require('mongodb').MongoClient;
+
+		mongo.connect("mongodb://localhost/matcha", (err, db)=> {
+			let error;
+			if (err) {
+				throw err
+			}
+			else {
+				db.collection('chatRoom').find({me: user, other: key}).toArray(function (err, result) {
+					if (err) {
+						callback(err);
+					}
+					if (result[0]) {
+
+					} else {
+						result = undefined
+					}
+					callback(result)
+				});
+			}
+		})
+	}
+
+	static	deleteChatroom(chatRoomName, callback){
+		this.GetDB((db)=>{
+			db.collection("chatRoom").remove({"chatRoomName": chatRoomName}, (err, res)=>{
+				callback(chatRoomName);
+			})
+		})
+
+	}
+
 	static createChatroom(name, callback){
 		
 		var chatRoom = {chatRoomName: name,
+						me: [],
+						other: [],
 						conte:[]
 						}
 		this.GetDB(function(db){

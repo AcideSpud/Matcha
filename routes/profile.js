@@ -43,7 +43,7 @@ router.get('/:userID', requireLogin, (req, res, next)=>{
                             }
                         }
                     }
-                    User.checkMatch(req.session.user, db, req.params.userID)
+                  //  User.checkMatch(req.session.user, db, req.params.userID)
                     User.findUsers3(req.session.user.name, (resu)=> {
                         let time = timeAgo(ret[0].lastCo);
                         res.render('profile', {

@@ -144,6 +144,8 @@ socket.on('sendchat', function(data){
 
   socket.on('notification_newMsg', function(data){
 
+    var allMsg = [];
+
     Utilisateur.findUsers3(data, (res)=>{
       if (res){
         for(var i = 0; i<res[0].matchRoom.length; i++){
@@ -151,9 +153,11 @@ socket.on('sendchat', function(data){
             if (chat && chat[0].conte){
               for(var i =0; i<chat[0].conte.length; i++){
                 if((chat[0].conte[i].user != res[0].name) && (chat[0].conte[i].isRead == false)){
-                  socket.emit('notif_newMsg', chat[0].conte[i])
+                  allMsg.push(chat[0].conte[i])
                 } 
               }
+              console.log('--------',allMsg)
+              socket.emit('notif_newMsg', allMsg, chat[0].chatRoomName)
             }    
           })
         }
@@ -198,8 +202,8 @@ socket.on('sendchat', function(data){
       all_users[username] = username;
       socket.join(chatRoomName);
     });
-
   })
+
 
 });
 

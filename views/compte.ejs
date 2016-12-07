@@ -173,13 +173,16 @@
 </div>
 
 
-<script src="../socket.io/socket.io.js"></script>
-<script>
+<script src="socket.io/socket.io.js"></script>
+  <script>
+    var socket = io.connect('http://localhost:3000');
+    socket.emit('notification_newMsg', '<%= user[0].name %>');
+
     notif();
     var myVar = setInterval(notif, 2000);
 
     function notif(){
-        var socket = io.connect('http://localhost:3000');
+        
 
         socket.on('connect', function(){
         socket.emit('notification_like', '<%= user[0].name %>');
@@ -210,10 +213,12 @@
         socket.on('nb_notif_unread', (res)=>{
             $('#notif_nb').text(res);
          }) 
-         socket.on('notif_newMsg', (res)=>{
-            console.log('res', res)
-            $('#notif_msg').empty();
-            $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="return send_info_chat2(\'<%= user[0].matchRoom[i] %>\', \'<%= user[0].name %>\')"><strong>' + res.user + '</strong>: le ' + res.date  +'</a></li>');
+         socket.on('notif_newMsg', (res, crn)=>{
+
+            for(var i = 0; i < res.length; i++){
+            $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="return send_info_chat2('+ crn + ', \'<%= user[0].name %>\')"><strong>' + res[i].user + '</strong>: le ' + res[i].date  +'</a></li>');
+                }
+            
             })
         })
     }  

@@ -28,7 +28,6 @@
             $('#messages').append('<div class="well"><div class="info"><p><strong>' + username + '(' + date + ')' + ':</p></strong>' + data + '</div></div>');
          })
 
-
          socket.on('afficher_message', function(username, data){
           console.log('updatechat---', username, data)
           $('#messages').append('<div class="well"><div class="info"><p><strong>' + username + ':</p></strong>' + data + '</div></div>');
@@ -53,7 +52,6 @@
               });
            });
 
-
             function switchRoom(room, name){
                socket.emit('switchRoom', room, name);
             }
@@ -73,4 +71,5 @@
          });
 
    	</script>
+
 <% include footer_dash %>

@@ -65,8 +65,8 @@
   })
   </script>
 
-<script src="../socket.io/socket.io.js"></script>
-<script>
+<script src="socket.io/socket.io.js"></script>
+  <script>
     notif();
     var myVar = setInterval(notif, 2000);
 
@@ -104,11 +104,9 @@
          }) 
          socket.on('notif_newMsg', (res)=>{
             console.log('res', res)
-            $('#notif_msg').empty();
             $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="return send_info_chat2(\'<%= user[0].matchRoom[i] %>\', \'<%= user[0].name %>\')"><strong>' + res.user + '</strong>: le ' + res.date  +'</a></li>');
             })
         })
-    }  
+  }  
 </script>
-
 <% include footer_dash %>

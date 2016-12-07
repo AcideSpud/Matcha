@@ -50,6 +50,7 @@ class Utilisateur {
 					callback(result)
 				});
 			}
+			db.close();
 		})
 	}
 
@@ -119,29 +120,29 @@ class Utilisateur {
 	}
 
 	static		updateMainChatRoom(db, username, focusName) {
-		console.log('usernae::::', username)
-		this.findUsers3(username, (res)=> {
-			if (res[0]) {
-				console.log('WTFFF', res[0].name)
-				for (var i = 0; i < res[0].matchRoom.length; i++) {
-					if (res[0].matchRoom[i].indexOf(focusName) == 0) {
+		var chatRoom = require('../models/chat_function')
+	
+		console.log('UPDATEMAINCHATROOM', username, focusName)
 
-						var focus = res[0].matchRoom[i];
-						console.log('WTF', focus)
-						break;
-					}
-				}
-			}
-			if (res[0] && focus)
-				db.collection("users").updateOne({"name": username}, {
-					$set: {"focus": focus}
-				}, (err, res)=> {
-					if (err) throw err;
+		chatRoom.findSameRoom(username, focusName, (res)=>{
+			if (res){
+				db.collection("users").updateOne({"name": username}, {$set :{"focus": res[0].chatRoomName}},
+					(err, resu)=>{
+						console.log('updateMainChatRoom', resu.chatRoomName);
 				})
+			} else{
+				chatRoom.findSameRoom(focusName, username, (res)=>{
+					if (res){
+						db.collection("users").updateOne({"name": username}, {$set :{"focus": res[0].chatRoomName}},
+						(err, resu)=>{
+						console.log('updateMainChatRoom', resu.chatRoomName);
+					})
+				}
+			})
+			}
+
 		})
 	}
-
-
 
 	static		updateVisit(user, db, key){
 		this.findUsers3(user, (res)=>{
@@ -157,53 +158,51 @@ class Utilisateur {
 	}
 
 	static		checkMatch(user, db, key){
+		var chatRoom = require('../models/chat_function')
 
 		this.findUsers3(user.name, (res)=>{
 			if (res[0].liker)
 				for (var i = 0; i < res[0].liker.length; i++){
-					console.log('LES PERSONNES QUE JE LIKE' +res[0].like[i]);
-					console.log('LES PERSONNES QUI ME LIKE'  +res[0].liker[i]);
 					if (res[0].liker[i] === key){
-						console.log('MATCHHH');
-						this.updateMatchUser(user, db, key);
+						chatRoom.createChatroom2(user.name, key, (chatRoomName)=>{
+							this.updateMatchUser(user, db, key, chatRoomName);
+						})
 					}
-					else
-						console.log('pas match')
 				}
-			else (console.log('personne updateMatch'))
-		})
-
+			})
 	}
 
 	static		checkUnMatch(user, db, key){
+		var chatRoom = require('../models/chat_function')
 
 		this.findUsers3(user.name, (res)=>{
 			if (res[0].liker)
 				for (var i = 0; i < res[0].liker.length; i++){
-					console.log('LES PERSONNES QUE JE LIKE' +res[0].like[i]);
-					console.log('LES PERSONNES QUI ME LIKE'  +res[0].liker[i]);
 					if (res[0].liker[i] === key){
-						console.log('UNNNMATCHHH');
-						this.updateUnMatchUser(user, db, key);
+						chatRoom.findSameRoom(user.name, key, (sameRoom)=>{
+							if (sameRoom[0]){
+								chatRoom.deleteChatroom(sameRoom[0].chatRoomName, (res)=>{
+									this.updateUnMatchUser(user, db, key, res);
+								})
+							}
+						})
 					}
-					else
-						console.log('pas match')
 				}
-			else (console.log('personne updateMatch'))
 		})
-
 	}
 
-	static		updateMatchUser(user, db, key) {
 
 
-		db.collection("users").updateOne({"name": user.name}, {$push: {"matchRoom": key+user.name}}, (err)=> {
+	static		updateMatchUser(user, db, key, chatRoomName) {
+
+
+		db.collection("users").updateOne({"name": user.name}, {$push: {"matchRoom": chatRoomName}}, (err)=> {
 			if (err)
 				throw err;
 			else
 				console.log("Update like OK !");
 		})
-		db.collection("users").updateOne({"name": key}, {$push: {"matchRoom":key+user.name}}, (err)=> {
+		db.collection("users").updateOne({"name": key}, {$push: {"matchRoom":chatRoomName}}, (err)=> {
 			if (err)
 				throw err;
 			else
@@ -212,24 +211,22 @@ class Utilisateur {
         this.sendNotif(user.name, key, 'Match with', db);
 	}
 
-	static		updateUnMatchUser(user, db, key) {
+	static		updateUnMatchUser(user, db, key, chatRoomName) {
 
-		console.log('user----:'+ user.name);
-		console.log('key----:' + key)
-		this.sendNotif(user.name, key, 'UnMatch with', db);
-
-		db.collection("users").updateOne({"name": user.name}, {$pull: {"matchRoom": key+user.name}}, (err)=> {
+		
+		db.collection("users").updateOne({"name": user.name}, {$pull: {"matchRoom": chatRoomName}}, (err)=> {
 			if (err)
 				throw err;
 			else
 				console.log("Update like OK !");
 		})
-		db.collection("users").updateOne({"name": key}, {$pull: {"matchRoom": key+user.name}}, (err)=> {
+		db.collection("users").updateOne({"name": key}, {$pull: {"matchRoom": chatRoomName}}, (err)=> {
 			if (err)
 				throw err;
 			else
 				console.log("Update liker OK!");
 		})
+		this.sendNotif(user.name, key, 'UnMatch with', db);
 	}
 
 
