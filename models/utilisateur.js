@@ -292,8 +292,9 @@ class Utilisateur {
 			let bcrypt = require('bcryptjs')
 			var hashtag = require('find-hashtags')
 			var hash = bcrypt.hashSync(request.body.pwd);
-			if (!request.body.geo) {
-				var geoo = {"latitude": 0, "longitude": 0};
+			console.log("|" + request.body.geo + "|");
+			if (request.body.geo == '') {
+				var geoo = {latitude: 0, longitude: 0};
 			} else {
 				var geoo = JSON.parse(request.body.geo);
 			}
@@ -628,7 +629,10 @@ class Utilisateur {
 	static      tcheckIf(user, otherUserArray)
 	{
 		let mbool = true;
-		if (user.geo.latitude){
+		console.log('LATITUDE::::', user.geo.latitude);
+		console.log('DLATITUE::::', user.geo.longitude);
+
+		if (user.geo.latitude !== undefined && user.geo.latitude !== null){
 			for (let i = 0, len = otherUserArray; i < len ; i++){
 				if (!otherUserArray[i].geo.latitude && !otherUserArray[i].geo.longitude)
 					mbool = false;
@@ -678,8 +682,10 @@ class Utilisateur {
             }
             callback(ret);
 		}
-        else
-            callback(null);
+        else{
+        	var ret;
+        	 ret[0] = {"dist" :"Undefined"};
+            callback(ret);}
 
 	}
 	static      SortDistance(user, otherUserArray, distance, callback)
