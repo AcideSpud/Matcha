@@ -7,48 +7,48 @@
 
         <% for (var i=0; i < ret.length; i++) { %>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xs-12" id="datbox">
-                <div class="thumbnail" style="background-image:linear-gradient(90deg,rgb(127, 18, 47), rgb(200, 255, 255));box-shadow: 1px 10px 22px #555; "  id="mybox">
+                <div class="thumbnail" style="background-image:linear-gradient(180deg,rgb(127, 18, 47), rgb(200, 255, 255));box-shadow: 5px 5px 12px #555;border-style:solid;border-color:black;"  id="mybox">
                     <div>
                     <% if (ret[i].img[0]){ %>
-                    <img class="parent" src="<%= ret[i].img[0] %>"  alt="">
+                    <img style="border-style:solid;border-color:black;border-radius: 10%;box-shadow: 10px 10px 22px #555;" class="parent" src="<%= ret[i].img[0] %>"  alt="">
                     <% } else { %>
-                    <img class=" img-thumbnail" alt="140x140" src="/img/no_image.png" />
+                    <img class=" img-thumbnail" alt="125x125" src="/img/no_image.png" />
                     <% } %></div>
                     <div class="caption">
-                        <h3><%= ret[i].nom %> <%= ret[i].prenom %></h3>
+                        <h3><strong><%= ret[i].nom %> <%= ret[i].prenom %></strong></h3>
                         <div class="col-md-4 column">
                         <table class="table">
                             <thead>
                             <tr>
                                 <td>
-                                    Age :
+                                    <strong><p>Age :</p></strong>
                                 </td>
                                 <td>
                                     <% if(ret[i].age) %>
-                                    <%= ret[i].age %>
+                                   <i> <%= ret[i].age %></i>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    Popularite:
+                                    <strong><p>Popularite:</p></strong>
                                 </td>
                                 <td>
-                                    <%= ret[i].popularite %>
+                                   <i><%= ret[i].popularite %></i>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    Dist:
+                                    <strong><p>Dist:</p></strong>
                                 </td>
                                 <td>
                                     <% if(geo[i]) { %>
-                                    <%= geo[i].dist  %> Km
-                                    <% } %>
+                                   <i> <%= geo[i].dist  %> Km
+                                    <% } %><i>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    Insterested by :
+                                    <strong><p>Insterested by :</p></strong>
                                 </td>
                                 <td>
                                     <% if (ret[i].orientation == 'Ht' && ret[i].genre == 'M'){ %>
@@ -86,7 +86,7 @@
   <script>
     
     notif();
-    var myVar = setInterval(notif, 2000);
+    var myVar = setInterval(notif, 7000);
 
     function notif(){
         
@@ -121,11 +121,10 @@
             $('#notif_nb').text(res);
          }) 
          socket.on('notif_newMsg', (res, crn)=>{
-
+            $('#notif_msg').empty();
             for(var i = 0; i < res.length; i++){
-            $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="return send_info_chat2('+ crn + ', \'<%= user[0].name %>\')"><strong>' + res[i].user + '</strong>: le ' + res[i].date  +'</a></li>');
+            $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="return send_info_chat3(\'<%= user[0].focus %>\', \'<%= user[0].name %>\')"><strong>' + res[i].user + '</strong>: le ' + res[i].date  +'</a></li>');
                 }
-            
             })
         })
     }  

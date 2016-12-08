@@ -119,29 +119,34 @@ class Utilisateur {
 		callback(null);
 	}
 
-	static		updateMainChatRoom(db, username, focusName) {
+	static		updateMainChatRoom(db, username, focusName, chatR) {
 		var chatRoom = require('../models/chat_function')
-	
-		console.log('UPDATEMAINCHATROOM', username, focusName)
 
-		chatRoom.findSameRoom(username, focusName, (res)=>{
-			if (res){
-				db.collection("users").updateOne({"name": username}, {$set :{"focus": res[0].chatRoomName}},
-					(err, resu)=>{
-						console.log('updateMainChatRoom', resu.chatRoomName);
+		if (chatR !== null){
+			console.log('PAR LE FOOTER UTiLISATEUR:', chatR)
+			db.collection("users").updateOne({"name": username},{$set: {"focus": chatR}},
+				(err, resu)=>{
 				})
-			} else{
-				chatRoom.findSameRoom(focusName, username, (res)=>{
-					if (res){
-						db.collection("users").updateOne({"name": username}, {$set :{"focus": res[0].chatRoomName}},
+		}
+		else{
+			chatRoom.findSameRoom(username, focusName, (res)=>{
+				if (res){
+					db.collection("users").updateOne({"name": username}, {$set :{"focus": res[0].chatRoomName}},
 						(err, resu)=>{
-						console.log('updateMainChatRoom', resu.chatRoomName);
+							console.log('updateMainChatRoom', resu.focus);
+					})
+				} else{
+					chatRoom.findSameRoom(focusName, username, (res)=>{
+						if (res){
+							db.collection("users").updateOne({"name": username}, {$set :{"focus": res[0].chatRoomName}},
+							(err, resu)=>{
+								console.log('updateMainChatRoom', resu.focus);
+							})
+						}
 					})
 				}
 			})
-			}
-
-		})
+		}
 	}
 
 	static		updateVisit(user, db, key){
@@ -287,7 +292,11 @@ class Utilisateur {
 			let bcrypt = require('bcryptjs')
 			var hashtag = require('find-hashtags')
 			var hash = bcrypt.hashSync(request.body.pwd);
-			var geoo = JSON.parse(request.body.geo);
+
+			if (!request.body.geo)
+				var geoo = {"latitude": 0, "longitude": 0};
+			else
+				var geoo = JSON.parse(request.body.geo);
 			var sanitizeHtml = require('sanitize-html');
 
 			var cleanPrenom = sanitizeHtml(request.body.prenom)

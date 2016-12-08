@@ -14,19 +14,17 @@
         <% } %>
 
         <div class="col-md-8 column">
-                <p>
-                    <%= ret[0].name %>
-                    </p>
+                <p><%= ret[0].name %></p>
                     <% if (ret[0].tag) { %>
-                <p>
-                <% for (var i = 0; i < ret[0].tag.length;  i++) { %>
-               <span class="label label-info"><%= ret[0].tag[i] %></span> &nbsp;
-                    <% if (i == 9){ %>
-                        </br>
-                    <% } %>
-                     <% } %></p>
-                    <% } %>
-
+                <p> 
+                    <% for (var i = 0; i < ret[0].tag.length;  i++) { %>
+                        <span class="label label-info"><%= ret[0].tag[i] %></span> &nbsp;
+                        <% if (i == 9){ %>
+                            </br>
+                        <% } %>
+                     <% } %>
+                </p>
+                <% } %>
         </div>
         <div class="container">
             <div class="row">
@@ -178,14 +176,14 @@
     </div>
 </div>
 
-<script src="socket.io/socket.io.js"></script>
+<script src="../socket.io/socket.io.js"></script>
   <script>
 
     notif();
-    var myVar = setInterval(notif, 2000);
+    var myVar = setInterval(notif, 7000);
 
     function notif(){
-        
+
         var socket = io.connect('http://localhost:3000');
         socket.on('connect', function(){
         socket.emit('notification_like', '<%= user[0].name %>');
@@ -217,11 +215,10 @@
             $('#notif_nb').text(res);
          }) 
          socket.on('notif_newMsg', (res, crn)=>{
-
+            $('#notif_msg').empty();
             for(var i = 0; i < res.length; i++){
-            $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="return send_info_chat2('+ crn + ', \'<%= user[0].name %>\')"><strong>' + res[i].user + '</strong>: le ' + res[i].date  +'</a></li>');
+            $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="return send_info_chat3(\'<%= user[0].focus %>\', \'<%= user[0].name %>\')"><strong>' + res[i].user + '</strong>: le ' + res[i].date  +'</a></li>');
                 }
-            
             })
         })
     }  

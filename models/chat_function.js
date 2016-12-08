@@ -32,9 +32,20 @@ class Chat {
 					callback(res)
 				})
 			}
-
 		})
+	}
 
+	static	findWho(username, crn, callback){
+		
+		this.findChatRoom(crn, (res)=>{
+			if (res){
+				for (var i = 0; i < res.length; i++) {
+					console.log(res[i])
+					if(res[i].me === username)
+						callback(res[i])
+				}
+			}
+		})
 	}
 
 	static findChatRoom(name, callback) {
@@ -42,7 +53,6 @@ class Chat {
 		let mongo = require('mongodb').MongoClient;
 
 		mongo.connect("mongodb://localhost/matcha", (err, db)=> {
-			let error;
 			if (err) {
 				throw err
 			}

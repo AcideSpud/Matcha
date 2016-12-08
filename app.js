@@ -156,7 +156,6 @@ socket.on('sendchat', function(data){
                   allMsg.push(chat[0].conte[i])
                 } 
               }
-              console.log('--------',allMsg)
               socket.emit('notif_newMsg', allMsg, chat[0].chatRoomName)
             }    
           })
@@ -165,7 +164,6 @@ socket.on('sendchat', function(data){
     })
   })
 
-
   socket.on('disconnect', function(){
     delete all_users[socket.username];
     io.sockets.emit('updateusers', all_users);
@@ -173,10 +171,10 @@ socket.on('sendchat', function(data){
   });
 
   socket.on('adduser3', function(username, chatRoomName){
+
     var chat = require('./models/chat_function.js');
     var allChatRoom = new Array();
     socket.username = username;
-
 
     async.series({
       one: function(callback) {
@@ -203,8 +201,6 @@ socket.on('sendchat', function(data){
       socket.join(chatRoomName);
     });
   })
-
-
 });
 
 
@@ -224,7 +220,6 @@ app.use('/forgot_mail', forgot_mail);
 app.use('/logout', logout);
 
 /*
-
 app.get('*', function(req, res, next) {
   var err = new Error();
   err.status = 404;
@@ -237,6 +232,7 @@ app.use(function(err, req, res, next) {
   }
   res.status(404);
   res.render('page_error')
-});
-*/
+});*/
+
+
 module.exports = app;

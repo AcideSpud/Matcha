@@ -54,21 +54,12 @@
         });
     return false;
     });
- 
-  /*  $('#img_button1').click(function() {
-      $("#status").empty().text("Modification ok");
-      });
-    $('#img_button2').click(function() {
-      $("#status").empty().text("Modification ok");
-      });*/
-     
   })
   </script>
-
 <script src="socket.io/socket.io.js"></script>
   <script>
     notif();
-    var myVar = setInterval(notif, 2000);
+    var myVar = setInterval(notif, 7000);
 
     function notif(){
         var socket = io.connect('http://localhost:3000');
@@ -102,11 +93,13 @@
         socket.on('nb_notif_unread', (res)=>{
             $('#notif_nb').text(res);
          }) 
-         socket.on('notif_newMsg', (res)=>{
-            console.log('res', res)
-            $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="return send_info_chat2(\'<%= user[0].matchRoom[i] %>\', \'<%= user[0].name %>\')"><strong>' + res.user + '</strong>: le ' + res.date  +'</a></li>');
+         socket.on('notif_newMsg', (res, crn)=>{
+            $('#notif_msg').empty();
+            for(var i = 0; i < res.length; i++){
+            $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="return send_info_chat3(\'<%= user[0].focus %>\', \'<%= user[0].name %>\')"><strong>' + res[i].user + '</strong>: le ' + res[i].date  +'</a></li>');
+                }
             })
         })
-  }  
+    }  
 </script>
 <% include footer_dash %>
