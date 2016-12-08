@@ -175,15 +175,13 @@
 
 <script src="socket.io/socket.io.js"></script>
   <script>
-    var socket = io.connect('http://localhost:3000');
-    socket.emit('notification_newMsg', '<%= user[0].name %>');
-
+    
     notif();
     var myVar = setInterval(notif, 2000);
 
     function notif(){
         
-
+        var socket = io.connect('http://localhost:3000');
         socket.on('connect', function(){
         socket.emit('notification_like', '<%= user[0].name %>');
         socket.emit('notification_newMsg', '<%= user[0].name %>');
