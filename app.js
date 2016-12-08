@@ -144,6 +144,8 @@ socket.on('sendchat', function(data){
 
   socket.on('notification_newMsg', function(data){
 
+    var allMsg = [];
+
     Utilisateur.findUsers3(data, (res)=>{
       if (res){
         for(var i = 0; i<res[0].matchRoom.length; i++){
@@ -151,16 +153,16 @@ socket.on('sendchat', function(data){
             if (chat && chat[0].conte){
               for(var i =0; i<chat[0].conte.length; i++){
                 if((chat[0].conte[i].user != res[0].name) && (chat[0].conte[i].isRead == false)){
-                  socket.emit('notif_newMsg', chat[0].conte[i])
+                  allMsg.push(chat[0].conte[i])
                 } 
               }
+              socket.emit('notif_newMsg', allMsg, chat[0].chatRoomName)
             }    
           })
         }
       }
     })
   })
-
 
   socket.on('disconnect', function(){
     delete all_users[socket.username];
@@ -169,10 +171,10 @@ socket.on('sendchat', function(data){
   });
 
   socket.on('adduser3', function(username, chatRoomName){
+
     var chat = require('./models/chat_function.js');
     var allChatRoom = new Array();
     socket.username = username;
-
 
     async.series({
       one: function(callback) {
@@ -198,9 +200,7 @@ socket.on('sendchat', function(data){
       all_users[username] = username;
       socket.join(chatRoomName);
     });
-
   })
-
 });
 app.post('/setNotif', (req, res)=>{
     console.log("RECEVE POST SETNOTIF !!!!!")
@@ -227,7 +227,6 @@ app.use('/forgot_mail', forgot_mail);
 app.use('/logout', logout);
 
 /*
-
 app.get('*', function(req, res, next) {
   var err = new Error();
   err.status = 404;
@@ -240,6 +239,7 @@ app.use(function(err, req, res, next) {
   }
   res.status(404);
   res.render('page_error')
-});
-*/
+});*/
+
+
 module.exports = app;

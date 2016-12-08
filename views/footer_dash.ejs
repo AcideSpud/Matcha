@@ -49,7 +49,7 @@
 
                 <ul class="dropdown-menu scrollable-menu"  role="menu" style = "background-image: linear-gradient(90deg,rgb(200, 255, 255), rgb(227, 118, 147));height:auto;max-height:300px;overflow-x:hidden;font-size:0.8em" >
                   <li>
-                      <p><strong>Vos Notifications</strong></p>
+                      <p><strong>Vos Notifications:</strong></p>
                     </li>
                     <ul id="notifliking">
                      </ul>
@@ -63,7 +63,7 @@
                     </li>
                     <li role="separator" class="divider"></li>
                     <li>
-                      <p><strong>Ils vous ont visités</strong></p>
+                      <p><strong>Ils vous ont visités:</strong></p>
                     </li>
                     <ul id ="all_visit">
                      </ul>
@@ -72,12 +72,15 @@
 					 <li class="dropdown" id="notifMatching"  style="">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"  role="button" aria-haspopup="true" aria-expanded="false"><span  id="notif_msg_nb" class="glyphicon glyphicon-comment" aria-hidden="true">0</span> <span class="caret"></span></a>
                 <ul id="notif_msg" class="dropdown-menu scrollable-menu"  role="menu" style="background-image: linear-gradient(90deg,rgb(200, 255, 255), rgb(227, 118, 147));height:auto;max-height:300px;overflow-x:hidden;font-size:0.8em">
+
                 <li>
-                      <p><strong>Vos messages non lu</strong></p>
+                      <p><strong>Vos messages non lu:</strong></p>
                     </li>
+                    <ul id="notif_msg">
+                     </ul>
                     <li role="separator" class="divider"></li>
                     <li>
-                      <p><strong>Toute vos conversations</strong></p>
+                      <p><strong>Toute vos conversations:</strong></p>
                     </li>
                     <% for(var i = 0; i < user[0].matchRoom.length; i++ ) { %>
                     <li><a href="/chat" onclick="return send_info_chat2('<%= user[0].matchRoom[i] %>', '<%= user[0].name %>')"> <%= user[0].matchRoom[i] %></a></li>

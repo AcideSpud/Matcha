@@ -3,13 +3,13 @@
 <div class="container">
     <div class="well"  style="padding:40px;">
       <h2 style="width:20%; margin:auto;">CHAT</h2>
-      <h3 style="width:20%; margin:auto;""> <p>Vous etes dans la room : <%= ret[0].focus %> </p></h3>
+      <h4 style="width:20%; margin:auto;""> <p>Vous etes dans la room : <%= ret[0].focus %> </p></h4>
       <div id="messages" style="">
       </div>
       <div style="float:left;width:300px;height:250px;overflow:scroll-y;padding:10px;">
       <div id="conversation"></div>
        <input id="data" style="width:200px;" />
-       <input type="button" id="datasend" value="send" />
+       <input type="button" id="datasend" value="send"/>
       </div>
     </div>
 </div>
@@ -28,7 +28,6 @@
             $('#messages').append('<div class="well"><div class="info"><p><strong>' + username + '(' + date + ')' + ':</p></strong>' + data + '</div></div>');
          })
 
-
          socket.on('afficher_message', function(username, data){
           console.log('updatechat---', username, data)
           $('#messages').append('<div class="well"><div class="info"><p><strong>' + username + ':</p></strong>' + data + '</div></div>');
@@ -36,9 +35,9 @@
 
          socket.on('updatechat', function(username, data){
             var request = new XMLHttpRequest();
-                            request.open('POST', '/chat/chat', true);
-                            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-                            request.send("userName="+username+"&content="+data+"&roomName="+"<%= ret[0].focus %>");
+            request.open('POST', '/chat/chat', true);
+            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+            request.send("userName="+username+"&content="+data+"&roomName="+"<%= ret[0].focus %>");
          })
 
          socket.on('updaterooms', function(rooms, current_room) {
@@ -53,24 +52,24 @@
               });
            });
 
+          function switchRoom(room, name){
+             socket.emit('switchRoom', room, name);
+          }
 
-            function switchRoom(room, name){
-               socket.emit('switchRoom', room, name);
-            }
-
-            $(function(){
+          $(function(){
             $('#datasend').click( function() {
-               var message = $('#data').val();
-               $('#data').val('');
-               socket.emit('sendchat', message);
+              var message = $('#data').val();
+              $('#data').val('');
+              socket.emit('sendchat', message);
             });
             $('#data').keypress(function(e) {
-               if(e.which == 13) {
-               $(this).blur();
-               $('#datasend').focus().click();
-               }
+              if(e.which == 13) {
+                $(this).blur();
+                $('#datasend').focus().click();
+              }
             });
-         });
+          });
 
    	</script>
+
 <% include footer_dash %>
