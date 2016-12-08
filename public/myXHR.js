@@ -25,7 +25,6 @@ function like_request(name) {
     xhr.open("POST", "/profile/like/:" + name, true);
     xhr.send();
     $('#mylikebutton').text('unlike').removeClass('btn-default').addClass('btn-danger').attr("onclick", "unlike_request('" + my_name + "')");
-    socket.emit('notification_like', '<%= user.name %>');
 }
 
 
@@ -67,4 +66,12 @@ function    changeProfilePicture(path, i){
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
     request.send("path="+path+"&i="+i);
     $("#status").empty().text("Modification ok");
+}
+
+function    setNotif(){
+    console.log("testmabite");
+    var request = new XMLHttpRequest();
+    request.open('POST', '/setNotif', true);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    request.send();
 }

@@ -202,7 +202,14 @@ socket.on('sendchat', function(data){
   })
 
 });
+app.post('/setNotif', (req, res)=>{
+    console.log("RECEVE POST SETNOTIF !!!!!")
+    Utilisateur.findUsers3(req.session.user.name, (cb)=>{
+      Utilisateur.updateNotif(cb);
+      res.end;
+    });
 
+});
 
 app.use(require('./middlewares/flash'));
 app.use('/', routes);

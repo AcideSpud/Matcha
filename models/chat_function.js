@@ -47,7 +47,7 @@ class Chat {
 				throw err
 			}
 			else {
-				console.log('FINDCHATROOM(CHAT_FUNCTION:)', name)
+
 				db.collection('chatRoom').find({chatRoomName: name}).toArray(function (err, result) {
 					if (err) {
 						callback(err);

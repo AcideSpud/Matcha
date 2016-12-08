@@ -290,7 +290,11 @@ class Utilisateur {
 			let bcrypt = require('bcryptjs')
 			var hashtag = require('find-hashtags')
 			var hash = bcrypt.hashSync(request.body.pwd);
-			var geoo = JSON.parse(request.body.geo);
+			if (!request.body.geo) {
+				var geoo = {"latitude": 0, "longitude": 0};
+			} else {
+				var geoo = JSON.parse(request.body.geo);
+			}
 			var sanitizeHtml = require('sanitize-html');
 
 			var cleanPrenom = sanitizeHtml(request.body.prenom)
@@ -598,15 +602,16 @@ class Utilisateur {
 
     }
 
-    static      updateNotif(user, db)
-    {
-            db.collection("users").update({"name": user}, {
-                $set: {
-                    "notif.isRead": true
-                }
-            }, {multi: true}, (err)=> {
-                if (err) throw err;
-            })
+    static      updateNotif(user) {
+		//for (let i = 0; i < user[0].notif.length; i++)
+		//{
+			this.GetDB((db)=>{
+				db.collection("users").update({"name": user[0].name}, { $set: { "notif" : { "isRead" : true} } }, {multi: true}, (err)=> {
+					if (err) throw err;
+				})
+			});
+		//}
+
     }
 
 	static      updatePop(nbScore, userToUp, db) {
