@@ -77,10 +77,10 @@ function    changeProfilePicture(path, i){
     $("#status").empty().text("Modification ok");
 }
 
-function    setNotif(){
+function    setNotif(notif){
     console.log("testmabite");
     var request = new XMLHttpRequest();
     request.open('POST', '/setNotif', true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-    request.send();
+    request.send("notif="+notif);
 }

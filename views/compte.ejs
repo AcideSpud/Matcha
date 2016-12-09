@@ -175,7 +175,7 @@
          socket.on('notif_like', (res, img)=>{
             $('#notifliking').empty();
             for(var i = 0; i < res.length; i++){
-                $('#notifliking').prepend('<li><a class="dropdown-item" href="/profile/'+res[i].userSend+'"> <strong><i>'+ res[i].type + '</i> ' + res[i].userSend + ' </strong> <p>'+ res[i].date + '</p></a></li>');
+                $('#notifliking').prepend('<li><a onclick="setNotif('+res[i]+');"  class="dropdown-item" href="/profile/'+res[i].userSend+'"> <strong><i>'+ res[i].type + '</i> ' + res[i].userSend + ' </strong> <p>'+ res[i].date + '</p></a></li>');
             }
          })
          socket.on('notif_all_like', (res)=>{

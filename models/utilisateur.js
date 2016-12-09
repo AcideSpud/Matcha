@@ -606,17 +606,31 @@ class Utilisateur {
 
     }
 
-    static      updateNotif(user) {
+    static      updateNotif(user, notif) {
 		//for (let i = 0; i < user[0].notif.length; i++)
 		//{
 			this.GetDB((db)=>{
-				db.collection("users").update({"name": user[0].name}, { $set: { "notif" : { "isRead" : true} } }, {multi: true}, (err)=> {
+				db.collection("users").updateOne({"name": user[0].name}, { $set: { "notif" : { "isRead" : true} } }, {multi: true}, (err)=> {
 					if (err) throw err;
 				})
 			});
 		//}
 
     }
+	static	readNotif(user, not){
+		this.GetDB(function(db){
+			db.collection("users").find({"user": user})
+				.forEach(function (doc) {
+					doc.notif.forEach(function (notif) {
+						if (notif.date == not.date && notif.userSend == not.userSend) {
+							notif.isRead = true;
+						}
+
+					});
+					db.collection("users").save(doc);
+				});
+		})
+	}
 
 	static      updatePop(nbScore, userToUp, db) {
 		db.collection("users").updateOne({"name": userToUp[0].name}, {$set: {"popularite": nbScore}}, (err)=> {
