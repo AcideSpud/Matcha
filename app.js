@@ -209,7 +209,9 @@ socket.on('sendchat', function(data){
 
 app.post('/setNotif', (req, res)=>{
     console.log("RECEVE POST SETNOTIF !!!!!")
-      Utilisateur.readNotif(req.session.user.name, req.body.notif);
+
+    console.log(req.body.notif);
+  Utilisateur.readNotif(req.session.user.name, req.body.notif);
       res.end;
 });
 
