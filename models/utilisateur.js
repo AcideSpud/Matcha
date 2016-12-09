@@ -619,10 +619,10 @@ class Utilisateur {
     }
 	static	readNotif(user, not){
 		this.GetDB(function(db){
-			db.collection("users").find({"user": user})
+			db.collection("users").find({"name": user})
 				.forEach(function (doc) {
 					doc.notif.forEach(function (notif) {
-						if (notif.date == not.date && notif.userSend == not.userSend) {
+						if (notif.date == parseInt(not)) {
 							notif.isRead = true;
 						}
 

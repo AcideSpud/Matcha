@@ -121,7 +121,7 @@ socket.on('sendchat', function(data){
           if (res[0].notif){
             for (let j = 0; j < res[0].notif.length; j++){
               if (allNotif.indexOf(res[0].notif[j].userSend) === -1){
-               res[0].notif[j].date = timeAgo(res[0].notif[j].date);
+               res[0].notif[j].time = timeAgo(res[0].notif[j].date);
                allNotif.push(res[0].notif[j])
              }  
             }

@@ -82,5 +82,6 @@ function    setNotif(notif){
     var request = new XMLHttpRequest();
     request.open('POST', '/setNotif', true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    console.log(notif);
     request.send("notif="+notif);
 }
