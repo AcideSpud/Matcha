@@ -99,29 +99,34 @@ socket.on('sendchat', function(data){
 
   socket.on('notification_like', function(data) {
       Utilisateur.findUsers3(data, (res)=> {
-        
-        var allVisit = [];
-        var allNotif = [];
+        if (res[0]){
+          var allVisit = [];
+          var allNotif = [];
 
-        if (res[0].liker && res[0].visit && res[0].notif) {
           Utilisateur.checkNbNotif(res[0].name, (cb)=> {
             socket.emit('nb_notif_unread', cb);
 
           });
-          socket.emit('notif_all_like', res[0].liker);
-          for (var i = 0; i < res[0].visit.length; i++){
-            if (allVisit.indexOf(res[0].visit[i].user) === -1){
-              allVisit.push(res[0].visit[i].user)
+          if (res[0].liker){
+            socket.emit('notif_all_like', res[0].liker);
+          }
+          if (res[0].visit){
+            for (var i = 0; i < res[0].visit.length; i++){
+              if (allVisit.indexOf(res[0].visit[i].user) === -1){
+               allVisit.push(res[0].visit[i].user)
+              }
             }
+            socket.emit('notif_all_visit', allVisit);
           }
-          socket.emit('notif_all_visit', allVisit);
-          for (let j = 0; j < res[0].notif.length; j++){
-            if (allNotif.indexOf(res[0].notif[j].userSend) === -1){
-              res[0].notif[j].date = timeAgo(res[0].notif[j].date);
-              allNotif.push(res[0].notif[j])
-            }  
+          if (res[0].notif){
+            for (let j = 0; j < res[0].notif.length; j++){
+              if (allNotif.indexOf(res[0].notif[j].userSend) === -1){
+               res[0].notif[j].date = timeAgo(res[0].notif[j].date);
+               allNotif.push(res[0].notif[j])
+             }  
+            }
+            socket.emit('notif_like', allNotif)
           }
-          socket.emit('notif_like', allNotif)
         }
       });
   });
@@ -143,7 +148,6 @@ socket.on('sendchat', function(data){
   })
 
   socket.on('notification_newMsg', function(data){
-
     var allMsg = [];
 
     Utilisateur.findUsers3(data, (res)=>{
@@ -202,10 +206,11 @@ socket.on('sendchat', function(data){
     });
   })
 });
+
 app.post('/setNotif', (req, res)=>{
     console.log("RECEVE POST SETNOTIF !!!!!")
     Utilisateur.findUsers3(req.session.user.name, (cb)=>{
-      Utilisateur.updateNotif(cb);
+      /*Utilisateur.updateNotif(cb);*/
       res.end;
     });
 

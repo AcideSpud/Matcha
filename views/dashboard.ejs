@@ -12,7 +12,7 @@
                     <% if (ret[i].img[0]){ %>
                     <img style="border-style:solid;border-color:black;border-radius: 10%;box-shadow: 10px 10px 22px #555;" class="parent" src="<%= ret[i].img[0] %>"  alt="">
                     <% } else { %>
-                    <img class=" img-thumbnail" alt="125x125" src="/img/no_image.png" />
+                    <img class=" img-thumbnail" alt="100x100" src="/img/no_image.png" />
                     <% } %></div>
                     <div class="caption">
                         <h3><strong><%= ret[i].nom %> <%= ret[i].prenom %></strong></h3>
@@ -92,6 +92,7 @@
         
         var socket = io.connect('http://localhost:3000');
         socket.on('connect', function(){
+        console.log('coucou')
         socket.emit('notification_like', '<%= user[0].name %>');
         socket.emit('notification_newMsg', '<%= user[0].name %>');
         socket.emit('notification_newMsg_unread', '<%= user[0].name %>');
