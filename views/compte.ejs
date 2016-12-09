@@ -37,6 +37,8 @@
         return temp;
     }
     
+    console.log('GEOLOCATION: ', navigator.geolocation)
+
     if(navigator.geolocation){
         navigator.geolocation.getCurrentPosition(function(position){
             $("#geoResult").val(JSON.stringify(cloneAsObject(position.coords)));
@@ -78,7 +80,7 @@
                 <input name="long" style="width:100%;" type="number"  value="<%= ret[0].geo.longitude %>" >
             </div>
                 <div class="form-group">
-                    <p style="{font-size: 0.3em;}"> (<%= city %> / <%= country %> )</p>
+                    <p style="{font-size: 0.2em;}"> (<%= city %> / <%= country %> )</p>
                 </div>
             <% } %>
         <hr>
