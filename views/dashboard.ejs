@@ -1,10 +1,7 @@
 <% include header_dash.ejs %>
 
-
-
 <div class="container" >
     <div class="row" id="table">
-
         <% for (var i=0; i < ret.length; i++) { %>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xs-12" id="datbox">
                 <div class="thumbnail" style="background-image:linear-gradient(180deg,rgb(127, 18, 47), rgb(200, 255, 255));box-shadow: 5px 5px 12px #555;border-style:solid;border-color:black;"  id="mybox">
@@ -84,15 +81,13 @@
 
 <script src="socket.io/socket.io.js"></script>
   <script>
-    
     notif();
     var myVar = setInterval(notif, 7000);
 
     function notif(){
-        
         var socket = io.connect('http://localhost:3000');
+
         socket.on('connect', function(){
-        console.log('coucou')
         socket.emit('notification_like', '<%= user[0].name %>');
         socket.emit('notification_newMsg', '<%= user[0].name %>');
         socket.emit('notification_newMsg_unread', '<%= user[0].name %>');
@@ -100,19 +95,23 @@
          socket.on('notif_like', (res, img)=>{
             $('#notifliking').empty();
             for(var i = 0; i < res.length; i++){
-            $('#notifliking').prepend('<li><a class="dropdown-item" href="/profile/'+res[i].userSend+'"> <strong><i>'+ res[i].type + '</i> ' + res[i].userSend + ' </strong> <p>'+ res[i].date + '</p></a></li>');
+                if (res[i].isRead == false) {
+                    $('#notifliking').prepend('<li><a href="/profile/'+res[i].userSend+'" onclick="setNotif(\'' + res[i].date + '\');" class="dropdown-item"> <strong><i>' + res[i].type + '</i> ' + res[i].userSend + ' </strong> <p>' + res[i].time + '</p></a></li>');
+                } else {
+                    $('#notifliking').prepend('<li ><a href="/profile/'+res[i].userSend+'" style="color: antiquewhite" onclick="setNotif(\'' + res[i].date + '\');" class="dropdown-item"> <strong><i>' + res[i].type + '</i> ' + res[i].userSend + ' </strong> <p>' + res[i].time + '</p></a></li>');
+                }
             }
          })
          socket.on('notif_all_like', (res)=>{
             $('#all_like').empty();
             for(var i = 0; i < res.length; i++){
-            $('#all_like').prepend('<li><a class="dropdown-item" href="/profile/'+res+'"> <strong>'+ res  + ' </strong></a></li>');
+                $('#all_like').prepend('<li><a class="dropdown-item" href="/profile/'+res+'"> <strong>'+ res  + ' </strong></a></li>');
             }
          }) 
          socket.on('notif_all_visit', (res)=>{
             $('#all_visit').empty();
             for(var i = 0; i < res.length; i++){
-              $('#all_visit').prepend('<li><a class="dropdown-item" href="/profile/'+res[i]+'"> <strong>'+ res[i]  + ' </strong></a></li>');  
+                $('#all_visit').prepend('<li><a class="dropdown-item" href="/profile/'+res[i]+'"> <strong>'+ res[i]  + ' </strong></a></li>');  
             }
          }) 
          socket.on('nb_msg_unread', (res)=>{
@@ -130,5 +129,6 @@
         })
     }  
 </script>
+
 
 <% include footer_dash %>

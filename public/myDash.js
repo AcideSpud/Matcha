@@ -156,8 +156,6 @@ var onReady = function(e) {
             console.log(status);
         }
     }
-    console.log(data);
-    console.log("test");
 };
 
 var onError = function(err) {
