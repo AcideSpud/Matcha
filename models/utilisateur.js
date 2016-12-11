@@ -622,6 +622,7 @@ class Utilisateur {
 			db.collection("users").find({"name": user})
 				.forEach(function (doc) {
 					doc.notif.forEach(function (notif) {
+						console.log('READNOTIF--')
 						if (notif.date == parseInt(not)) {
 							notif.isRead = true;
 						}

@@ -35,12 +35,21 @@ class Chat {
 		})
 	}
 
+	static	findOther(username, crn){
+		this.findChatRoom(crn, (res)=>{
+			if (res[0]){
+				console.log('----find other:',res[0].other)
+				return res[0].other;
+			}
+		})
+	}
+
+
 	static	findWho(username, crn, callback){
 		
 		this.findChatRoom(crn, (res)=>{
 			if (res){
 				for (var i = 0; i < res.length; i++) {
-					console.log(res[i])
 					if(res[i].me === username)
 						callback(res[i])
 				}

@@ -26,6 +26,7 @@ router.get('/:userID', requireLogin, (req, res, next)=>{
             if (ret) {
                 User.GetDB((db)=> {
                     User.updateVisit(req.params.userID, db, req.session.user.name);
+                    console.log('coucou')
                     User.updatePop(ret[0].popularite + 1, ret, db);
                     var islike = false;
                     var imlike = false;
@@ -43,8 +44,10 @@ router.get('/:userID', requireLogin, (req, res, next)=>{
                             }
                         }
                     }
+                    console.log('COUCOU PROFILE>JS')
                     User.findUsers3(req.session.user.name, (resu)=> {
                         let time = timeAgo(ret[0].lastCo);
+                        console.log('COUCOU PROPROROORO')
                         res.render('profile', {
                             ret: ret,
                             islike: islike,
