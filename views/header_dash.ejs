@@ -8,13 +8,13 @@
     <link rel="stylesheet" type="text/css" href="/mystyle.css">
     <script type="text/javascript" src="/myXHR.js"></script>
     <script type="text/javascript" src="/myDash.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 
 </head>
-
+<body style="background-image: linear-gradient(90deg,rgb(200, 255, 255), rgb(127, 18, 47)); font-family:'Lucidatypewriter', monospace";>
 <nav class="navbar navbar-inverse navbar-static-top">
-    <body style="background-image: linear-gradient(90deg,rgb(200, 255, 255), rgb(127, 18, 47)); font-family:'Lucidatypewriter', monospace";>
+
     <div class="container">
         <a class="navbar-brand" href="/">Michto</a>
         <ul class="nav navbar-nav">
@@ -44,9 +44,7 @@
                         <input type="number" id="age-max" name="age-max" min="18" max="100" value="100" required="required">
                     </div>
                 </li>
-                <li class="divider-vertical"></li>
-            </ul>
-            <ul class="nav navbar-nav">
+
                 <li style="margin-right: 10px;padding-left: 10px;" >
                     <div class="form-group">
                         <p style="color: rgb(255,255,255);"><label> Pop min </label></p>
@@ -59,7 +57,6 @@
                         <input type="number" id="pop-max" name="pop-max" min="18" max="100" value="100" required="required">
                     </div>
                 </li>
-                <li class="divider-vertical"></li>
                 <li style="margin-right: 10px;padding-left: 10px;">
                     <div class="form-group">
                         <p style="color: rgb(255,255,255);"><label><span class="glyphicon glyphicon-map-marker" aria-hidden="true">Dist </span></label></p>
@@ -79,13 +76,13 @@
                 </li>
                 <li>
                     <div class="form-group">
-                    <button style="margin-top: 25px;margin-left: 35px;" id="btn-find" onclick="find();" class="btn btn-warning btn-block" type="button">Find !</button>
+                    <button style="margin-top: 25px;" id="btn-find" onclick="find();" class="btn btn-warning" type="button">Find !</button>
                     </div>
                 </li>
                 <li>
                     <div class="form-group">
-                        <label for="sel1" style="color: rgb(255,255,255);margin-left: 55px">Sort</label>
-                        <select style="margin-left: 55px" class="form-control" id="sel2">
+                        <label for="sel1" style="color: rgb(255,255,255);">Sort</label>
+                        <select style="" class="form-control" id="sel2">
                             <option value="1">Age</option>
                             <option value="2">Popularite</option>
                             <option value="3">Distance</option>
@@ -95,12 +92,13 @@
                 </li>
                 <li>
                     <div class="form-group">
-                        <button style="margin-top: 25px;margin-left: 65px;" id="btn-find" onclick="find('sort');" class="btn btn-warning btn-block" type="button">Sort !</button>
+                        <button style="margin-top: 25px;" id="btn-find" onclick="find('sort');" class="btn btn-warning" type="button">Sort !</button>
                     </div>
                 </li>
             </ul>
         </div>
 </nav>
+
 <% if (locals.flash && locals.flash.error) { %>
 <div class="alert alert-warning">
 <a href="#" class="close" data-dismiss="alert">&times;</a>
