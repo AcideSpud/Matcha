@@ -50,7 +50,6 @@ class Utilisateur {
 					callback(result)
 				});
 			}
-			db.close();
 		})
 	}
 
@@ -161,16 +160,18 @@ class Utilisateur {
 	}
 
 	static		updateVisit(user, db, key){
+		console.log('PUTIN');
 		this.sendNotif(user, key, 'Visit from', db);
+		console.log('updateVisit',user)
 		this.findUsers3(user, (res)=>{
 			if (res[0])
 				db.collection("users").updateOne({"name": user}, {
 					$push : {"visit": { "user": key, "date" :Date.now() } }
 				}, (err, res)=>{
 					if (err) throw err;
-					db.close();
 				})
 		})
+
 	}
 
 	static		checkMatch(user, db, key){
@@ -633,7 +634,6 @@ class Utilisateur {
 	            throw err;
             else
                 console.log("Receve notif");
-            db.close();
         });
     }
 
@@ -671,7 +671,6 @@ class Utilisateur {
 				throw err;
 			else
 				console.log("popularite update OK !");
-			db.close();
 		});
 		
 	}

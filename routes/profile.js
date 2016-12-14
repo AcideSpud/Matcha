@@ -25,6 +25,7 @@ router.get('/:userID', requireLogin, (req, res, next)=>{
         Profile.findUsers4(req.params.userID, (ret)=> {
             if (ret) {
                 User.GetDB((db)=> {
+                    console.log('|',db,'|');
                     User.updateVisit(req.params.userID, db, req.session.user.name);
                     console.log('coucou')
                     User.updatePop(ret[0].popularite + 1, ret, db);
