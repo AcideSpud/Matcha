@@ -142,7 +142,6 @@ class Utilisateur {
 					db.collection("users").updateOne({"name": username}, {$set :{"focus": res[0].chatRoomName}},
 						(err, resu)=>{
 							console.log('updateMainChatRoom', resu.focus);
-							db.close();
 					})
 				} else{
 					chatRoom.findSameRoom(focusName, username, (res)=>{
@@ -150,7 +149,6 @@ class Utilisateur {
 							db.collection("users").updateOne({"name": username}, {$set :{"focus": res[0].chatRoomName}},
 							(err, resu)=>{
 								console.log('updateMainChatRoom', resu.focus);
-								db.close();
 							})
 						}
 					})
@@ -218,14 +216,12 @@ class Utilisateur {
 				throw err;
 			else
 				console.log("Update like OK !");
-			db.close();
 		})
 		db.collection("users").updateOne({"name": key}, {$push: {"matchRoom":chatRoomName}}, (err)=> {
 			if (err)
 				throw err;
 			else
 				console.log("Update liker OK!");
-			db.close();
 		})
         
 	}
@@ -238,14 +234,12 @@ class Utilisateur {
 				throw err;
 			else
 				console.log("Update like OK !");
-			db.close();
 		})
 		db.collection("users").updateOne({"name": key}, {$pull: {"matchRoom": chatRoomName}}, (err)=> {
 			if (err)
 				throw err;
 			else
 				console.log("Update liker OK!");
-			db.close();
 		})
 	}
 
@@ -257,14 +251,12 @@ class Utilisateur {
 				throw err;
 			else
 				console.log("Update like OK !");
-			db.close();
 		})
 		db.collection("users").updateOne({"name": key}, {$push: {"liker": user.name}}, (err)=> {
 			if (err)
 				throw err;
 			else
 				console.log("Update liker OK!");
-			db.close();
 		})
 	}
 
@@ -275,14 +267,12 @@ class Utilisateur {
 				throw err;
 			else
 				console.log("remove like OK !");
-			db.close();
 		});
 		db.collection("users").updateOne({"name": key}, {$pull: {"liker": user.name}}, (err)=> {
 			if (err)
 				throw err;
 			else
 				console.log("remove liker OK ! ");
-			db.close();
 		})
 	}
 
