@@ -74,7 +74,6 @@ app.use(function(req, res, next){
 })
 
 
-
 var all_users = {};
 var rooms = ['room1', 'room2', 'room3'];
 var chatRoom = [];
@@ -99,7 +98,7 @@ socket.on('sendchat', function(data){
 
   socket.on('notification_like', function(data) {
       Utilisateur.findUsers3(data, (res)=> {
-        if (res[0]){
+        if (res){
           var allVisit = [];
           var allNotif = [];
 

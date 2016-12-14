@@ -61,6 +61,13 @@ function send_info_chat3(chatRoomName, username){
     request.send("crn="+chatRoomName+"&name="+username+"&test=test");
 }
 
+function send_info_geo(chatRoomName, username){
+    var request = new XMLHttpRequest();
+    request.open('POST', '/compte/chat', true);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    request.send("crn="+chatRoomName+"&name="+username+"&test=test");
+}
+
 function    deleteImg(path){
     var request = new XMLHttpRequest();
     request.open('POST', '/upload_img/delete_img', true);
