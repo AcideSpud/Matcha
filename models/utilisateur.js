@@ -1,4 +1,4 @@
-
+[]
 class Utilisateur {
 
 
@@ -576,17 +576,18 @@ class Utilisateur {
 	}
 
 	static		sortPop(otherUserArray, callback){
-		var byPop = otherUserArray.popularite.slice(0);
+		var byPop = otherUserArray;
 		byPop.sort(function(a,b) {
 			return a.popularite - b.popularite;
 		});
 		//let ret = Object.keys(otherUserArray.age).sort(function(a,b){return list[a]-list[b]});
+
 		callback(byPop);
 	}
 	static		sortDist(otherUserArray, callback){
 		var byDist = otherUserArray.slice(0);
 		byDist.sort(function(a,b) {
-			return a.geo - b.geo;
+			return a.dist - b.dist;
 		});
 		//let ret = Object.keys(otherUserArray.age).sort(function(a,b){return list[a]-list[b]});
 		callback(byDist);
@@ -684,8 +685,7 @@ class Utilisateur {
 	static      GetDistance(user, otherUserArray, callback) {
 	    if (this.tcheckIf(user, otherUserArray)){
 		    let geolib = require('geolib');
-			console.log("ICI ====> LATI : " + user.geo.latitude);
-			console.log("ICI ====> LONG : " + user.geo.longitude);
+
 
 		    let userLatitude = user.geo.latitude.toString();
 		    userLatitude = userLatitude.substring(0, 8);
@@ -704,8 +704,6 @@ class Utilisateur {
                     userpos = null;
                     otherpos = null;
                     dist = null;
-					console.log("ICI OTHER ====> LATI : " + otherUserArray[i].geo.latitude);
-					console.log("ICI OTHER ====> LONG : " + otherUserArray[i].geo.longitude);
                     otherLatitude = otherUserArray[i].geo.latitude.toString();
                     otherLatitude = otherLatitude.substring(0, 8);
                     otherLongitude = otherUserArray[i].geo.longitude.toString();
@@ -714,7 +712,6 @@ class Utilisateur {
                     otherpos = {latitude: otherLatitude, longitude: otherLongitude};
                     dist = geolib.getDistance(userpos, otherpos);
                     dist = geolib.convertUnit('km', dist, 0);
-					console.log("ICI DIST ====> RES : " + dist);
                     ret[i] = {"dist": dist};
                 }
             }
