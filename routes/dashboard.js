@@ -50,22 +50,22 @@ router.get('/', requireLogin,  function(req, res, next) {
 router.post('/sort', upload.array(), requireLogin, (req, res)=> {
     if (req.body.data) {
         let data = JSON.parse(req.body.data);
-        if (req.body.mySort = 1) {
+        if (req.body.mySort == 1) {
             getProfile.sortAge(data, (cb)=>{
                 res.contentType('json');
                 res.send(JSON.stringify(cb));
             });
         }
-        else if (req.body.mySort = 2) {
+        else if (req.body.mySort == 2) {
             getProfile.sortPop(data, (cb)=>{
                 res.contentType('json');
                 res.send(JSON.stringify(cb));
             });
         }
-        else if (req.body.mySort = 3) {
+        else if (req.body.mySort == 3) {
             getProfile.GetDistance(req.session.user, data, (cb)=> {
                 for (let i = 0, len = data.length; i < len; i++) {
-                    data[i].push({geo: cb[i]});
+                    data[i].dist = cb[i].dist;
                 }
                 getProfile.sortDist(data, (cb)=> {
                     res.contentType('json');
@@ -73,7 +73,7 @@ router.post('/sort', upload.array(), requireLogin, (req, res)=> {
                 })
             });
         }
-        else if (req.body.mySort = 4) {
+        else if (req.body.mySort == 4) {
             getProfile.nbTag(req.session.user, data, (cb)=>{
                 for (let i = 0, len = data.length; i < len; i++){
                     for (let j = 0, lon = cb.length; i < lon; j++){
@@ -93,8 +93,7 @@ router.post('/sort', upload.array(), requireLogin, (req, res)=> {
         User.Create_db((array)=> {
             getProfile.sortReported(array, (array)=>{
             getProfile.SortPrefSexUser(req.session.user, array, (ret)=>{
-
-                if (req.body.mySort = 1) {
+                if (req.body.mySort == 1) {
                     getProfile.sortAge(ret, (cb)=>{
                         getProfile.GetDistance(req.session.user, cb, (geo)=> {
                             for (let i = 0, len = cb.length; i < len; i++) {
@@ -106,18 +105,19 @@ router.post('/sort', upload.array(), requireLogin, (req, res)=> {
                         });
                         });
                 }
-                else if (req.body.mySort = 2) {
+                else if (req.body.mySort == 2) {
                     getProfile.sortPop(ret, (cb)=>{
                         getProfile.GetDistance(req.session.user, cb, (geo)=> {
                             for (let i = 0, len = cb.length; i < len; i++) {
                                 cb[i].dist = geo[i].dist;
                             }
+
                             res.contentType('json');
                             res.send(JSON.stringify(cb));
                         });
                     });
                 }
-                else if (req.body.mySort = 3) {
+                else if (req.body.mySort == 3) {
                     getProfile.GetDistance(req.session.user, ret, (cb)=>{
                         for (let i = 0, len = ret.length; i < len; i++){
                             ret[i].dist = cb[i].dist;
@@ -129,7 +129,7 @@ router.post('/sort', upload.array(), requireLogin, (req, res)=> {
 
                     })
                 }
-                else if (req.body.mySort = 4) {
+                else if (req.body.mySort == 4) {
                     getProfile.nbTag(req.session.user, ret, (cb)=>{
                         getProfile.GetDistance(req.session.user, cb, (geo)=> {
                             for (let i = 0, len = cb.length; i < len; i++) {
