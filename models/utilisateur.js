@@ -63,7 +63,9 @@ class Utilisateur {
 					callback()
 				}
 			})
+			db.close();
 		})
+		
 
 	}
 
@@ -74,7 +76,8 @@ class Utilisateur {
 			}
 		},(err, res)=>{
 			if (err) throw err
-			callback()
+			callback();
+			db.close();
 		})
 	}
 
@@ -93,7 +96,9 @@ class Utilisateur {
 		}, (err, res)=> {
 			if (err) throw err
 			callback()
+			db.close();
 		})
+		
 	}
 
 	static		updateReported(db , reportedUser) {
@@ -103,6 +108,7 @@ class Utilisateur {
 			}
 		}, (err)=> {
 			if (err) throw err;
+			db.close();
 		})
 	}
 
@@ -115,8 +121,10 @@ class Utilisateur {
 			}
 		}, (err)=> {
 			if (err) throw err;
+			db.close();
 		})
 		callback(null);
+		
 	}
 
 	static		updateMainChatRoom(db, username, focusName, chatR) {
@@ -126,6 +134,7 @@ class Utilisateur {
 			console.log('PAR LE FOOTER UTiLISATEUR:', chatR)
 			db.collection("users").updateOne({"name": username},{$set: {"focus": chatR}},
 				(err, resu)=>{
+					db.close();
 				})
 		}
 		else{
@@ -134,6 +143,7 @@ class Utilisateur {
 					db.collection("users").updateOne({"name": username}, {$set :{"focus": res[0].chatRoomName}},
 						(err, resu)=>{
 							console.log('updateMainChatRoom', resu.focus);
+							db.close();
 					})
 				} else{
 					chatRoom.findSameRoom(focusName, username, (res)=>{
@@ -141,6 +151,7 @@ class Utilisateur {
 							db.collection("users").updateOne({"name": username}, {$set :{"focus": res[0].chatRoomName}},
 							(err, resu)=>{
 								console.log('updateMainChatRoom', resu.focus);
+								db.close();
 							})
 						}
 					})
@@ -150,16 +161,16 @@ class Utilisateur {
 	}
 
 	static		updateVisit(user, db, key){
+		this.sendNotif(user, key, 'Visit from', db);
 		this.findUsers3(user, (res)=>{
 			if (res[0])
 				db.collection("users").updateOne({"name": user}, {
 					$push : {"visit": { "user": key, "date" :Date.now() } }
 				}, (err, res)=>{
 					if (err) throw err;
+					db.close();
 				})
-
 		})
-        this.sendNotif(user, key, 'Visit from', db);
 	}
 
 	static		checkMatch(user, db, key){
@@ -199,39 +210,42 @@ class Utilisateur {
 
 
 	static		updateMatchUser(user, db, key, chatRoomName) {
-
+	this.sendNotif(user.name, key, 'Match with', db);
 
 		db.collection("users").updateOne({"name": user.name}, {$push: {"matchRoom": chatRoomName}}, (err)=> {
 			if (err)
 				throw err;
 			else
 				console.log("Update like OK !");
+			db.close();
 		})
 		db.collection("users").updateOne({"name": key}, {$push: {"matchRoom":chatRoomName}}, (err)=> {
 			if (err)
 				throw err;
 			else
 				console.log("Update liker OK!");
+			db.close();
 		})
-        this.sendNotif(user.name, key, 'Match with', db);
+        
 	}
 
 	static		updateUnMatchUser(user, db, key, chatRoomName) {
 
-		
+		this.sendNotif(user.name, key, 'UnMatch with', db);
 		db.collection("users").updateOne({"name": user.name}, {$pull: {"matchRoom": chatRoomName}}, (err)=> {
 			if (err)
 				throw err;
 			else
 				console.log("Update like OK !");
+			db.close();
 		})
 		db.collection("users").updateOne({"name": key}, {$pull: {"matchRoom": chatRoomName}}, (err)=> {
 			if (err)
 				throw err;
 			else
 				console.log("Update liker OK!");
+			db.close();
 		})
-		this.sendNotif(user.name, key, 'UnMatch with', db);
 	}
 
 
@@ -242,14 +256,15 @@ class Utilisateur {
 				throw err;
 			else
 				console.log("Update like OK !");
+			db.close();
 		})
 		db.collection("users").updateOne({"name": key}, {$push: {"liker": user.name}}, (err)=> {
 			if (err)
 				throw err;
 			else
 				console.log("Update liker OK!");
+			db.close();
 		})
-
 	}
 
 	static		updateUnlikeUser(user, db, key) {
@@ -259,14 +274,15 @@ class Utilisateur {
 				throw err;
 			else
 				console.log("remove like OK !");
+			db.close();
 		});
 		db.collection("users").updateOne({"name": key}, {$pull: {"liker": user.name}}, (err)=> {
 			if (err)
 				throw err;
 			else
 				console.log("remove liker OK ! ");
+			db.close();
 		})
-
 	}
 
 	static		updateLocalisation(loca, name){
@@ -278,10 +294,20 @@ class Utilisateur {
 					throw err;
 				else;
 			})
+			db.close();
 		})
-
+		
 	}
 
+	static		updateGeolcation(geolocation, name){
+		this.GetDB((db)=>{
+			db.collection("users").updateOne({"name": name}, {$set: {"geo":geolocation}}, (err)=>{
+				if (err) throw err;
+				db.close();
+			})
+		})
+		
+	}
 
 	static		modifUser(request, callback) {
 		let mongo = require('mongodb').MongoClient;
@@ -292,22 +318,28 @@ class Utilisateur {
 			let bcrypt = require('bcryptjs')
 			var hashtag = require('find-hashtags')
 			var hash = bcrypt.hashSync(request.body.pwd);
-			console.log("|" + request.body.geo + "|");
-			if (request.body.geo == '') {
-				var geoo = {latitude: 0, longitude: 0};
-			} else {
-				var geoo = JSON.parse(request.body.geo);
-			}
-
 			var sanitizeHtml = require('sanitize-html');
+			console.log("|" + request.body.geo + "|");
+			var geoo = {};
+
+			geoo.latitude = JSON.parse(request.body.geo).lat;
+			geoo.longitude =JSON.parse(request.body.geo).lon;
+
+	
+
+			
 
 			var cleanPrenom = sanitizeHtml(request.body.prenom)
 			var cleanNom = sanitizeHtml(request.body.nom)
 			var cleanBio = sanitizeHtml(request.body.bio)
 			var cleanHobbies = sanitizeHtml(request.body.hashtag);
 			var hobbies = hashtag(cleanHobbies);
-
-
+			if (request.body.hastag2){
+				console.log(request.body.hastag2)
+				for (var i = 0; i < request.body.hastag2.length; i++)
+					hobbies.push(request.body.hastag2[i]);
+			}
+			console.log(hobbies);
 
 			if (request.body.lat && request.body.long)
 				geoo = {latitude: parseFloat(request.body.lat),
@@ -351,6 +383,7 @@ class Utilisateur {
 					result = undefined
 				}
 				callback(result);
+				db.close();
 			});
 		})
 	}
@@ -365,7 +398,9 @@ class Utilisateur {
 					callback()
 			})
 			callback()
+			db.close();
 		})
+		
 	}
 
 	static		changeProfilePic(username, imgpath, i, callback){
@@ -380,6 +415,7 @@ class Utilisateur {
    		 		db.collection("users").save(doc);
   			});
   			callback();
+  			db.close();
 		})
 	}
 
@@ -392,6 +428,7 @@ class Utilisateur {
 				if (err) throw err
 				else
 					callback()
+				db.close();
 			})
 		})
 	}
@@ -409,9 +446,8 @@ class Utilisateur {
 			else {
 				var hash = bcrypt.hashSync(request.body.pwd);
 				var user = {
-					name: cleanName,
-					email: request.body.email,
-					pwd: hash,
+					 name: cleanName,
+					 pwd: hash,
 					question: request.body.questionSecrete,
 					reponse: cleanReponse,
 					popularite: 0,
@@ -436,13 +472,14 @@ class Utilisateur {
 								console.log('coucoucoucoucoucoo')
 								response.redirect('/login')
 							}
+							db.close();
 						})
 					}
-					db.close;
 				})
 			}
 		})
 	}
+	
 	static		checkNbNotif(name, callback){
 		var nb = 0;
 
@@ -457,11 +494,6 @@ class Utilisateur {
 		})
 	}
 
-	static      deleteImg(request, response){
-		var async = require('async');
-
-
-	}
 	static		sortReported(otherUserArray, callback){
 		let ret = [];
 		let cmp = 0;
@@ -596,14 +628,13 @@ class Utilisateur {
 	}
 
 	static		sendNotif(userReceve, userSend, notifType, db){
-		console.log('NOTIF TYPE---', notifType, userSend, userReceve)
 	    db.collection("users").updateOne({"name": userReceve}, {$push: {"notif": {"type": notifType, "userSend": userSend, "date": Date.now(), "isRead" : false}}}, (err)=>{
 	        if (err)
 	            throw err;
             else
                 console.log("Receve notif");
+            db.close();
         });
-
     }
 
     static      updateNotif(user, notif) {
@@ -629,6 +660,7 @@ class Utilisateur {
 
 					});
 					db.collection("users").save(doc);
+					db.close();
 				});
 		})
 	}
@@ -639,7 +671,9 @@ class Utilisateur {
 				throw err;
 			else
 				console.log("popularite update OK !");
+			db.close();
 		});
+		
 	}
 	static      tcheckIf(user, otherUserArray)
 	{
@@ -698,7 +732,7 @@ class Utilisateur {
             callback(ret);
 		}
         else{
-        	var ret;
+        	var ret = [];
         	 ret[0] = {"dist" :"Undefined"};
             callback(ret);}
 

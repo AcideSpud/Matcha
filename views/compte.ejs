@@ -37,18 +37,16 @@
         return temp;
     }
     
-    console.log('GEOLOCATION: ', navigator.geolocation)
 
     if(navigator.geolocation){
         navigator.geolocation.getCurrentPosition(function(position){
             $("#geoResult").val(JSON.stringify(cloneAsObject(position.coords)));
         })
     }
-    else{
         $.getJSON("http://ip-api.com/json/?callback=?", function(data) {
             $("#geoResult").val(JSON.stringify(data));
-        });
-    }
+     });
+
     </script>
 <script type="text/javascript">
 </script>
@@ -139,6 +137,22 @@
             </label>
         </div>
         <hr>
+
+        <div class="form-group">
+        <label>What do you like?</label>
+            <select id="hastag2" name="hastag2" class="selectpicker" multiple>
+             <option>Art</option>
+             <option>Musique</option>
+             <option>Litterature</option>
+             <option>Sport</option>
+             <option>Art Martiaux</option>
+             <option>Culture</option>
+             <option>Science</option>
+             <option>Informatique</option>
+             <option>Chill</option>
+         </select>
+
+        </div>
 
         <div class = "form-group">
             <label>Put some #hobbies:</label>

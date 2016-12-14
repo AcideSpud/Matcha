@@ -30,6 +30,7 @@ class Chat {
 						result = undefined
 					}
 					callback(res)
+					db.close();
 				})
 			}
 		})
@@ -38,7 +39,6 @@ class Chat {
 	static	findOther(username, crn){
 		this.findChatRoom(crn, (res)=>{
 			if (res[0]){
-				console.log('----find other:',res[0].other)
 				return res[0].other;
 			}
 		})
@@ -77,6 +77,7 @@ class Chat {
 						result = undefined
 					}
 					callback(result)
+					db.close();
 				});
 			}
 		})
@@ -97,6 +98,7 @@ class Chat {
 						throw err;
 					else
 						console.log("chatRoom modifContent OOK");
+					db.close();
 				})
 			})
 		}
@@ -123,6 +125,7 @@ class Chat {
 					if(err) throw err;
 					else
 						callback()
+					db.close();
 				})
 			})
 	}
@@ -138,6 +141,7 @@ class Chat {
       					
     				});
    		 		db.collection("chatRoom").save(doc);
+   		 		db.close();
   			});
 		})
 	}
@@ -156,6 +160,7 @@ class Chat {
 				else{
 					callback(name);
 				}
+				db.close();
 			})
 		})
 	}
@@ -179,6 +184,7 @@ class Chat {
 						result = undefined
 					}
 					callback(result)
+					db.close();
 				});
 			}
 		})
@@ -188,6 +194,7 @@ class Chat {
 		this.GetDB((db)=>{
 			db.collection("chatRoom").remove({"chatRoomName": chatRoomName}, (err, res)=>{
 				callback(chatRoomName);
+				db.close();
 			})
 		})
 
@@ -206,6 +213,7 @@ class Chat {
 				else{
 					callback()
 				}
+				db.close();
 			})
 		})
 	}
