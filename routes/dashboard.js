@@ -76,9 +76,9 @@ router.post('/sort', upload.array(), requireLogin, (req, res)=> {
         else if (req.body.mySort == 4) {
             getProfile.nbTag(req.session.user, data, (cb)=>{
                 for (let i = 0, len = data.length; i < len; i++){
-                    for (let j = 0, lon = cb.length; i < lon; j++){
+                    for (let j = 0, lon = cb.length; j < lon; j++){
                         if (data[i] == cb[j].name){
-                            data[i].push({nTag : cb[j].size});
+                            data[i].nTag = cb[j].size;
                         }
                     }
                 }
@@ -136,7 +136,7 @@ router.post('/sort', upload.array(), requireLogin, (req, res)=> {
                                 cb[i].dist = geo[i].dist;
                             }
                             for (let i = 0, len = ret.length; i < len; i++) {
-                                for (let j = 0, lon = cb.length; i < lon; j++) {
+                                for (let j = 0, lon = cb.length; j < lon; j++) {
                                     if (ret[i] == cb[j].name) {
                                         ret[i].nTag = cb[j].size;
                                     }

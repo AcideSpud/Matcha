@@ -670,14 +670,15 @@ class Utilisateur {
 		let mbool = true;
 		console.log('LATITUDE::::', user.geo.latitude);
 		console.log('DLATITUE::::', user.geo.longitude);
-
-		if (user.geo.latitude !== undefined && user.geo.latitude !== null){
-			for (let i = 0, len = otherUserArray; i < len ; i++){
-				if (!otherUserArray[i].geo.latitude && !otherUserArray[i].geo.longitude)
-					mbool = false;
-			}
+        for (let i = 0, len = otherUserArray; i < len ; i++){
+            if (otherUserArray[i].geo.latitude !== undefined || otherUserArray[i].geo.longitude !== null)
+                mbool = false;
+        }
+		if (user.geo.latitude !== undefined || user.geo.latitude !== null){
+            mbool = false;
 			return mbool;
 		}
+
 		else
 			return (mbool = false);
 
@@ -729,10 +730,12 @@ class Utilisateur {
         let cmp = 0;
         this.GetDistance(user, otherUserArray, (cb)=>{
             for (let i = 0, len = otherUserArray.length; i < len; i++) {
-               if (cb && cb[i].dist <= distance){
-                   res[cmp] = otherUserArray[i];
-                   cmp++;
-               }
+            	if(cb[i]) {
+					if (cb[i].dist <= distance) {
+						res[cmp] = otherUserArray[i];
+						cmp++;
+					}
+				}
             }
             callback(res);
         });
@@ -765,10 +768,12 @@ class Utilisateur {
             cmp++;
         }
 
-        nbTagUser = user.tag.length;
+        let nbTagUser = user.tag.length;
         let tab = new Array;
         for (let i = 0, len = comTag.length; i < len; i++) {
-            tab[i] = {name: comTag[i][0].name, size: comTag[i].length};
+            if (comTag[i][0]) {
+                tab[i] = {name: comTag[i][0].name, size: comTag[i].length};
+            }
         }
         callback(tab);
 	}
@@ -808,7 +813,9 @@ class Utilisateur {
             nbTagUser = user.tag.length;
             let tab = new Array;
             for (let i = 0, len = comTag.length; i < len; i++) {
-                tab[i] = {name: comTag[i][0].name, size: comTag[i].length};
+                if (comTag[i][0]) {
+                    tab[i] = {name: comTag[i][0].name, size: comTag[i].length};
+                }
             }
             for (let i = 0, len = tab.length; i < len; i++) {
                 nbTagOther[i] = {name: tab[i].name, percent: tab[i].size * 100 / nbTagUser};
