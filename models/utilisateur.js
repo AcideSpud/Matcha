@@ -505,7 +505,8 @@ class Utilisateur {
 		if (user.orientation == 'Ht') {
 			if (user.genre == 'M') {
 				for (let i = 0, len = otherUserArray.length; i < len; i++) {
-					if (otherUserArray[i].genre == 'Mme' && otherUserArray[i].orientation == 'Ht') {
+					if (otherUserArray[i].genre == 'Mme' && otherUserArray[i].orientation == 'Ht' && otherUserArray[i].orientation == 'Bi'
+						&& otherUserArray[i].name != user.name) {
 						res[cmp] = otherUserArray[i];
 						cmp++;
 					}
@@ -513,20 +514,14 @@ class Utilisateur {
 			}
 			else if (user.genre == 'Mme') {
 				for (let i = 0, len = otherUserArray.length; i < len; i++) {
-					if (otherUserArray[i].genre == 'M' && otherUserArray[i].orientation == 'Ht') {
+					if (otherUserArray[i].genre == 'M' && otherUserArray[i].orientation == 'Ht' && otherUserArray[i].orientation == 'Bi'
+						&& otherUserArray[i].name != user.name) {
 						res[cmp] = otherUserArray[i];
 						cmp++;
 					}
 				}
 			}
-			else if (user.genre == 'Tran') {
-				for (let i = 0, len = otherUserArray.length; i < len; i++) {
-					if (otherUserArray[i].genre == 'Mme' || otherUserArray[i].genre == 'M' && otherUserArray[i].orientation == 'Ht') {
-						res[cmp] = otherUserArray[i];
-						cmp++;
-					}
-				}
-			}
+
 		}
 		else if (user.orientation == 'Hm') {
 			if (user.genre == 'M') {
@@ -545,21 +540,23 @@ class Utilisateur {
 					}
 				}
 			}
-			else if (user.genre == 'Tran') {
+
+		}
+		else if (user.orientation == 'Bi') {
+			if (user.genre == 'M') {
 				for (let i = 0, len = otherUserArray.length; i < len; i++) {
-					if (otherUserArray[i].genre == 'Mme' || otherUserArray[i].genre == 'M' && otherUserArray[i].orientation == 'Hm') {
+					if ((otherUserArray[i].genre == 'M' && otherUserArray[i].orientation == 'Hm') && otherUserArray[i].name != user.name && (otherUserArray[i].genre == 'Mme' && otherUserArray[i].orientation != 'Hm')) {
 						res[cmp] = otherUserArray[i];
 						cmp++;
 					}
 				}
 			}
-		}
-		else if (user.orientation == 'Bi') {
-			for (let i = 0, len = otherUserArray.length; i < len; i++) {
-				if ((otherUserArray[i].genre == 'Mme' || otherUserArray[i].genre == 'M' || otherUserArray[i].genre == 'Tran')  &&
-					otherUserArray[i].name != user.name) {
-					res[cmp] = otherUserArray[i];
-					cmp++;
+			else if (user.genre == 'Mme') {
+				for (let i = 0, len = otherUserArray.length; i < len; i++) {
+					if ((otherUserArray[i].genre == 'Mme' && otherUserArray[i].orientation == 'Hm') && otherUserArray[i].name != user.name && (otherUserArray[i].genre == 'M' && otherUserArray[i].orientation != 'Hm')) {
+						res[cmp] = otherUserArray[i];
+						cmp++;
+					}
 				}
 			}
 		}
@@ -670,15 +667,14 @@ class Utilisateur {
 		let mbool = true;
 		console.log('LATITUDE::::', user.geo.latitude);
 		console.log('DLATITUE::::', user.geo.longitude);
-        for (let i = 0, len = otherUserArray; i < len ; i++){
-            if (otherUserArray[i].geo.latitude !== undefined || otherUserArray[i].geo.longitude !== null)
-                mbool = false;
-        }
-		if (user.geo.latitude !== undefined || user.geo.latitude !== null){
-            mbool = false;
+
+		if (user.geo.latitude !== undefined && user.geo.latitude !== null){
+			for (let i = 0, len = otherUserArray; i < len ; i++){
+				if (!otherUserArray[i].geo.latitude || !otherUserArray[i].geo.longitude)
+					mbool = false;
+			}
 			return mbool;
 		}
-
 		else
 			return (mbool = false);
 
@@ -713,15 +709,16 @@ class Utilisateur {
                     otherpos = {latitude: otherLatitude, longitude: otherLongitude};
                     dist = geolib.getDistance(userpos, otherpos);
                     dist = geolib.convertUnit('km', dist, 0);
-                    ret[i] = {"dist": dist};
+                    otherUserArray[i].dist  = dist;
                 }
             }
-            callback(ret);
+            callback(otherUserArray);
 		}
         else{
-        	var ret = [];
-        	 ret[0] = {"dist" :"Undefined"};
-            callback(ret);}
+        	for(let i = 0; i < otherUserArray.length; i++){
+        		otherUserArray[i].dist = "Undef";
+			}
+			callback(otherUserArray);}
 
 	}
 	static      SortDistance(user, otherUserArray, distance, callback)
@@ -786,6 +783,7 @@ class Utilisateur {
         let cmp2 = 0;
         let cmp = 0;
         comTag[cmp] = new Array;
+
         if (val == 2)
             val = 25;
         else if (val == 3)
@@ -809,7 +807,7 @@ class Utilisateur {
                 cmp2 = 0;
                 cmp++;
             }
-
+			console.log("++++++===========++++++\n" + comTag + "\n+++++============+++++++");
             nbTagUser = user.tag.length;
             let tab = new Array;
             for (let i = 0, len = comTag.length; i < len; i++) {
@@ -818,17 +816,20 @@ class Utilisateur {
                 }
             }
             for (let i = 0, len = tab.length; i < len; i++) {
-                nbTagOther[i] = {name: tab[i].name, percent: tab[i].size * 100 / nbTagUser};
+            	if (tab[i]) {
+					nbTagOther[i] = {name: tab[i].name, percent: tab[i].size * 100 / nbTagUser};
+				}
             }
             let j = 0;
             for (let i = 0, len = otherUserArray.length; i < len; i++) {
                 for (let k = 0, lon = nbTagOther.length; k < lon; k++) {
-
-                    if (otherUserArray[i].name == nbTagOther[k].name && nbTagOther[k].percent >= val) {
-                        ret[j] = otherUserArray[i];
-                        j++;
-                    }
-                }
+					if (nbTagOther[k]) {
+						if (otherUserArray[i].name == nbTagOther[k].name && nbTagOther[k].percent >= val) {
+							ret[j] = otherUserArray[i];
+							j++;
+						}
+					}
+				}
             }
             callback(ret);
         }

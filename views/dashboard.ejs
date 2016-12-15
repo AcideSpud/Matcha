@@ -38,9 +38,10 @@
                                     <strong><p>Dist:</p></strong>
                                 </td>
                                 <td>
-                                    <% if(geo[i]) { %>
-                                   <i> <%= geo[i].dist  %> Km
-                                    <% } %><i>
+                                    <% if(ret[i].dist != null) { %>
+                                   <i> <%= ret[i].dist  %> Km
+                                    <% } else { %>
+                                       <i>Undef <% } %>
                                 </td>
                             </tr>
                             <tr>
