@@ -502,7 +502,7 @@ class Utilisateur {
 		if (user.orientation == 'Ht') {
 			if (user.genre == 'M') {
 				for (let i = 0, len = otherUserArray.length; i < len; i++) {
-					if (otherUserArray[i].genre == 'Mme' && otherUserArray[i].orientation == 'Ht' && otherUserArray[i].orientation == 'Bi'
+					if (otherUserArray[i].genre == 'Mme' && (otherUserArray[i].orientation == 'Ht' || otherUserArray[i].orientation == 'Bi')
 						&& otherUserArray[i].name != user.name) {
 						res[cmp] = otherUserArray[i];
 						cmp++;
@@ -511,7 +511,7 @@ class Utilisateur {
 			}
 			else if (user.genre == 'Mme') {
 				for (let i = 0, len = otherUserArray.length; i < len; i++) {
-					if (otherUserArray[i].genre == 'M' && otherUserArray[i].orientation == 'Ht' && otherUserArray[i].orientation == 'Bi'
+					if (otherUserArray[i].genre == 'M' && (otherUserArray[i].orientation == 'Ht' || otherUserArray[i].orientation == 'Bi')
 						&& otherUserArray[i].name != user.name) {
 						res[cmp] = otherUserArray[i];
 						cmp++;
@@ -523,7 +523,7 @@ class Utilisateur {
 		else if (user.orientation == 'Hm') {
 			if (user.genre == 'M') {
 				for (let i = 0, len = otherUserArray.length; i < len; i++) {
-					if (otherUserArray[i].genre == 'M' && otherUserArray[i].name != user.name && otherUserArray[i].orientation == 'Hm') {
+					if (otherUserArray[i].genre == 'M' && otherUserArray[i].name != user.name && otherUserArray[i].orientation != 'Ht') {
 						res[cmp] = otherUserArray[i];
 						cmp++;
 					}
@@ -531,7 +531,7 @@ class Utilisateur {
 			}
 			else if (user.genre == 'Mme') {
 				for (let i = 0, len = otherUserArray.length; i < len; i++) {
-					if (otherUserArray[i].genre == 'Mme' && otherUserArray[i].name != user.name && otherUserArray[i].orientation == 'Hm') {
+					if (otherUserArray[i].genre == 'Mme' && otherUserArray[i].name != user.name && otherUserArray[i].orientation != 'Ht') {
 						res[cmp] = otherUserArray[i];
 						cmp++;
 					}
@@ -542,7 +542,7 @@ class Utilisateur {
 		else if (user.orientation == 'Bi') {
 			if (user.genre == 'M') {
 				for (let i = 0, len = otherUserArray.length; i < len; i++) {
-					if ((otherUserArray[i].genre == 'M' && otherUserArray[i].orientation == 'Hm') && otherUserArray[i].name != user.name && (otherUserArray[i].genre == 'Mme' && otherUserArray[i].orientation != 'Hm')) {
+					if (((otherUserArray[i].genre == 'M' && (otherUserArray[i].orientation == 'Hm' || otherUserArray[i].orientation == 'Bi')) || (otherUserArray[i].genre == 'Mme' && (otherUserArray[i].orientation == 'Ht' || otherUserArray[i].orientation == 'Bi'))) && otherUserArray[i].name != user.name) {
 						res[cmp] = otherUserArray[i];
 						cmp++;
 					}
@@ -550,7 +550,7 @@ class Utilisateur {
 			}
 			else if (user.genre == 'Mme') {
 				for (let i = 0, len = otherUserArray.length; i < len; i++) {
-					if ((otherUserArray[i].genre == 'Mme' && otherUserArray[i].orientation == 'Hm') && otherUserArray[i].name != user.name && (otherUserArray[i].genre == 'M' && otherUserArray[i].orientation != 'Hm')) {
+					if (((otherUserArray[i].genre == 'Mme' && (otherUserArray[i].orientation == 'Hm' || otherUserArray[i].orientation == 'Bi')) || (otherUserArray[i].genre == 'M' && (otherUserArray[i].orientation == 'Ht' || otherUserArray[i].orientation == 'Bi'))) && otherUserArray[i].name != user.name) {
 						res[cmp] = otherUserArray[i];
 						cmp++;
 					}
