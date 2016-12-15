@@ -767,6 +767,7 @@ class Utilisateur {
         for (let i = 0, len = comTag.length; i < len; i++) {
             if (comTag[i][0]) {
                 tab[i] = {name: comTag[i][0].name, size: comTag[i].length};
+                console.log(tab[i].name + " :::: " + tab[i].size);
             }
         }
         callback(tab);
@@ -804,7 +805,7 @@ class Utilisateur {
                 cmp2 = 0;
                 cmp++;
             }
-			console.log("++++++===========++++++\n" + comTag + "\n+++++============+++++++");
+
             nbTagUser = user.tag.length;
             let tab = new Array;
             for (let i = 0, len = comTag.length; i < len; i++) {

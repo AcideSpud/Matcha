@@ -35,9 +35,18 @@ router.get('/', requireLogin,  function(req, res, next) {
 		    getProfile.SortPrefSexUser(req.session.user, ret, (cb)=> {
                 getProfile.GetDistance(req.session.user, cb, (dist)=> {
                     getProfile.findUsers3(req.session.user.name, (resu)=>{
+                        getProfile.nbTag(req.session.user, dist, (cb)=> {
+                            for (let i = 0, len = dist.length; i < len; i++) {
+                                for (let j = 0, lon = cb.length; j < lon; j++) {
+                                    if (dist[i].name == cb[j].name) {
+                                        dist[i].nTag = cb[j].size;
+                                    }
+                                }
+                            }
                             res.render('dashboard', {
                                 ret: dist,
                                 user: resu
+                            });
                         });
                     });
                 });
@@ -116,8 +125,8 @@ router.post('/sort', upload.array(), requireLogin, (req, res)=> {
                     })
                 }
                 else if (req.body.mySort == 4) {
-                    getProfile.nbTag(req.session.user, ret, (cb)=>{
-                        console.log(ret[0] + ret[1] + "\n++++==========++++++++");
+                    getProfile.GetDistance(req.session.user, ret, (ret)=> {
+                        getProfile.nbTag(req.session.user, ret, (cb)=> {
                             for (let i = 0, len = ret.length; i < len; i++) {
                                 for (let j = 0, lon = cb.length; j < lon; j++) {
                                     if (ret[i].name == cb[j].name) {
@@ -131,6 +140,8 @@ router.post('/sort', upload.array(), requireLogin, (req, res)=> {
                                 res.send(JSON.stringify(mcb));
                             })
                         })
+
+                    })
                 }
                 });
             });

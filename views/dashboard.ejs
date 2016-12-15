@@ -39,9 +39,9 @@
                                 </td>
                                 <td>
                                     <% if(ret[i].dist != null) { %>
-                                   <i> <%= ret[i].dist  %> Km
+                                   <i> <%= ret[i].dist  %> Km<i/>
                                     <% } else { %>
-                                       <i>Undef <% } %>
+                                       <i>Undef</i> <% } %>
                                 </td>
                             </tr>
                             <tr>
@@ -66,6 +66,12 @@
                             <tr>
                                 <td>
                                     <strong><p>Nombre de Tag en commun:</p></strong>
+                                </td>
+                                <td>
+                                    <% if(ret[i].nTag != null) { %>
+                                    <i> <%= ret[i].nTag  %> Tags <i/>
+                                        <% } else { %>
+                                        <i>0 Tags</i> <% } %>
                                 </td>
                             </tr>
                             </thead>
