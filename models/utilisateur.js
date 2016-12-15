@@ -735,9 +735,9 @@ class Utilisateur {
         });
     };
     static      sortByTag(otherUserArray, callback){
-        var byTag = otherUserArray.slice(0);
+        var byTag = otherUserArray;
         byTag.sort(function(a,b) {
-            return a.nTag - b.nTag;
+            return b.nTag - a.nTag;
         });
         //let ret = Object.keys(otherUserArray.age).sort(function(a,b){return list[a]-list[b]});
         callback(byTag);

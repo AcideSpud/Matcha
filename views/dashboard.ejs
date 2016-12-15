@@ -41,9 +41,9 @@
                                     <% if(ret[i].dist >= 0) { %>
                                     <i> ~ 1 Km </i>
                                     <% } else if(ret[i].dist != null) { %>
-                                   <i> <%= ret[i].dist  %> Km
+                                   <i> <%= ret[i].dist  %> Km</i>
                                     <% } else { %>
-                                    <i> Undef <% } %>
+                                    <i> Undef <% } %></i>
                                 </td>
                             </tr>
                             <tr>
@@ -71,9 +71,9 @@
                                 </td>
                                 <td>
                                     <% if(ret[i].nTag != null) { %>
-                                    <i> <%= ret[i].nTag  %> Tags <i/>
+                                    <i> <%= ret[i].nTag  %><i/>
                                         <% } else { %>
-                                        <i>0 Tags</i> <% } %>
+                                        <i>0</i> <% } %>
                                 </td>
                             </tr>
                             </thead>
