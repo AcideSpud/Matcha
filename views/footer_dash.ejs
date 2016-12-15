@@ -82,9 +82,7 @@
                     <li>
                       <p><strong>Toute vos conversations:</strong></p>
                     </li>
-                    <% for(var i = 0; i < user[0].matchRoom.length; i++ ) { %>
-                    <li><a href="/chat" onclick="return send_info_chat2('<%= user[0].matchRoom[i] %>', '<%= user[0].name %>')"> <%= user[0].matchRoom[i] %></a></li>
-                    <% } %>
+                    <ul id="all_conv"></ul>
                 </ul>
             </li>
           </ul>

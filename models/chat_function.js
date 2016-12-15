@@ -27,10 +27,9 @@ class Chat {
 					} if (res){
 
 					} else{
-						result = undefined
+						res = undefined
 					}
 					callback(res)
-					db.close();
 				})
 			}
 		})

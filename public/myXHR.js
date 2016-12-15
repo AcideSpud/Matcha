@@ -58,7 +58,7 @@ function send_info_chat3(chatRoomName, username){
     var request = new XMLHttpRequest();
     request.open('POST', '/chat/chat', true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-    request.send("crn="+chatRoomName+"&name="+username+"&test=test");
+    request.send("crn="+chatRoomName+"&name="+username);
 }
 
 function send_info_geo(chatRoomName, username){

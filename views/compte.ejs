@@ -39,9 +39,9 @@
     
 
     if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(function(position){
-            $("#geoResult").val(JSON.stringify(cloneAsObject(position.coords)));
-        })
+      //  navigator.geolocation.getCurrentPosition(function(position){
+      //      $("#geoResult").val(JSON.stringify(cloneAsObject(position.coords)));
+       // })
     }
         $.getJSON("http://ip-api.com/json/?callback=?", function(data) {
             $("#geoResult").val(JSON.stringify(data));
@@ -103,13 +103,13 @@
                 <input type="radio" name="genre" value="Mme" />Feminin
             <% } %>
 			</label>
-			<label class="radio-inline">
+		<!--	<label class="radio-inline">
 			<% if (ret[0].genre == 'Tran') { %>
                 <input type="radio" name="genre" value="Tran" checked="checked" />Indefini
             <% } else { %>
                 <input type="radio" name="genre" value="Tran" />Indefini
             <% } %>
-			</label>
+			</label> -->
         </div>
 
         <div class="form-group">
@@ -137,7 +137,6 @@
             </label>
         </div>
         <hr>
-
         <div class="form-group">
         <label>What do you like?</label>
             <select id="hastag2" name="hastag2" class="selectpicker" multiple>
@@ -145,11 +144,13 @@
              <option>Musique</option>
              <option>Litterature</option>
              <option>Sport</option>
-             <option>Art Martiaux</option>
+             <option>Art_Martiaux</option>
              <option>Culture</option>
              <option>Science</option>
              <option>Informatique</option>
              <option>Chill</option>
+             <option>Politique</option>
+             <option>Jeux Vidéo</option>
          </select>
 
         </div>
@@ -201,13 +202,13 @@
          socket.on('notif_all_like', (res)=>{
             $('#all_like').empty();
             for(var i = 0; i < res.length; i++){
-                $('#all_like').prepend('<li><a class="dropdown-item" href="/profile/'+res+'"> <strong>'+ res  + ' </strong></a></li>');
+                $('#all_like').prepend('<li><a class="dropdown-item" href="/profile/'+res[i]+'"> <strong>'+ res[i] +' </strong></a></li>');
             }
          }) 
          socket.on('notif_all_visit', (res)=>{
             $('#all_visit').empty();
             for(var i = 0; i < res.length; i++){
-                $('#all_visit').prepend('<li><a class="dropdown-item" href="/profile/'+res[i]+'"> <strong>'+ res[i]  + ' </strong></a></li>');  
+                $('#all_visit').prepend('<li><a class="dropdown-item" href="/profile/'+res[i]+'"> <strong>'+ res[i] + ' </strong></a></li>');  
             }
          }) 
          socket.on('nb_msg_unread', (res)=>{
@@ -219,9 +220,17 @@
          socket.on('notif_newMsg', (res, crn)=>{
             $('#notif_msg').empty();
             for(var i = 0; i < res.length; i++){
-            $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="return send_info_chat3(\'<%= user[0].focus %>\', \'<%= user[0].name %>\')"><strong>' + res[i].user + '</strong>: le ' + res[i].date  +'</a></li>');
+            $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="send_info_chat3(\''+ res[i].chatRoomName +'\', \'<%= user[0].name %>\');"><strong>' + res[i].user + '</strong>: le ' + res[i].date  +'</a></li>');
                 }
             })
+
+         socket.on('notif_all_conv', (res)=>{
+            $('#all_conv').empty();
+            for(var i = 0; i < res.length; i++){
+                $('#all_conv').prepend('<li><a class="dropdown-item" href="/chat" onclick="send_info_chat3(\''+ res[i].chatRoomName +'\', \'<%= user[0].name %>\');"><strong>' + res[i].other + '-' + res[i].me + '</strong></a></li>');
+            }
+
+         })
         })
     }  
 </script>

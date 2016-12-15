@@ -5,7 +5,9 @@ let bodyParser = require('body-parser');
 var upload = multer();
 let User = require('../models/getDataUser');
 let getProfile = require('../models/utilisateur');
-/* GET home page. */
+var chatRoom = require('../models/chat_function')
+
+
 function requireLogin (req, res, next) {
 	if (!req.user) {
 		req.flash('error', "il faut s'autentifier")
@@ -28,13 +30,11 @@ router.use(bodyParser.urlencoded({ extended: true }));
 
 
 router.get('/', requireLogin,  function(req, res, next) {
-
 	User.Create_db((ret)=>{
         getProfile.sortReported(ret, (ret)=>{
 		    getProfile.SortPrefSexUser(req.session.user, ret, (cb)=> {
                 getProfile.GetDistance(req.session.user, cb, (geo)=> {
                     getProfile.findUsers3(req.session.user.name, (resu)=>{
-
                             res.render('dashboard', {
                                 ret: cb,
                                 geo: geo,

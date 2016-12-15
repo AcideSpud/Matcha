@@ -139,6 +139,8 @@ class Utilisateur {
 		else{
 			chatRoom.findSameRoom(username, focusName, (res)=>{
 				if (res){
+					console.log('PAR LE PROFILE NON?:', username, focusName)
+					console.log('CHATROOMNAME:', res[0].chatRoomName)
 					db.collection("users").updateOne({"name": username}, {$set :{"focus": res[0].chatRoomName}},
 						(err, resu)=>{
 							console.log('updateMainChatRoom', resu.focus);
@@ -217,6 +219,8 @@ class Utilisateur {
 			else
 				console.log("Update like OK !");
 		})
+
+
 		db.collection("users").updateOne({"name": key}, {$push: {"matchRoom":chatRoomName}}, (err)=> {
 			if (err)
 				throw err;
@@ -310,28 +314,21 @@ class Utilisateur {
 			var hashtag = require('find-hashtags')
 			var hash = bcrypt.hashSync(request.body.pwd);
 			var sanitizeHtml = require('sanitize-html');
-			console.log("|" + request.body.geo + "|");
-			var geoo = {};
-
-			geoo.latitude = JSON.parse(request.body.geo).lat;
-			geoo.longitude =JSON.parse(request.body.geo).lon;
-
-	
-
-			
-
 			var cleanPrenom = sanitizeHtml(request.body.prenom)
 			var cleanNom = sanitizeHtml(request.body.nom)
 			var cleanBio = sanitizeHtml(request.body.bio)
 			var cleanHobbies = sanitizeHtml(request.body.hashtag);
-			var hobbies = hashtag(cleanHobbies);
-			if (request.body.hastag2){
-				console.log(request.body.hastag2)
-				for (var i = 0; i < request.body.hastag2.length; i++)
-					hobbies.push(request.body.hastag2[i]);
-			}
-			console.log(hobbies);
+			var hobbies = []
+			var hashtag2 = request.body.hastag2;
+			var geoo = {};
 
+			geoo.latitude = JSON.parse(request.body.geo).lat;
+			geoo.longitude =JSON.parse(request.body.geo).lon;			
+			hobbies = hashtag(cleanHobbies);
+
+			if (request.body.hastag2)
+				for (var i = 0; i < hashtag2.length; i++)
+					hobbies.push(hashtag2[i]);
 			if (request.body.lat && request.body.long)
 				geoo = {latitude: parseFloat(request.body.lat),
 						longitude: parseFloat(request.body.long)};
@@ -444,7 +441,7 @@ class Utilisateur {
 					popularite: 0,
 					img: [],
 					orientation: "Bi",
-					geo: [],
+					geo: {},
 					visit: [], reported: false, lastCo: Date.now(),
 					matchRoom: [],
 					focus: [],
@@ -578,7 +575,7 @@ class Utilisateur {
 	static		sortPop(otherUserArray, callback){
 		var byPop = otherUserArray;
 		byPop.sort(function(a,b) {
-			return a.popularite - b.popularite;
+			return b.popularite - a.popularite;
 		});
 		//let ret = Object.keys(otherUserArray.age).sort(function(a,b){return list[a]-list[b]});
 

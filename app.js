@@ -101,6 +101,7 @@ socket.on('sendchat', function(data){
         if (res){
           var allVisit = [];
           var allNotif = [];
+          var allConv = [];
 
           Utilisateur.checkNbNotif(res[0].name, (cb)=> {
             socket.emit('nb_notif_unread', cb);
@@ -125,6 +126,19 @@ socket.on('sendchat', function(data){
              }  
             }
             socket.emit('notif_like', allNotif)
+          }
+          if (res[0].matchRoom){
+            chatRoom.findAllRooms((allroom)=>{
+              if (allroom){
+                for (var k = 0; k < allroom.length; k++){
+                  for (var l = 0; l < res[0].matchRoom.length; l++){
+                    if (allroom[k].chatRoomName === res[0].matchRoom[l])
+                      allConv.push(allroom[k]);
+                  }
+                }
+              }
+              socket.emit('notif_all_conv', allConv);
+            })
           }
         }
       });
@@ -207,9 +221,6 @@ socket.on('sendchat', function(data){
 });
 
 app.post('/setNotif', (req, res)=>{
-    console.log("RECEVE POST SETNOTIF !!!!!")
-
-    console.log(req.body.notif);
   Utilisateur.readNotif(req.session.user.name, req.body.notif);
       res.end;
 });
@@ -229,7 +240,7 @@ app.use('/header', header);
 app.use('/forgot_mail', forgot_mail);
 app.use('/logout', logout);
 
-/*
+
 app.get('*', function(req, res, next) {
   var err = new Error();
   err.status = 404;
@@ -242,7 +253,7 @@ app.use(function(err, req, res, next) {
   }
   res.status(404);
   res.render('page_error')
-});*/
+});
 
 
 module.exports = app;

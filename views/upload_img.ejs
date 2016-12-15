@@ -101,11 +101,18 @@
          socket.on('notif_newMsg', (res, crn)=>{
             $('#notif_msg').empty();
             for(var i = 0; i < res.length; i++){
-            $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="return send_info_chat3(\'<%= user[0].focus %>\', \'<%= user[0].name %>\')"><strong>' + res[i].user + '</strong>: le ' + res[i].date  +'</a></li>');
+            $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="return send_info_chat3('+ res[i].chatRoomName +'\', \'<%= user[0].name %>\')"><strong>' + res[i].user + '</strong>: le ' + res[i].date  +'</a></li>');
                 }
             })
+
+         socket.on('notif_all_conv', (res)=>{
+            $('#all_conv').empty();
+            for(var i = 0; i < res.length; i++){
+                $('#all_conv').prepend('<li><a class="dropdown-item" href="/chat" onclick="return send_info_chat3('+ res[i].chatRoomName +'\', \'<%= user[0].name %>\')"><strong>' + res[i].other + '-' + res[i].me + '</strong></a></li>');
+            }
+
+         })
         })
     }  
 </script>
-
 <% include footer_dash %>

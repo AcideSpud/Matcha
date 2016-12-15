@@ -21,14 +21,18 @@ function requireLogin (req, res, next) {
 router.get('/', requireLogin,  function(req, res, next) {
 
 	Utilisateur.findUsers3(req.user.name, (result)=>{
-		if (result[0]){
-			res.render('chat2', {ret : result, user: result});
-		}	
+		if (result[0] && result){
+			chatRoom.findChatRoom(result[0].focus, (r)=>{
+				res.render('chat2', {ret : result, user: result, crn: r[0].other + '-' + r[0].me });
+			})
+		}
  	})
 });
 
 
 router.post('/chat', requireLogin, function(req, res, next){
+
+		console.log('coucou--------');
 
 		if (req.body.name1 &&  req.body.name2){
 			console.log('ON ENtre PAR LE PROFILE: SON NOM:', req.body.name1, 'MON NOM:', req.body.name2)
@@ -36,7 +40,7 @@ router.post('/chat', requireLogin, function(req, res, next){
 				Utilisateur.updateMainChatRoom(db, req.body.name2,req.body.name1, null)
 			})
 		}
-		else if (req.body.crn && req.body.name){
+		if (req.body.crn && req.body.name){
 			console.log('ON ENtre PAR LE FOOTER: CRN:', req.body.crn, 'NAME:', req.body.name)
 			Utilisateur.GetDB((db)=>{
 				Utilisateur.updateMainChatRoom(db, req.body.name, null, req.body.crn)
@@ -54,7 +58,7 @@ router.post('/chat', requireLogin, function(req, res, next){
 			})
 		}
 		
-		console.log('CRN PUtin:', req.session.user.name);
+		console.log('CRN PUtin:', req.body.crn);
 		console.log('test:', req.body.test)
 
 		Utilisateur.findUsers3(req.session.user.name, (result)=>{
