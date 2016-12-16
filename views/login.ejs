@@ -1,7 +1,7 @@
 <% include header2 %>
 <div class="container">
 	<div class="col-sm-6 col-sm-offset-3">
-    <div class="jumbotron text-center"  style="padding:40px;">
+    <div class="jumbotron text-center" style="box-shadow: 12px 8px 12px rgb(125,125,125);padding:40px;">
     <h2><span class="fa fa-sign-in"></span>Authentification</h2>
     <form action="login/form_log" method="post">
         <div class="form-group">
@@ -11,11 +11,15 @@
             <input type="password" class="form-control" name="password" placeholder="password" required="required">
         </div>
         <hr>
-        <button type="submit" class="btn btn-warning btn-lg">Connexion</button>
+        <button type="submit" class="btn btn-danger">Connexion</button>
     </form>
     </div>
     <hr>
-    <p>Password oublié? <a href="/forgot_mail">Password oublié</a></p>
-    <p>Pas encore inscrit? <a href="/inscription2">Signup</a></p>
-	</div>
+    <div class="col-sm-6 col-sm-offset-3">
+         <p><strong>Mot de passe oublié?</strong></p>
+         <p><a href="/forgot_mail">clique ici</a></p>
+        <p><strong>Pas encore inscrit?</strong></p>
+         <p><a href="/inscription2">clique ici</a></p>
+    </div>
+    </div>
 </div>

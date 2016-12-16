@@ -322,6 +322,8 @@ class Utilisateur {
 			var hashtag2 = request.body.hastag2;
 			var geoo = {};
 
+			console.log('geoo:', request.body.geo)
+
 			geoo.latitude = JSON.parse(request.body.geo).lat;
 			geoo.longitude =JSON.parse(request.body.geo).lon;			
 			hobbies = hashtag(cleanHobbies);
@@ -744,6 +746,7 @@ class Utilisateur {
     }
 
     static      nbTag(user, otherUserArray, callback){
+    	console.log('OTHER USER ARRAY:', otherUserArray);
         let comTag = new Array;
         let cmp2 = 0;
         let cmp = 0;
