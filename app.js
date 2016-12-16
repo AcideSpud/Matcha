@@ -87,13 +87,7 @@ app.use(function(err, req, res, next) {
 
 
 var all_users = {};
-var rooms = ['room1', 'room2', 'room3'];
-var chatRoom = [];
 var historique_message =[];
-var likeLength = 0;
-var matchLength = 0;
-var visitLength = 0;
-var messageLength = 0;
 
 var Utilisateur = require('./models/utilisateur.js');
 var chatRoom = require('./models/chat_function')
@@ -106,11 +100,11 @@ socket.on('sendchat', function(data){
     io.sockets.in(socket.room).emit('afficher_message', socket.username, clean);
   });
 
-    let info = 0;
-
   socket.on('notification_like', function(data) {
       Utilisateur.findUsers3(data, (res)=> {
+        console.log('coucou', res)
         if (res){
+
           var allVisit = [];
           var allNotif = [];
           var allConv = [];
@@ -128,6 +122,7 @@ socket.on('sendchat', function(data){
                allVisit.push(res[0].visit[i].user)
               }
             }
+            console.log('all visit:', allVisit)
             socket.emit('notif_all_visit', allVisit);
           }
           if (res[0].notif){
@@ -252,7 +247,7 @@ app.use('/header', header);
 app.use('/forgot_mail', forgot_mail);
 app.use('/logout', logout);
 
-/*
+
 app.get('*', function(req, res, next) {
   var err = new Error();
   err.status = 404;
@@ -266,6 +261,6 @@ app.use(function(err, req, res, next) {
   res.status(404);
   res.render('page_error')
 });
-*/
+
 
 module.exports = app;

@@ -1,88 +1,98 @@
 	<div class="navbar navbar-inverse navbar-fixed-bottom">
-		<div class="container">
-			<div class="navbar-collapse collapse" id="footer-body">
-				<ul class="nav navbar-nav navbar-left" style="margin-right: auto">
-        <li>
+		<div class="container-fluid">
+			<div class="collapse navbar-collapse" style="display: inline-block;float: none;vertical-align: top;">
+				<ul class="nav navbar-nav navbar-left" style="">
+          <li>
             <div id='time' class="glyphicon glyphicon-time" style="margin-right: 0.8em; font-size:1.1em;color:grey;">   
             </div>
           </li>
-        <li>
-          <div style="color:grey; margin-right: 5%;">bonjour <%= user[0].name %> </div>
-          <div id ="bonjour"></div>
-        </li>
-         
           <li>
-            <p>||</p>
+            <div style="color:grey; margin-right: 5%;">
+              <p>bonjour <%= user[0].name %></p>
+            </div>
           </li>
         </ul>
-        <ul class="nav navbar-nav" style="margin: 0 auto;">
-				<li><div>
-                    		<a href="/dashboard">
-                    			<button class="btn btn-default btn-lg btn-link" style="font-size:16px;" title="Dashboard">
-   										 <span class="glyphicon glyphicon-home"></span>
-  								</button>
-  							</a>
-  						</div>
+        <ul class="navbar-nav" style="margin: 0 auto;">
+				  <li>
+            <div>
+              <a href="/dashboard">
+                <button class="btn btn-default btn-lg btn-link" style="font-size:16px;" title="Dashboard">
+   								<span class="glyphicon glyphicon-home"></span>
+  							</button>
+  						</a>
+  					</div>
 					</li>
-                    <li><div>
-                    		<a href="/compte">
-                    			<button class="btn btn-default btn-lg btn-link" style="font-size:16px;" title="Parametre du compte">
-   										 <span class="glyphicon glyphicon-user"></span>
-  								</button>
-  							</a>
-  						</div>
+          <li>
+            <div>
+              <a href="/compte">
+                <button class="btn btn-default btn-lg btn-link" style="font-size:16px;" title="Parametre du compte">
+   							  <span class="glyphicon glyphicon-user">     
+                  </span>
+  							</button>
+  						</a>
+  					</div>
 					</li>
-                    <li><div>
-                    		<a href="/upload_img">
-                    			<button class="btn btn-default btn-lg btn-link" style="font-size:16px;" title="Vos Photos">
-   										 <span class="glyphicon glyphicon-camera"></span>
+            <li>
+              <div>
+                <a href="/upload_img">
+                  <button class="btn btn-default btn-lg btn-link" style="font-size:16px;" title="Vos Photos">
+                    <span class="glyphicon glyphicon-camera">
+                    </span>
   								</button>
   							</a>
   						</div>
 					</li>
         </ul>
-          <ul class="nav navbar-nav navbar-right">
-          <li class="dropdown" >
-
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="notif_nb" class="glyphicon glyphicon-heart" aria-hidden="true">0</span> <span class="caret"></span></a>
-
-                <ul class="dropdown-menu scrollable-menu"  role="menu" style = "background-image: linear-gradient(90deg,rgb(200, 255, 255), rgb(227, 118, 147));height:auto;max-height:300px;overflow-x:hidden;font-size:0.8em" >
-                  <li>
-                      <p><strong>Vos Notifications:</strong></p>
-                    </li>
-                    <ul id="notifliking">
-                     </ul>
-                    <li id="" role="separator" class="divider">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown nav navbar-nav">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <span id="notif_nb" class="glyphicon glyphicon-heart" aria-hidden="true">0</span>
+              <span class="caret">
                 
-                    </li>
-                    <li><p><strong>Ils vous aimes:</strong></p></li>
-                    <ul id ="all_like">
-                     </ul>
-                    <li>
-                    </li>
-                    <li role="separator" class="divider"></li>
-                    <li>
-                      <p><strong>Ils vous ont visités:</strong></p>
-                    </li>
-                    <ul id ="all_visit">
-                     </ul>
+              </span>
+            </a>
+            <ul class="dropdown-menu scrollable-menu"  role="menu" style = "background-image: linear-gradient(90deg,rgb(200, 255, 255), rgb(227, 118, 147));height:auto;max-height:300px;overflow-x:hidden;font-size:0.8em" >
+              <li>
+                <p>
+                  <strong>
+                    Vos Notifications:
+                  </strong>
+                  </p>
+              </li>
+                <ul id="notifliking">
                 </ul>
+              <li id="" role="separator" class="divider">        
+              </li>
+              <li>
+                <p>
+                  <strong>Ils vous aimes:</strong>
+                </p>
+              </li>
+              <ul id ="all_like">
+              </ul>
+              <li role="separator" class="divider"></li>
+              <li>
+                <p><strong>Ils vous ont visités:</strong></p>
+              </li>
+              <ul id ="all_visit"></ul>
+           </ul>
           </li>
-					 <li class="dropdown" id="notifMatching"  style="">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"  role="button" aria-haspopup="true" aria-expanded="false"><span  id="notif_msg_nb" class="glyphicon glyphicon-comment" aria-hidden="true">0</span> <span class="caret"></span></a>
-                <ul class="dropdown-menu scrollable-menu"  role="menu" style="background-image: linear-gradient(90deg,rgb(200, 255, 255), rgb(227, 118, 147));height:auto;max-height:300px;overflow-x:hidden;font-size:0.8em">
-
+					<li class="dropdown" id="notifMatching"  style="">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"  role="button" aria-haspopup="true" aria-expanded="false"><span  id="notif_msg_nb" class="glyphicon glyphicon-comment" aria-hidden="true">0</span> <span class="caret"></span></a>
+            <ul class="dropdown-menu scrollable-menu"  role="menu" style="background-image: linear-gradient(90deg,rgb(200, 255, 255), rgb(227, 118, 147));height:auto;max-height:300px;overflow-x:hidden;font-size:0.8em">
+              <li>
+                <p>
+                  <strong>Vos messages non lu:</strong>
+                </p>
+              </li>
+              <ul id="notif_msg"></ul>
+              <li role="separator" class="divider"></li>
                 <li>
-                      <p><strong>Vos messages non lu:</strong></p>
-                    </li>
-                    <ul id="notif_msg">
-                     </ul>
-                    <li role="separator" class="divider"></li>
-                    <li>
-                      <p><strong>Toute vos conversations:</strong></p>
-                    </li>
-                    <ul id="all_conv"></ul>
-                </ul>
+                  <p>
+                    <strong>Toute vos conversations:</strong>
+                  </p>
+                </li>
+                <ul id="all_conv"></ul></ul>
             </li>
           </ul>
 			</div>
