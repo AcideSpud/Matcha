@@ -29,7 +29,6 @@ function like_request(name) {
 
 
 function unlike_request(name) {
-    console.log("test");
     var xhr = new XMLHttpRequest();
     my_name = name;
     xhr.open("POST", "/profile/unlike/:" + name, true);
@@ -46,7 +45,6 @@ function send_info_chat(name1, name2){
 }
 
 function send_info_chat2(chatRoomName, username){
-    console.log('SEND INFO CHAT 2')
     var request = new XMLHttpRequest();
     request.open('POST', '/chat/chat', true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
@@ -54,7 +52,6 @@ function send_info_chat2(chatRoomName, username){
 }
 
 function send_info_chat3(chatRoomName, username){
-    console.log('SEND INFO CHAT 2')
     var request = new XMLHttpRequest();
     request.open('POST', '/chat/chat', true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
@@ -85,7 +82,6 @@ function    changeProfilePicture(path, i){
 }
 
 function    setNotif(notif){
-    console.log("testmabite");
     var request = new XMLHttpRequest();
     request.open('POST', '/setNotif', true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');

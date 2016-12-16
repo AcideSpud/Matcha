@@ -38,9 +38,10 @@ router.get('/', requireLogin,  function(req, res, next) {
                         getProfile.nbTag(req.session.user, dist, (cb)=> {
                             for (let i = 0, len = dist.length; i < len; i++) {
                                 for (let j = 0, lon = cb.length; j < lon; j++) {
+                                    if (dist[i]){
                                     if (dist[i].name == cb[j].name) {
                                         dist[i].nTag = cb[j].size;
-                                    }
+                                    }}
                                 }
                             }
                             res.render('dashboard', {

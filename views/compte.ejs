@@ -1,9 +1,9 @@
 <% include header2 %>
 
-<div class="container">
 
+<div class="container">
 <div class="col-sm-6 col-sm-offset-3">
-    <div class="jumbotron text-center"  style="padding:40px;">
+    <div class="jumbotron text-center"  style="box-shadow: 12px 8px 12px rgb(125,125,125); padding:40px;">
     <h2><span class="fa fa-sign-in"><strong>Votre Profile</strong></span></h2>
     <hr>
     <div>
@@ -14,45 +14,10 @@
             <% } %>
             <br>
     </div>
-    <div>
-        <% if (ret[0].liker && ret[0].visit) { %>
-        <span><%= ret[0].liker.length %> vous aimes,</span>
-        <span><%= ret[0].visit.length %> vous as visité</span>
-        <% } else { %>
-    </div>
-    <div>
-        <span></span>
-        <span></span>
-        <% } %>
-    </div>
     <br>
     <hr>
-    <script>
-    function cloneAsObject(obj) {
-        if (obj === null || !(obj instanceof Object))
-            return obj;
-        var temp = (obj instanceof Array) ? [] : {};
-        for (var key in obj)
-            temp[key] = cloneAsObject(obj[key]);
-        return temp;
-    }
     
-
-    if(navigator.geolocation){
-      //  navigator.geolocation.getCurrentPosition(function(position){
-      //      $("#geoResult").val(JSON.stringify(cloneAsObject(position.coords)));
-       // })
-    }
-        $.getJSON("http://ip-api.com/json/?callback=?", function(data) {
-            $("#geoResult").val(JSON.stringify(data));
-     });
-
-    </script>
-<script type="text/javascript">
-</script>
-    <!-- LOGIN FORM -->
     <form class="form-horizontal" action="compte/form_compte" method="post">
-        
         <div class="form-group">
             <input type="text" class="form-control" name="email" required="required"
             placeholder="Email" value="<%= ret[0].email %>">
@@ -103,13 +68,6 @@
                 <input type="radio" name="genre" value="Mme" />Feminin
             <% } %>
 			</label>
-		<!--	<label class="radio-inline">
-			<% if (ret[0].genre == 'Tran') { %>
-                <input type="radio" name="genre" value="Tran" checked="checked" />Indefini
-            <% } else { %>
-                <input type="radio" name="genre" value="Tran" />Indefini
-            <% } %>
-			</label> -->
         </div>
 
         <div class="form-group">
@@ -169,7 +127,7 @@
             <input type="hidden" name="geo" id="geoResult" value=""></input>
         </div>
         <div class="form-group">
-        <button type="submit" class="btn btn-warning btn-lg">Enregistrer</button>
+        <button type="submit" class="btn btn-danger">Enregistrer</button>
     </div></form>
 </div>
 </div>
@@ -177,62 +135,7 @@
 
 
 <script src="socket.io/socket.io.js"></script>
-  <script>
-    notif();
-    var myVar = setInterval(notif, 7000);
-
-    function notif(){
-        var socket = io.connect('http://localhost:3000');
-
-        socket.on('connect', function(){
-        socket.emit('notification_like', '<%= user[0].name %>');
-        socket.emit('notification_newMsg', '<%= user[0].name %>');
-        socket.emit('notification_newMsg_unread', '<%= user[0].name %>');
-
-         socket.on('notif_like', (res, img)=>{
-            $('#notifliking').empty();
-            for(var i = 0; i < res.length; i++){
-                if (res[i].isRead == false) {
-                    $('#notifliking').prepend('<li><a onclick="setNotif(\'' + res[i].date + '\');" class="dropdown-item"> <strong><i>' + res[i].type + '</i> ' + res[i].userSend + ' </strong> <p>' + res[i].time + '</p></a></li>');
-                } else {
-                    $('#notifliking').prepend('<li ><a style="color: antiquewhite" onclick="setNotif(\'' + res[i].date + '\');" class="dropdown-item"> <strong><i>' + res[i].type + '</i> ' + res[i].userSend + ' </strong> <p>' + res[i].time + '</p></a></li>');
-                }
-            }
-         })
-         socket.on('notif_all_like', (res)=>{
-            $('#all_like').empty();
-            for(var i = 0; i < res.length; i++){
-                $('#all_like').prepend('<li><a class="dropdown-item" href="/profile/'+res[i]+'"> <strong>'+ res[i] +' </strong></a></li>');
-            }
-         }) 
-         socket.on('notif_all_visit', (res)=>{
-            $('#all_visit').empty();
-            for(var i = 0; i < res.length; i++){
-                $('#all_visit').prepend('<li><a class="dropdown-item" href="/profile/'+res[i]+'"> <strong>'+ res[i] + ' </strong></a></li>');  
-            }
-         }) 
-         socket.on('nb_msg_unread', (res)=>{
-            $('#notif_msg_nb').text(res);
-         })
-        socket.on('nb_notif_unread', (res)=>{
-            $('#notif_nb').text(res);
-         }) 
-         socket.on('notif_newMsg', (res, crn)=>{
-            $('#notif_msg').empty();
-            for(var i = 0; i < res.length; i++){
-            $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="send_info_chat3(\''+ res[i].chatRoomName +'\', \'<%= user[0].name %>\');"><strong>' + res[i].user + '</strong>: le ' + res[i].date  +'</a></li>');
-                }
-            })
-
-         socket.on('notif_all_conv', (res)=>{
-            $('#all_conv').empty();
-            for(var i = 0; i < res.length; i++){
-                $('#all_conv').prepend('<li><a class="dropdown-item" href="/chat" onclick="send_info_chat3(\''+ res[i].chatRoomName +'\', \'<%= user[0].name %>\');"><strong>' + res[i].other + '-' + res[i].me + '</strong></a></li>');
-            }
-
-         })
-        })
-    }  
-</script>
+<script src="/geo.js"></script>
+<script src="/notif.js"></script>
 
 <%include footer_dash %>

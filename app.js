@@ -1,8 +1,11 @@
 let express = require('express');
-let http = require('http');
 let app = express();
+let http = require('http');
 var server = http.createServer(app).listen(3000);
 var io = require('socket.io').listen(server);
+
+
+
 
 let path = require('path');
 let favicon = require('serve-favicon');
@@ -14,6 +17,10 @@ let timeAgo = require('node-time-ago');
 let async = require('async')
 var sanitizeHtml = require('sanitize-html');
 
+
+
+
+//ALL ROUTES
 let routes = require('./routes/index');
 let users = require('./routes/users');
 let inscription2 = require('./routes/inscription2');
@@ -71,6 +78,11 @@ app.use(function(req, res, next){
   } else{
     next();
   }
+})
+
+
+app.use(function(err, req, res, next) {
+  console.log('dirname: ',__dirname);
 })
 
 
