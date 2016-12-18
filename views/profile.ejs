@@ -1,5 +1,5 @@
 <% include header_pro %>
-<div class="container">
+<div class="container-fluid">
     <div class="row clearfix well">
         <% if(ret[0].img[0]) { %>
         <div class="col-md-2 column">
@@ -14,7 +14,7 @@
         <% } %>
 
         <div class="col-md-8 column">
-                <p><%= ret[0].name %></p>
+                <p><h4><%= ret[0].name %></h4></p>
                     <% if (ret[0].tag) { %>
                 <p> 
                     <% for (var i = 0; i < ret[0].tag.length;  i++) { %>
@@ -26,7 +26,7 @@
                 </p>
                 <% } %>
         </div>
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
         <div class="col-md-2 column">
             <p>
@@ -88,7 +88,7 @@
                         <div class="row clearfix">
                             <div class="col-md-8 column">
                                 <p>
-                                    <%= ret[0].bio%>
+                                    <strong><%= ret[0].bio %></strong>
                                 </p>
                             </div>
                             <div class="col-md-4 column">
@@ -96,14 +96,7 @@
                                     <thead>
                                     <tr>
                                         <th>
-                                            Details
-                                        </th>
-                                        <th>
-                                            <% if (ret[0].genre == 'M'){ %>
-                                                His
-                                            <% } else { %>
-                                                Her
-                                            <% } %>
+                                            <strong>Details</strong>
                                         </th>
 
                                     </tr>
@@ -111,44 +104,44 @@
                                     <tbody>
                                     <tr>
                                         <td>
-                                            Age :
+                                            <strong>Age :</strong>
                                         </td>
                                         <td>
                                             <% if(ret[0].age) %>
-                                            <%= ret[0].age %>
+                                            <p style="color:white;"><%= ret[0].age %><p>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            Last Online
+                                            <strong>Last Online</strong>
                                         </td>
                                         <td>
-                                            <%= time %>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Popularite :
-                                        </td>
-                                        <td>
-                                            <%= ret[0].popularite %>
+                                              <p style="color:white;"><%= time %></p>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            Insterested by :
+                                            <strong>Popularite :</strong>
+                                        </td>
+                                        <td>
+                                              <p style="color:white;"><%= ret[0].popularite %></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Insterested by :</strong>
                                         </td>
                                         <td>
                                             <% if (ret[0].orientation == 'Ht' && ret[0].genre == 'M'){ %>
-                                            Woman
+                                              <p style="color:white;">Woman</p>
                                             <% } else if (ret[0].orientation == 'Ht' && ret[0].genre == 'Mme') { %>
-                                            Man
+                                              <p style="color:white;">Man</p>
                                             <% } else if (ret[0].orientation == 'Hm' && ret[0].genre == 'M') { %>
-                                            Man
+                                              <p style="color:white;">Man</p>
                                             <% } else if (ret[0].orientation == 'Hm' && ret[0].genre == 'Mme') { %>
-                                            Woman
+                                              <p style="color:white;">Woman</p>
                                             <% } else if (ret[0].orientation == 'Bi'){ %>
-                                            THE WORLD !!!
+                                              <p style="color:white;">THE WORLD !!!</p>
                                             <% } %>
                                         </td>
                                     </tr>

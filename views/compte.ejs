@@ -142,7 +142,6 @@ var myVar = setInterval(notif, 7000);
     var socket = io.connect('http://localhost:3000');
 
     socket.on('connect', function(){
-        console.log('coucou')
         socket.emit('notification_like', '<%= user[0].name %>');
         socket.emit('notification_newMsg', '<%= user[0].name %>');
         socket.emit('notification_newMsg_unread', '<%= user[0].name %>');
