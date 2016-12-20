@@ -167,6 +167,7 @@ socket.on('sendchat', function(data){
 
   socket.on('notification_newMsg', function(data){
     var allMsg = [];
+    var allCrn = [];
 
     Utilisateur.findUsers3(data, (res)=>{
       if (res){
@@ -175,10 +176,10 @@ socket.on('sendchat', function(data){
             if (chat && chat[0].conte){
               for(var i =0; i<chat[0].conte.length; i++){
                 if((chat[0].conte[i].user != res[0].name) && (chat[0].conte[i].isRead == false)){
-                  allMsg.push(chat[0].conte[i])
+                  allMsg.push(chat[0].conte[i]);
                 } 
               }
-              socket.emit('notif_newMsg', allMsg, chat[0].chatRoomName)
+              socket.emit('notif_newMsg', allMsg)
             }    
           })
         }
