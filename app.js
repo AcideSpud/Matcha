@@ -102,7 +102,6 @@ socket.on('sendchat', function(data){
 
   socket.on('notification_like', function(data) {
       Utilisateur.findUsers3(data, (res)=> {
-        console.log('coucou', res)
         if (res){
 
           var allVisit = [];
@@ -122,7 +121,6 @@ socket.on('sendchat', function(data){
                allVisit.push(res[0].visit[i].user)
               }
             }
-            console.log('all visit:', allVisit)
             socket.emit('notif_all_visit', allVisit);
           }
           if (res[0].notif){

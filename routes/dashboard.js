@@ -36,7 +36,8 @@ router.get('/', requireLogin,  function(req, res, next) {
                 getProfile.GetDistance(req.session.user, cb, (dist)=> {
                     getProfile.findUsers3(req.session.user.name, (resu)=>{
                         getProfile.nbTag(req.session.user, dist, (cb)=> {
-                            for (let i = 0, len = dist.length; i < len; i++) {
+                            if (cb[0] && dist[0]){
+                                for (let i = 0, len = dist.length; i < len; i++) {
                                 for (let j = 0, lon = cb.length; j < lon; j++) {
                                     if (dist[i] && cb[j]){
                                     if (dist[i].name == cb[j].name) {
@@ -48,6 +49,8 @@ router.get('/', requireLogin,  function(req, res, next) {
                                 ret: dist,
                                 user: resu
                             });
+                            }
+                            
                         });
                     });
                 });
