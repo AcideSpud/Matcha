@@ -6,11 +6,12 @@
             <div class="col-sm-6 col-md-4 col-lg-3 col-xs-12" id="datbox">
                 <div class="thumbnail" style="background-image:linear-gradient(180deg,rgb(127, 18, 47), rgb(200, 255, 255));box-shadow: 5px 5px 12px #555;border-style:solid;border-color:black;"  id="mybox">
                     <div>
-                    <% if (ret[i].img[0]){ %>
-                    <img style="border-style:solid;border-color:black;border-radius: 10%;box-shadow: 10px 10px 22px #555;" class="parent" src="<%= ret[i].img[0] %>"  alt="">
-                    <% } else { %>
-                    <img class=" img-thumbnail" alt="100x100" src="/img/no_image.png" />
-                    <% } %></div>
+                        <% if (ret[i].img[0]){ %>
+                        <img style="border-style:solid;border-color:black;border-radius: 10%;box-shadow: 10px 10px 22px #555;" class="parent" src="<%= ret[i].img[0] %>"  alt="">
+                        <% } else { %>
+                        <img class="img-thumbnail" alt="100x100" src="/img/no_image.png" />
+                        <% } %>
+                    </div>
                     <div class="caption">
                         <h3><strong><%= ret[i].nom %> <%= ret[i].prenom %></strong></h3>
                         <div class="col-md-4 column">
@@ -71,9 +72,9 @@
                                 </td>
                                 <td>
                                     <% if(ret[i].nTag != null) { %>
-                                    <i> <%= ret[i].nTag  %><i/>
+                                    <i> <%= ret[i].nTag  %></i>
                                         <% } else { %>
-                                        <i>0</i> <% } %>
+                                        <i> 0 </i> <% } %>
                                 </td>
                             </tr>
                             </thead>
