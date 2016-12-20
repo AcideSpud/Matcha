@@ -8,14 +8,11 @@
     <link rel="stylesheet" type="text/css" href="/mystyle.css">
     <script type="text/javascript" src="/myXHR.js"></script>
     <script type="text/javascript" src="/myDash.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
 
 </head>
 <body style="background-image: linear-gradient(90deg,rgb(200, 255, 255), rgb(127, 18, 47)); font-family:'Lucidatypewriter', monospace";>
 <nav class="navbar navbar-inverse navbar-static-top">
-
-    <div class="container">
+    <div class="container-fluid">
         <a class="navbar-brand" href="/">Michto</a>
         <ul class="nav navbar-nav">
         </ul>
@@ -29,43 +26,44 @@
         </ul>
     </div>
 
-        <div class="container">
+        <div class="container-fluid">
             <ul class="nav navbar-nav">
                 <li style="margin-right: 10px;padding-left: 10px;" >
                     <div class="form-group">
-                        <p style="color: rgb(255,255,255);"><label> Age min </label></p>
+                        <p style="color: rgb(255,215,255);"><label> Age min </label></p>
                         <input type="number" id="age-min" name="age-min" min="18" max="100" value="18" required="required">
                     </div>
                 </li>
 
                 <li style="margin-right: 10px;padding-left: 10px;">
                     <div class="form-group">
-                        <p style="color: rgb(255,255,255);"><label> Age max </label></p>
+                        <p style="color: rgb(255,215,255);"><label> Age max </label></p>
                         <input type="number" id="age-max" name="age-max" min="18" max="100" value="100" required="required">
                     </div>
                 </li>
 
                 <li style="margin-right: 10px;padding-left: 10px;" >
                     <div class="form-group">
-                        <p style="color: rgb(255,255,255);"><label> Pop min </label></p>
+                        <p style="color: rgb(255,215,255);"><label> Pop min </label></p>
                         <input type="number" id="pop-min" name="pop-min" min="0" max="100" value="0" required="required">
                     </div>
                 </li>
                 <li style="margin-right: 10px;padding-left: 10px;">
                     <div class="form-group">
-                        <p style="color: rgb(255,255,255);"><label> Pop max </label></p>
+                        <p style="color: rgb(255,215,255);"><label> Pop max </label></p>
                         <input type="number" id="pop-max" name="pop-max" min="18" max="100" value="100" required="required">
                     </div>
                 </li>
                 <li style="margin-right: 10px;padding-left: 10px;">
                     <div class="form-group">
-                        <p style="color: rgb(255,255,255);"><label><span class="glyphicon glyphicon-map-marker" aria-hidden="true">Dist </span></label></p>
+                        <p style="color: rgb(255,215,255);"><label><span class="glyphicon glyphicon-map-marker" aria-hidden="true">Dist </span></label></p>
                         <input style="margin-top: 5px" id="dist" type="number" name="dist" min="2" max="2000" value="10" required="required"><span style="margin-left:10px;color: rgb(255,255,255);">Km</span>
                     </div>
                 </li>
-                <li>
+            
+                <li style="margin-right: 10px;padding-left: 10px;">
                     <div class="form-group">
-                        <label for="sel1" style="color: rgb(255,255,255);">#Tags commmun</label>
+                        <label for="sel1" style="color: rgb(255,215,255);">#Tags commmun</label>
                         <select class="form-control" id="sel1">
                             <option value="1">Peu importe</option>
                             <option value="2">25% de tag </option>
@@ -74,21 +72,19 @@
                         </select>
                     </div>
                 </li>
-                <li>
+                <li style="margin-right: 10px;padding-left: 10px;">
                     <div class="form-group">
-                    <button style="margin-top: 25px;" id="btn-find" onclick="find();" class="btn btn-warning" type="button">Find !</button>
+                    <button style="margin-top: 25px;" id="btn-find" onclick="find();" class="btn btn-danger" type="button">Find !</button>
                     </div>
                 </li>
+                
+                </ul>
+                </div>
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
                 <li>
                     <div class="form-group">
-                        <a href="/dashboard">
-                            <button style="" id="btn-reload" class="btn btn-warning" type="button">reload!</button>
-                        </a>
-                    </div>
-                </li>
-                <li>
-                    <div class="form-group">
-                        <label for="sel1" style="color: rgb(255,255,255);">Sort</label>
+                        <label for="sel1" style="color: rgb(255,215,255);">Sort</label>
                         <select style="" class="form-control" id="sel2">
                             <option value="1">Age</option>
                             <option value="2">Popularite</option>
@@ -99,7 +95,18 @@
                 </li>
                 <li>
                     <div class="form-group">
-                        <button style="margin-top: 25px;" id="btn-find" onclick="find('sort');" class="btn btn-warning" type="button">Sort !</button>
+                        <button style="margin-top: 25px;" id="btn-find" onclick="find('sort');" class="btn btn-danger" type="button">Sort !</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+<div class="container-fluid">
+                <ul class="nav navbar-nav">
+        <li>
+                    <div style="" class="form-group">
+                        <a href="/dashboard">
+                            <button style="" id="btn-reload" class="btn btn-danger" type="button">reload!</button>
+                        </a>
                     </div>
                 </li>
             </ul>

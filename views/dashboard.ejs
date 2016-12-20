@@ -1,10 +1,10 @@
 <% include header_dash.ejs %>
 
 <div class="container" >
-    <div class="row" id="table">
+    <div >
         <% for (var i=0; i < ret.length; i++) { %>
             <div class="col-sm-6 col-md-4 col-lg-3 col-xs-12" id="datbox">
-                <div class="thumbnail" style="background-image:linear-gradient(180deg,rgb(127, 18, 47), rgb(200, 255, 255));box-shadow: 5px 5px 12px #555;border-style:solid;border-color:black;"  id="mybox">
+                <div class="thumbnail" style="background-image:linear-gradient(180deg,rgb(127, 18, 47), rgb(200, 255, 255));box-shadow: 5px 5px 12px #555;border-radius: 70px;border-style:solid;border-color:black;"  id="mybox">
                     <div>
                         <% if (ret[i].img[0]){ %>
                         <img style="border-style:solid;border-color:black;border-radius: 10%;box-shadow: 10px 10px 22px #555;" class="parent" src="<%= ret[i].img[0] %>"  alt="">
@@ -83,7 +83,7 @@
                         </div>
                     </div>
                     <div>
-                        <p id="b_view" style="display: inline"><a href="/profile/<%= ret[i].name %>" class="btn btn-primary" role="button">View profil</a></p>
+                        <p id="b_view" style="display: inline"><a href="/profile/<%= ret[i].name %>" class="btn btn-danger" role="button">View profil</a></p>
                     </div>
                         
                 </div>
@@ -95,18 +95,17 @@
 
 <script src="socket.io/socket.io.js"></script>
   <script>
-    notif();
-    var myVar = setInterval(notif, 7000);
+    notif();    
+var myVar = setInterval(notif, 7000);
 
     function notif(){
-        var socket = io.connect('http://localhost:3000');
+    var socket = io.connect('http://localhost:3000');
 
-        socket.on('connect', function(){
+    socket.on('connect', function(){
         socket.emit('notification_like', '<%= user[0].name %>');
         socket.emit('notification_newMsg', '<%= user[0].name %>');
         socket.emit('notification_newMsg_unread', '<%= user[0].name %>');
-
-         socket.on('notif_like', (res, img)=>{
+        socket.on('notif_like', (res, img)=>{
             $('#notifliking').empty();
             for(var i = 0; i < res.length; i++){
                 if (res[i].isRead == false) {
@@ -115,41 +114,39 @@
                     $('#notifliking').prepend('<li ><a style="color: antiquewhite" onclick="setNotif(\'' + res[i].date + '\');" class="dropdown-item"> <strong><i>' + res[i].type + '</i> ' + res[i].userSend + ' </strong> <p>' + res[i].time + '</p></a></li>');
                 }
             }
-         })
-         socket.on('notif_all_like', (res)=>{
+        })
+        socket.on('notif_all_like', (res)=>{
             $('#all_like').empty();
             for(var i = 0; i < res.length; i++){
-                $('#all_like').prepend('<li><a class="dropdown-item" href="/profile/'+res+'"> <strong>'+ res  + ' </strong></a></li>');
+                $('#all_like').prepend('<li><a class="dropdown-item" href="/profile/'+res[i]+'"> <strong>'+ res[i] +' </strong></a></li>');
             }
-         }) 
-         socket.on('notif_all_visit', (res)=>{
+        }) 
+        socket.on('notif_all_visit', (res)=>{
             $('#all_visit').empty();
             for(var i = 0; i < res.length; i++){
-                $('#all_visit').prepend('<li><a class="dropdown-item" href="/profile/'+res[i]+'"> <strong>'+ res[i]  + ' </strong></a></li>');  
+                $('#all_visit').prepend('<li><a class="dropdown-item" href="/profile/'+res[i]+'"> <strong>'+ res[i] + ' </strong></a></li>');  
             }
-         }) 
-         socket.on('nb_msg_unread', (res)=>{
+        }) 
+        socket.on('nb_msg_unread', (res)=>{
             $('#notif_msg_nb').text(res);
-         })
+        })
         socket.on('nb_notif_unread', (res)=>{
             $('#notif_nb').text(res);
-         }) 
-         socket.on('notif_newMsg', (res, crn)=>{
+        }) 
+        socket.on('notif_newMsg', (res, crn)=>{
             $('#notif_msg').empty();
             for(var i = 0; i < res.length; i++){
-            $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="return send_info_chat3('+ res[i].chatRoomName +'\', \'<%= user[0].name %>\')"><strong>' + res[i].user + '</strong>: le ' + res[i].date  +'</a></li>');
-                }
-            })
-
-         socket.on('notif_all_conv', (res)=>{
+                $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="send_info_chat3(\''+ res[i].chatRoomName +'\', \'<%= user[0].name %>\');"><strong>' + res[i].user + '</strong>: le ' + res[i].date  +'</a></li>');
+            }
+        })
+        socket.on('notif_all_conv', (res)=>{
             $('#all_conv').empty();
             for(var i = 0; i < res.length; i++){
-                $('#all_conv').prepend('<li><a class="dropdown-item" href="/chat" onclick="return send_info_chat3('+ res[i].chatRoomName +', \'<%= user[0].name %>\')"><strong>' + res[i].other + '-' + res[i].me + '</strong></a></li>');
+                $('#all_conv').prepend('<li><a class="dropdown-item" href="/chat" onclick="send_info_chat3(\''+ res[i].chatRoomName +'\', \'<%= user[0].name %>\');"><strong>' + res[i].other + '-' + res[i].me + '</strong></a></li>');
             }
-
-         })
         })
-    }  
+    })
+}
 </script>
 
 

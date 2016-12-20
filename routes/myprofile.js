@@ -1,6 +1,4 @@
-/**
- * Created by tapostin on 11/16/16.
- */
+
 var express = require('express');
 var router = express.Router();
 let Profile = require('../models/getDataUser');
