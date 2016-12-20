@@ -211,6 +211,7 @@ class Utilisateur {
 
 
 	static		updateMatchUser(user, db, key, chatRoomName) {
+		console.log('moi:', user.name, 'autre', key, 'chatRoomName:', chatRoomName);
 	this.sendNotif(user.name, key, 'Match with', db);
 
 		db.collection("users").updateOne({"name": user.name}, {$push: {"matchRoom": chatRoomName}}, (err)=> {
@@ -231,6 +232,8 @@ class Utilisateur {
 	}
 
 	static		updateUnMatchUser(user, db, key, chatRoomName) {
+
+		console.log('moi:', user.name, 'autre', key, 'chatRoomName:', chatRoomName);
 
 		this.sendNotif(user.name, key, 'UnMatch with', db);
 		db.collection("users").updateOne({"name": user.name}, {$pull: {"matchRoom": chatRoomName}}, (err)=> {
@@ -315,6 +318,7 @@ class Utilisateur {
 			var hash = bcrypt.hashSync(request.body.pwd);
 			var sanitizeHtml = require('sanitize-html');
 			var cleanPrenom = sanitizeHtml(request.body.prenom)
+			var cleanMail = sanitizeHtml(request.body.email)
 			var cleanNom = sanitizeHtml(request.body.nom)
 			var cleanBio = sanitizeHtml(request.body.bio)
 			var cleanHobbies = sanitizeHtml(request.body.hashtag);
@@ -339,7 +343,7 @@ class Utilisateur {
 				throw err
 			} else {
 				var user = {
-					email: request.body.email,
+					email: cleanMail,
 					pwd: hash,
 					nom: cleanNom,
 					prenom: cleanPrenom,
@@ -381,6 +385,8 @@ class Utilisateur {
 	static		deleteIMG(username, imgpath, callback){
 		let mongo = require('mongodb').MongoClient;
 		
+		console.log('coucou?')
+
 		mongo.connect('mongodb://localhost/matcha', (err, db)=> {
 			db.collection("users").updateOne({"name": username}, {$pull: {"img": imgpath}}, (err, res)=> {
 				if (err) throw err
@@ -405,7 +411,7 @@ class Utilisateur {
    		 		db.collection("users").save(doc);
   			});
   			callback();
-  			db.close();
+  			//db.close();
 		})
 	}
 
@@ -431,6 +437,8 @@ class Utilisateur {
 		var cleanName = sanitizeHtml(request.body.name);
 		var cleanReponse = sanitizeHtml(request.body.repQuestion);
 
+		console.log('email',sanitizeHtml(request.body.email))
+
 		mongo.connect("mongodb://localhost/matcha", (err, db)=> {
 			if (err) throw err
 			else {
@@ -438,6 +446,7 @@ class Utilisateur {
 				var user = {
 					 name: cleanName,
 					 pwd: hash,
+					 email:sanitizeHtml(request.body.email),
 					question: request.body.questionSecrete,
 					reponse: cleanReponse,
 					popularite: 0,
@@ -746,7 +755,6 @@ class Utilisateur {
     }
 
     static      nbTag(user, otherUserArray, callback){
-    	console.log('OTHER USER ARRAY:', otherUserArray);
         let comTag = new Array;
         let cmp2 = 0;
         let cmp = 0;
@@ -765,7 +773,6 @@ class Utilisateur {
             cmp++;
         }
 
-        let nbTagUser = user.tag.length;
         let tab = new Array;
         for (let i = 0, len = comTag.length; i < len; i++) {
             if (comTag[i][0]) {
