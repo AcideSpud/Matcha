@@ -1,4 +1,4 @@
-[]
+
 class Utilisateur {
 
 
@@ -113,7 +113,6 @@ class Utilisateur {
 
 
 	static		updateLastCo(db , date, userName, callback) {
-		console.log(date);
 		db.collection("users").updateOne({"name": userName.name}, {
 			$set: {
 				"lastCo": date
@@ -130,7 +129,6 @@ class Utilisateur {
 		var chatRoom = require('../models/chat_function')
 
 		if (chatR !== null){
-			console.log('PAR LE FOOTER UTiLISATEUR:', chatR)
 			db.collection("users").updateOne({"name": username},{$set: {"focus": chatR}},
 				(err, resu)=>{
 					db.close();
@@ -139,18 +137,14 @@ class Utilisateur {
 		else{
 			chatRoom.findSameRoom(username, focusName, (res)=>{
 				if (res){
-					console.log('PAR LE PROFILE NON?:', username, focusName)
-					console.log('CHATROOMNAME:', res[0].chatRoomName)
 					db.collection("users").updateOne({"name": username}, {$set :{"focus": res[0].chatRoomName}},
 						(err, resu)=>{
-							console.log('updateMainChatRoom', resu.focus);
 					})
 				} else{
 					chatRoom.findSameRoom(focusName, username, (res)=>{
 						if (res){
 							db.collection("users").updateOne({"name": username}, {$set :{"focus": res[0].chatRoomName}},
 							(err, resu)=>{
-								console.log('updateMainChatRoom', resu.focus);
 							})
 						}
 					})
@@ -160,9 +154,9 @@ class Utilisateur {
 	}
 
 	static		updateVisit(user, db, key){
-		console.log('PUTIN');
+
 		this.sendNotif(user, key, 'Visit from', db);
-		console.log('updateVisit',user)
+
 		this.findUsers3(user, (res)=>{
 			if (res[0])
 				db.collection("users").updateOne({"name": user}, {
@@ -217,16 +211,12 @@ class Utilisateur {
 		db.collection("users").updateOne({"name": user.name}, {$push: {"matchRoom": chatRoomName}}, (err)=> {
 			if (err)
 				throw err;
-			else
-				console.log("Update like OK !");
 		})
 
 
 		db.collection("users").updateOne({"name": key}, {$push: {"matchRoom":chatRoomName}}, (err)=> {
 			if (err)
 				throw err;
-			else
-				console.log("Update liker OK!");
 		})
         
 	}
@@ -239,14 +229,12 @@ class Utilisateur {
 		db.collection("users").updateOne({"name": user.name}, {$pull: {"matchRoom": chatRoomName}}, (err)=> {
 			if (err)
 				throw err;
-			else
-				console.log("Update like OK !");
+
 		})
 		db.collection("users").updateOne({"name": key}, {$pull: {"matchRoom": chatRoomName}}, (err)=> {
 			if (err)
 				throw err;
-			else
-				console.log("Update liker OK!");
+
 		})
 	}
 
@@ -256,14 +244,12 @@ class Utilisateur {
 		db.collection("users").updateOne({"name": user.name}, {$push: {"like": key}}, (err)=> {
 			if (err)
 				throw err;
-			else
-				console.log("Update like OK !");
+
 		})
 		db.collection("users").updateOne({"name": key}, {$push: {"liker": user.name}}, (err)=> {
 			if (err)
 				throw err;
-			else
-				console.log("Update liker OK!");
+
 		})
 	}
 
@@ -272,14 +258,12 @@ class Utilisateur {
 		db.collection("users").updateOne({"name": user.name}, {$pull: {"like": key}}, (err)=> {
 			if (err)
 				throw err;
-			else
-				console.log("remove like OK !");
+
 		});
 		db.collection("users").updateOne({"name": key}, {$pull: {"liker": user.name}}, (err)=> {
 			if (err)
 				throw err;
-			else
-				console.log("remove liker OK ! ");
+
 		})
 	}
 
@@ -326,7 +310,7 @@ class Utilisateur {
 			var hashtag2 = request.body.hastag2;
 			var geoo = {};
 
-			console.log('geoo:', request.body.geo)
+
 
 			geoo.latitude = JSON.parse(request.body.geo).lat;
 			geoo.longitude =JSON.parse(request.body.geo).lon;			
@@ -372,8 +356,6 @@ class Utilisateur {
 					callback(err);
 				else if (result.length) {
 				} else {
-
-					console.log('No document(s) found with defined "find" criteria!');
 					result = undefined
 				}
 				callback(result);
@@ -468,7 +450,6 @@ class Utilisateur {
 							if (err) throw err;
 							else {
 								request.flash('success', "Vous êtes bien enregistré!")
-								console.log('coucoucoucoucoucoo')
 								response.redirect('/login')
 							}
 							db.close();
@@ -628,8 +609,6 @@ class Utilisateur {
 	    db.collection("users").updateOne({"name": userReceve}, {$push: {"notif": {"type": notifType, "userSend": userSend, "date": Date.now(), "isRead" : false}}}, (err)=>{
 	        if (err)
 	            throw err;
-            else
-                console.log("Receve notif");
         });
     }
 
@@ -649,7 +628,6 @@ class Utilisateur {
 			db.collection("users").find({"name": user})
 				.forEach(function (doc) {
 					doc.notif.forEach(function (notif) {
-						console.log('READNOTIF--')
 						if (notif.date == parseInt(not)) {
 							notif.isRead = true;
 						}
@@ -665,16 +643,13 @@ class Utilisateur {
 		db.collection("users").updateOne({"name": userToUp[0].name}, {$set: {"popularite": nbScore}}, (err)=> {
 			if (err)
 				throw err;
-			else
-				console.log("popularite update OK !");
 		});
 		
 	}
 	static      tcheckIf(user, otherUserArray)
 	{
 		let mbool = true;
-		console.log('LATITUDE::::', user.geo.latitude);
-		console.log('DLATITUE::::', user.geo.longitude);
+
 
 		if (user.geo.latitude !== undefined && user.geo.latitude !== null){
 			for (let i = 0, len = otherUserArray; i < len ; i++){
@@ -772,12 +747,10 @@ class Utilisateur {
             cmp2 = 0;
             cmp++;
         }
-
         let tab = new Array;
         for (let i = 0, len = comTag.length; i < len; i++) {
             if (comTag[i][0]) {
                 tab[i] = {name: comTag[i][0].name, size: comTag[i].length};
-                console.log(tab[i].name + " :::: " + tab[i].size);
             }
         }
         callback(tab);
@@ -815,8 +788,8 @@ class Utilisateur {
                 cmp2 = 0;
                 cmp++;
             }
-
-            nbTagUser = user.tag.length;
+			if (user.tag)
+            	nbTagUser = user.tag.length;
             let tab = new Array;
             for (let i = 0, len = comTag.length; i < len; i++) {
                 if (comTag[i][0]) {
@@ -830,7 +803,7 @@ class Utilisateur {
             }
             let j = 0;
             for (let i = 0, len = otherUserArray.length; i < len; i++) {
-                for (let k = 0, lon = nbTagOther.length; k < lon; k++) {
+				for (let k = 0, lon = nbTagOther.length; k < lon; k++) {
 					if (nbTagOther[k]) {
 						if (otherUserArray[i].name == nbTagOther[k].name && nbTagOther[k].percent >= val) {
 							ret[j] = otherUserArray[i];
@@ -838,9 +811,9 @@ class Utilisateur {
 						}
 					}
 				}
-            }
-            callback(ret);
+			}
         }
+		callback(ret);
     }
 
 }
