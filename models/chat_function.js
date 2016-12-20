@@ -82,12 +82,12 @@ class Chat {
 		})
 	}
 
-	static modifContent(name, user, conten){
+	static modifContent(name, user, conten, crn){
 
 		var d = new Date();
     	var n = d.toLocaleDateString("en-GB");
 
-    	var message = {user: user, content: conten, date: n, isRead: false};
+    	var message = {user: user, content: conten, date: n, isRead: false, crn: crn};
 
 		this.GetDB((db)=>{
 			db.collection("chatRoom").updateOne({"chatRoomName": name}, {

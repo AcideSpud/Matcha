@@ -71,9 +71,6 @@ router.get('/', requireLogin, (req, res, next)=>{
 
 router.post('/delete_img', (req, resu)=>{
 	Utilisateur.deleteIMG(req.user.name, req.body.path , ()=>{
-		console.log('DELETe IMG')
-		req.flash('sucess', 'IMG DELETE')
-		resu.redirect('/upload_img')
 	})
 })
 
@@ -102,8 +99,8 @@ router.post('/change_img', (req, resu, next)=>{
 	
 	Utilisateur.findUsers3(req.user.name, (res)=>{
 		Utilisateur.changeProfilePic(req.user.name, req.body.path, req.body.i, ()=>{
-			console.log('ook')
-			resu.redirect('/upload_img')
+			//console.log('ook')
+			//resu.redirect('/upload_img')
 		})
 	})
 

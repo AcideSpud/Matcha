@@ -173,10 +173,10 @@ var myVar = setInterval(notif, 7000);
         socket.on('nb_notif_unread', (res)=>{
             $('#notif_nb').text(res);
         }) 
-        socket.on('notif_newMsg', (res, crn)=>{
+        socket.on('notif_newMsg', (res)=>{
             $('#notif_msg').empty();
             for(var i = 0; i < res.length; i++){
-                $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="send_info_chat3(\''+ res[i].chatRoomName +'\', \'<%= user[0].name %>\');"><strong>' + res[i].user + '</strong>: le ' + res[i].date  +'</a></li>');
+                $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="send_info_chat3(\''+ res[i].crn +'\', \'<%= user[0].name %>\');"><strong>' + res[i].user + '</strong>: le ' + res[i].date  +'</a></li>');
             }
         })
         socket.on('notif_all_conv', (res)=>{

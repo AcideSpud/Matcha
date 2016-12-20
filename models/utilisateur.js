@@ -205,6 +205,7 @@ class Utilisateur {
 
 
 	static		updateMatchUser(user, db, key, chatRoomName) {
+		console.log('moi:', user.name, 'autre', key, 'chatRoomName:', chatRoomName);
 	this.sendNotif(user.name, key, 'Match with', db);
 
 		db.collection("users").updateOne({"name": user.name}, {$push: {"matchRoom": chatRoomName}}, (err)=> {
@@ -221,6 +222,8 @@ class Utilisateur {
 	}
 
 	static		updateUnMatchUser(user, db, key, chatRoomName) {
+
+		console.log('moi:', user.name, 'autre', key, 'chatRoomName:', chatRoomName);
 
 		this.sendNotif(user.name, key, 'UnMatch with', db);
 		db.collection("users").updateOne({"name": user.name}, {$pull: {"matchRoom": chatRoomName}}, (err)=> {
@@ -299,18 +302,22 @@ class Utilisateur {
 			var hash = bcrypt.hashSync(request.body.pwd);
 			var sanitizeHtml = require('sanitize-html');
 			var cleanPrenom = sanitizeHtml(request.body.prenom)
+			var cleanMail = sanitizeHtml(request.body.email)
 			var cleanNom = sanitizeHtml(request.body.nom)
 			var cleanBio = sanitizeHtml(request.body.bio)
 			var cleanHobbies = sanitizeHtml(request.body.hashtag);
-			var hashtag2 = request.body.hastag2;
-			var geoo = {};
 			var hobbies = [];
+			var hashtag2 = [];
+			var geoo = {};
 
 
 
 			geoo.latitude = JSON.parse(request.body.geo).lat;
 			geoo.longitude =JSON.parse(request.body.geo).lon;			
 			hobbies = hashtag(cleanHobbies);
+
+			hashtag2.push(request.body.hastag2)
+ 			console.log(hashtag2, '---<', hashtag2.length, '-----');
 
 			if (request.body.hastag2)
 				for (var i = 0; i < hashtag2.length; i++)
@@ -323,7 +330,7 @@ class Utilisateur {
 				throw err
 			} else {
 				var user = {
-					email: request.body.email,
+					email: cleanMail,
 					pwd: hash,
 					nom: cleanNom,
 					prenom: cleanPrenom,
@@ -363,6 +370,8 @@ class Utilisateur {
 	static		deleteIMG(username, imgpath, callback){
 		let mongo = require('mongodb').MongoClient;
 		
+		console.log('coucou?')
+
 		mongo.connect('mongodb://localhost/matcha', (err, db)=> {
 			db.collection("users").updateOne({"name": username}, {$pull: {"img": imgpath}}, (err, res)=> {
 				if (err) throw err
@@ -387,7 +396,7 @@ class Utilisateur {
    		 		db.collection("users").save(doc);
   			});
   			callback();
-  			db.close();
+  			//db.close();
 		})
 	}
 
@@ -413,6 +422,8 @@ class Utilisateur {
 		var cleanName = sanitizeHtml(request.body.name);
 		var cleanReponse = sanitizeHtml(request.body.repQuestion);
 
+		console.log('email',sanitizeHtml(request.body.email))
+
 		mongo.connect("mongodb://localhost/matcha", (err, db)=> {
 			if (err) throw err
 			else {
@@ -420,6 +431,7 @@ class Utilisateur {
 				var user = {
 					 name: cleanName,
 					 pwd: hash,
+					 email:sanitizeHtml(request.body.email),
 					question: request.body.questionSecrete,
 					reponse: cleanReponse,
 					popularite: 0,

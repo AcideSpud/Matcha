@@ -39,8 +39,10 @@ router.post('/chat', requireLogin, function(req, res, next){
 				Utilisateur.updateMainChatRoom(db, req.body.name2,req.body.name1, null)
 			})
 		}
+		console.log('CRN PUtin:', req.body.crn);
+		console.log('test:', req.body.name);
 		if (req.body.crn && req.body.name){
-		//	console.log('ON ENtre PAR LE FOOTER: CRN:', req.body.crn, 'NAME:', req.body.name)
+			console.log('ON ENtre PAR LE FOOTER: CRN:', req.body.crn, 'NAME:', req.body.name)
 			Utilisateur.GetDB((db)=>{
 				Utilisateur.updateMainChatRoom(db, req.body.name, null, req.body.crn)
 			})
@@ -50,16 +52,16 @@ router.post('/chat', requireLogin, function(req, res, next){
 		if (req.body.roomName){
 			chatRoom.findChatRoom(req.body.roomName, (res)=>{
 				if (res){
+					console.log('coucou, ROOM NAME:', req.body.roomName)
 					var clean = sanitizeHtml(req.body.content);
-						chatRoom.modifContent(req.body.roomName, req.body.userName, clean, ()=>{
+					console.log('CLLEEAN;', clean)
+						chatRoom.modifContent(req.body.roomName, req.body.userName, clean, req.body.roomName, ()=>{
 					})
 				}
 			})
 		}
 		
-		console.log('CRN PUtin:', req.body.crn);
-		console.log('test:', req.body.test)
-
+		
 		Utilisateur.findUsers3(req.session.user.name, (result)=>{
 			console.log('PUTINNNNNN______', req.body.crn)
 			if (result[0]){
