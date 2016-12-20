@@ -45,11 +45,12 @@ router.get('/', requireLogin,  function(req, res, next) {
                                     }}
                                 }
                             }
+                            }
                             res.render('dashboard', {
                                 ret: dist,
                                 user: resu
                             });
-                            }
+
                             
                         });
                     });
@@ -102,6 +103,7 @@ router.post('/sort', upload.array(), requireLogin, (req, res)=> {
         User.Create_db((array)=> {
             getProfile.sortReported(array, (array)=>{
             getProfile.SortPrefSexUser(req.session.user, array, (ret)=>{
+                console.log(req.body.mySort + "||||||||||||||||+++++++");
                 if (req.body.mySort == 1) {
                     getProfile.sortAge(ret, (cb)=>{
                         getProfile.GetDistance(req.session.user, cb, (geo)=> {
@@ -138,7 +140,6 @@ router.post('/sort', upload.array(), requireLogin, (req, res)=> {
                                     }
                                 }
                             }
-                            console.log(ret);
                             getProfile.sortByTag(ret, (mcb)=> {
                                 res.contentType('json');
                                 res.send(JSON.stringify(mcb));
@@ -159,7 +160,6 @@ router.post('/filter', upload.array(),requireLogin, (req, res) =>{
 	let ageMax = req.body.ageMax;
 	var popMin = req.body.popMin;
 	var popMax = req.body.popMax;
-    let arr = [];
 	var tag = req.body.tag;
 	var dist = req.body.dist;
 	if (req.body.data)

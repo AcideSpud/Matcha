@@ -87,54 +87,71 @@ function showTable(data){
             imgclass = 'img-thumbnail'
             img = '/img/no_image.png';
         }
+        if (!data[i].nTag) {
+            data[i].nTag = 0;
+        }
+        if (data[i].dist == 0)
+            data[i].dist = '<i>~1km</i>';
+        else if (data[i].dist != null){
+            data[i].dist = '<i>' + data[i].dist + ' km</i>';
+        }
+        else{
+            data[i].dist = '<i>undef</i>';
+        }
 
 
         $('#table').append('<div class="col-sm-6 col-md-3" id="thebox">' +
-       '<div class="thumbnail" style="background-image:linear-gradient(90deg,rgb(127, 18, 47), rgb(200, 255, 255) );" id="mybox">' +
-         '<div><img class="'+ imgclass +'" src="'+ img+ '"  alt=""></div>' +
+       '<div class="thumbnail" style="background-image:linear-gradient(180deg,rgb(127, 18, 47), rgb(200, 255, 255));box-shadow: 5px 5px 12px #555;border-radius: 70px;border-style:solid;border-color:black;"" id="mybox">' +
+         '<div style="text-align: center"><img style="border-style:solid;border-color:black;border-radius: 10%;box-shadow: 10px 10px 22px #555;" class="'+ imgclass +'" src="'+ img+ '"  alt=""></div>' +
             '<div class="caption">' +
-            '<h3>' +  data[i].nom + '&nbsp;' + data[i].prenom + '</h3>' +
+            '<h3><strong>' +  data[i].nom + '&nbsp;' + data[i].prenom + '</strong></h3>' +
             `<div class="col-md-4 column">
             <table class="table">
             <thead>
             <tr>
-            <td>Age :</td>  
+            <td><strong>Age :</strong></td>  
             <td> 
-            ${age}  
+            <i>${age}</i>  
             </td>
             </tr>
             <tr>
             <td>
-            Popularite:
+            <strong>Popularite:</strong>
     </td>
-        <td>` +
+        <td><i>` +
          data[i].popularite +
-            `</td>
+            `</i></td>
             </tr>
             <tr>
             <td>
-            Dist:
+            <strong>Dist:</strong>
     </td>
         <td>` +
-         data[i].dist + `Km
-            </td>
+         data[i].dist + `
+           </td>
             </tr>
             <tr>
             <td>
-            Insterested by :
+            <strong>Insterested by :</strong>
             </td>
-        <td>
+        <td><i>
        ` + orient + `
-    </td>
+    </i></td>
         </tr>
-
-
+        <tr>
+                                <td>
+                                    <strong><p>Nombre de Tag en commun:</p></strong>
+                                </td>
+                                <td>
+                <i>${data[i].nTag}</i> 
+         </td>
+                            </tr>
         </thead>
         </table>
 
         </div>
         </div>'
-            '<p id="b_view"><a href="/profile/`  + data[i].name + '" class="btn btn-primary" role="button">View profil</a></p>' +
+            '<p id="b_view" style="display: inline"><a href="/profile/`  + data[i].name + '" class="btn btn-primary" role="button">View profil</a></p>' +
                 '</div></div></div>');
 
     }
