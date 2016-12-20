@@ -323,7 +323,7 @@ class Utilisateur {
 			var cleanBio = sanitizeHtml(request.body.bio)
 			var cleanHobbies = sanitizeHtml(request.body.hashtag);
 			var hobbies = [];
-			var hashtag2 = [];
+			var hashtag2 = request.body.hastag2;
 			var geoo = {};
 
 			console.log('geoo:', request.body.geo)
@@ -331,9 +331,6 @@ class Utilisateur {
 			geoo.latitude = JSON.parse(request.body.geo).lat;
 			geoo.longitude =JSON.parse(request.body.geo).lon;			
 			hobbies = hashtag(cleanHobbies);
-
-			hashtag2.push(request.body.hastag2)
- 			console.log(hashtag2, '---<', hashtag2.length, '-----');
 
 			if (request.body.hastag2)
 				for (var i = 0; i < hashtag2.length; i++)
