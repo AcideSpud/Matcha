@@ -107,7 +107,14 @@ class Utilisateur {
 			}
 		}, (err)=> {
 			if (err) throw err;
-			db.close();
+		})
+	}
+
+	static		updateReported2(db, me, reportedUser){
+		db.collection("users").updateOne({"name": me},{
+			$push: {"reported2": reportedUser}
+		}, (err)=>{
+			if (err) throw err;
 		})
 	}
 
@@ -435,7 +442,11 @@ class Utilisateur {
 					img: [],
 					orientation: "Bi",
 					geo: {},
-					visit: [], reported: false, lastCo: Date.now(),
+					visit: [],
+					reported: false,
+					reported2: [],
+
+					lastCo: Date.now(),
 					matchRoom: [],
 					focus: [],
                     notif: []
@@ -815,7 +826,6 @@ class Utilisateur {
         }
 		callback(ret);
     }
-
 }
 
 module.exports= Utilisateur;

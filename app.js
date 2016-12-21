@@ -246,6 +246,7 @@ app.use('/header', header);
 app.use('/forgot_mail', forgot_mail);
 app.use('/logout', logout);
 
+/*
 
 app.get('*', function(req, res, next) {
   var err = new Error();
@@ -260,6 +261,6 @@ app.use(function(err, req, res, next) {
   res.status(404);
   res.render('page_error')
 });
-
+*/
 
 module.exports = app;

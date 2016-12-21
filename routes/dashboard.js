@@ -44,7 +44,6 @@ router.get('/', requireLogin,  function(req, res, next) {
                                     }}
                                 }
                             }
-
                             res.render('dashboard', {
                                 ret: dist,
                                 user: resu

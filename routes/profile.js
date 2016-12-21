@@ -64,6 +64,7 @@ router.post('/reporte/:name', requireLogin, (req, res)=>{
     Profile.findUsers4(req.params.name, (ret)=> {
         User.GetDB((db)=> {
             User.updateReported(db, req.params.name);
+            //User.updateReported2(db, req.session.user.name, req.params.name);
             User.updateVisit(req.params.name, db, req.session.user.name);
             User.updatePop(ret[0].popularite + 1, ret, db);
             var islike = false;
@@ -82,7 +83,8 @@ router.post('/reporte/:name', requireLogin, (req, res)=>{
         });
     });
 });
-    //next();
+
+//next();
 
 router.post('/like/:Namelike', requireLogin, (req, res) =>{
     User.GetDB((db)=> {
