@@ -100,6 +100,7 @@ class Utilisateur {
 		
 	}
 
+
 	static		updateReported(db , reportedUser) {
 		db.collection("users").updateOne({"name": reportedUser}, {
 			$set: {
@@ -418,6 +419,19 @@ class Utilisateur {
 		})
 	}
 
+
+	static 		isCo(username, bool){
+		this.GetDB((db)=>{
+			db.collection("users").updateOne({"name": username}, {$set:{"isCo": bool}}
+				,(err)=>{
+					if (err) throw err
+						console.log("IS COOO  OK:    ", bool)
+				})
+			db.close();
+		})
+	}
+
+
 	static      create(request, response) {
 		let mongo = require('mongodb').MongoClient
 		let bcrypt = require('bcryptjs');
@@ -445,7 +459,7 @@ class Utilisateur {
 					visit: [],
 					reported: false,
 					reported2: [],
-
+					isCo: false,
 					lastCo: Date.now(),
 					matchRoom: [],
 					focus: [],

@@ -20,6 +20,7 @@ function requireLogin (req, res, next) {
 router.get('/', requireLogin, (req, res, next)=>{
     Ut.GetDB((db)=>{
         Ut.updateLastCo(db, Date.now(), req.session.user, (nothing) =>{
+            Ut.isCo(req.session.user.name, false);
 	       req.session.destroy((err)=> {
             if (err) {
              throw err

@@ -94,6 +94,8 @@ var chatRoom = require('./models/chat_function')
 
 io.on('connection', function (socket) {
   
+
+
 socket.on('sendchat', function(data){
   var clean = sanitizeHtml(data);
     socket.emit(socket.room).emit('updatechat', socket.username, clean);

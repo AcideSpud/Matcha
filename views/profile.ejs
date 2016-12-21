@@ -145,7 +145,19 @@
                                             <% } %>
                                         </td>
                                     </tr>
-                                    
+                                    <tr>
+                                        <td>
+                                            <strong> Connected: </strong>
+                                            <td>
+                                                <% if (ret[0].isCo === true) { %>
+                                                    <p style="color:green;"> <span class="glyphicon glyphicon-ok"></span></p>
+
+                                                <% } else { %>
+                                                    <p style="color:red;"> <span class="glyphicon glyphicon-remove"></span></p>
+
+                                                <% } %> 
+                                            </td>
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
