@@ -81,6 +81,14 @@ function    changeProfilePicture(path, i){
     $("#status").empty().text("Modification ok");
 }
 
+function    block_user(userBlock, user){
+    var request = new XMLHttpRequest();
+    request.open('POST', '/profile/block', true);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    request.send("block="+userBlock+"&user="+user);
+
+}
+
 function    setNotif(notif){
     var request = new XMLHttpRequest();
     request.open('POST', '/setNotif', true);

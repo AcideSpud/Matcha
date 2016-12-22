@@ -6,6 +6,9 @@ var router = express.Router();
 let Profile = require('../models/getDataUser');
 let User = require('../models/utilisateur');
 let timeAgo = require('node-time-ago');
+let bodyParser = require('body-parser');
+
+router.use(bodyParser.urlencoded({ extended: false }));
 
 function requireLogin (req, res, next) {
     if (!req.user) {
@@ -111,6 +114,15 @@ router.post('/unlike/:Nameunlike', requireLogin, (req, res)=>{
     });
     res.end();
 });
+
+router.post('/block', (req, res)=>{
+    console.log(req.body.block,' ',req.body.user);
+    User.GetDB((db)=>{
+        User.updateBlock(db, req.body.user, req.body.block, ()=>{
+            
+        })
+    })
+})
 
 
 module.exports = router;

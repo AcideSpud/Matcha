@@ -111,11 +111,12 @@ class Utilisateur {
 		})
 	}
 
-	static		updateReported2(db, me, reportedUser){
+	static		updateBlock(db, me, reportedUser){
 		db.collection("users").updateOne({"name": me},{
-			$push: {"reported2": reportedUser}
+			$push: {"blocked": reportedUser}
 		}, (err)=>{
 			if (err) throw err;
+			console.log('ME: ', me, 'BLOCKED: ', reportedUser);
 		})
 	}
 
@@ -162,7 +163,6 @@ class Utilisateur {
 	}
 
 	static		updateVisit(user, db, key){
-
 		this.sendNotif(user, key, 'Visit from', db);
 
 		this.findUsers3(user, (res)=>{
@@ -425,7 +425,6 @@ class Utilisateur {
 			db.collection("users").updateOne({"name": username}, {$set:{"isCo": bool}}
 				,(err)=>{
 					if (err) throw err
-						console.log("IS COOO  OK:    ", bool)
 				})
 			db.close();
 		})
@@ -458,7 +457,7 @@ class Utilisateur {
 					geo: {},
 					visit: [],
 					reported: false,
-					reported2: [],
+					blocked: [],
 					isCo: false,
 					lastCo: Date.now(),
 					matchRoom: [],

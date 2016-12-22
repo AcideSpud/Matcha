@@ -103,6 +103,8 @@ socket.on('sendchat', function(data){
   });
 
   socket.on('notification_like', function(data) {
+    Utilisateur.isCo(data, true);
+    socket.isco = data;
       Utilisateur.findUsers3(data, (res)=> {
         if (res){
 
@@ -120,7 +122,17 @@ socket.on('sendchat', function(data){
           if (res[0].visit){
             for (var i = 0; i < res[0].visit.length; i++){
               if (allVisit.indexOf(res[0].visit[i].user) === -1){
-               allVisit.push(res[0].visit[i].user)
+                if (res[0].blocked){
+                    console.log('BLOCKED:', res[0].blocked, 'NotiF USer;', res[0].visit[i].user, 'indexOF:', res[0].blocked.indexOf(res[0].visit[i].user) )
+                  if (res[0].blocked.indexOf(res[0].visit[i].user) === -1){
+
+                    console.log(res[0].visit.user)
+                     allVisit.push(res[0].visit[i].user);
+                  }
+                     
+                } else {
+                  allVisit.push(res[0].visit[i].user)
+                }  
               }
             }
             socket.emit('notif_all_visit', allVisit);
@@ -190,6 +202,7 @@ socket.on('sendchat', function(data){
   })
 
   socket.on('disconnect', function(){
+    Utilisateur.isCo(socket.isco, false);
     delete all_users[socket.username];
     io.sockets.emit('updateusers', all_users);
     socket.leave(socket.room);
@@ -248,7 +261,6 @@ app.use('/header', header);
 app.use('/forgot_mail', forgot_mail);
 app.use('/logout', logout);
 
-/*
 
 app.get('*', function(req, res, next) {
   var err = new Error();
@@ -263,6 +275,6 @@ app.use(function(err, req, res, next) {
   res.status(404);
   res.render('page_error')
 });
-*/
+
 
 module.exports = app;
