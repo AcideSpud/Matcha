@@ -97,8 +97,8 @@ function    setNotif(notif){
     request.send("notif="+notif);
 }
 function    reportedEv(name){
+    console.log("test ::== > " + name);
     var request = new XMLHttpRequest();
-    request.open('POST', 'profile/reporte/:' + name, true);
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    request.open('POST', '/profile/reporte/' + name, true);
     request.send();
 }
