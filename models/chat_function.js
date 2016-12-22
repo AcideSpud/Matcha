@@ -105,16 +105,21 @@ class Chat {
 
 	static	checkNbNotif(name, user, callback){
 		var nb = 0;
+	//	var Utilisateur = require('../models/utilisateur')
 
-		this.findChatRoom(name, (res)=>{
-			if (res[0]){
-				for (var i = 0; i<res[0].conte.length; i++){
-					if (res[0].conte[i].isRead == false && res[0].conte[i].user != user)
-						nb++;
+	//	Utilisateur.findUsers3(user, (resu)=>{
+			this.findChatRoom(name, (res)=>{
+				if (res[0]){
+					for (var i = 0; i<res[0].conte.length; i++){
+						if (res[0].conte[i].isRead == false && res[0].conte[i].user != user
+							/* resu[0].blocked.indexOf(res[0].conte[i].user) === -1 */){
+							nb++;
+						}
+					}
+					callback(nb);
 				}
-				callback(nb);
-			}
-		})
+			})
+		//})
 	}
 
 	static	readAllMsg(name, callback){
