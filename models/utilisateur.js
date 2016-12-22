@@ -477,7 +477,8 @@ class Utilisateur {
 		this.findUsers3(name, (res)=>{
 			if (res[0]){
  				for (var i = 0; i<res[0].notif.length; i++){
-					if (res[0].notif[i].isRead == false )
+					if (res[0].notif[i].isRead == false &&
+						(res[0].blocked.indexOf(res[0].notif[i].userSend) === -1))
 						nb++;
 				}
 				callback(nb);

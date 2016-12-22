@@ -111,25 +111,25 @@ socket.on('sendchat', function(data){
           var allVisit = [];
           var allNotif = [];
           var allConv = [];
+          var allLiker = [];
 
           Utilisateur.checkNbNotif(res[0].name, (cb)=> {
             socket.emit('nb_notif_unread', cb);
 
           });
           if (res[0].liker){
-            socket.emit('notif_all_like', res[0].liker);
+            for (var i = 0; i < res[0].liker.length; i++){
+              if (res[0].blocked.indexOf(res[0].liker[i]) === -1)
+                allLiker.push(res[0].liker[i]);
+            }
+              socket.emit('notif_all_like', allLiker);
           }
           if (res[0].visit){
             for (var i = 0; i < res[0].visit.length; i++){
               if (allVisit.indexOf(res[0].visit[i].user) === -1){
                 if (res[0].blocked){
-                    console.log('BLOCKED:', res[0].blocked, 'NotiF USer;', res[0].visit[i].user, 'indexOF:', res[0].blocked.indexOf(res[0].visit[i].user) )
-                  if (res[0].blocked.indexOf(res[0].visit[i].user) === -1){
-
-                    console.log(res[0].visit.user)
-                     allVisit.push(res[0].visit[i].user);
-                  }
-                     
+                  if (res[0].blocked.indexOf(res[0].visit[i].user) === -1)
+                     allVisit.push(res[0].visit[i].user);  
                 } else {
                   allVisit.push(res[0].visit[i].user)
                 }  
@@ -140,9 +140,11 @@ socket.on('sendchat', function(data){
           if (res[0].notif){
             for (let j = 0; j < res[0].notif.length; j++){
               if (allNotif.indexOf(res[0].notif[j].userSend) === -1){
-               res[0].notif[j].time = timeAgo(res[0].notif[j].date);
-               allNotif.push(res[0].notif[j])
-             }  
+                if ((res[0].blocked) && (res[0].blocked.indexOf(res[0].notif[j].userSend) === -1)){
+                    res[0].notif[j].time = timeAgo(res[0].notif[j].date);
+                    allNotif.push(res[0].notif[j])
+                }
+              }
             }
             socket.emit('notif_like', allNotif)
           }
@@ -151,7 +153,8 @@ socket.on('sendchat', function(data){
               if (allroom){
                 for (var k = 0; k < allroom.length; k++){
                   for (var l = 0; l < res[0].matchRoom.length; l++){
-                    if (allroom[k].chatRoomName === res[0].matchRoom[l])
+                    if ((allroom[k].chatRoomName === res[0].matchRoom[l]) &&
+                        (res[0].blocked.indexOf(allroom[k].other) === -1))
                       allConv.push(allroom[k]);
                   }
                 }
