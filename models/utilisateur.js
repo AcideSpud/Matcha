@@ -498,6 +498,15 @@ class Utilisateur {
 		callback(ret);
 	}
 
+	static		updateReported2(db, me, reportedUser){
+			db.collection("users").updateOne({"name": me},{
+						$push: {"reported2": reportedUser}
+				}, (err)=>{
+			if (err) throw err;
+						db.close();
+		})
+	}
+
 	static      SortPrefSexUser(user, otherUserArray, callback) {
 
 		let res = [];

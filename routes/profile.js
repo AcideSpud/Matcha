@@ -64,6 +64,7 @@ router.get('/:userID', requireLogin, (req, res, next)=>{
 });
 
 router.post('/reporte/:name', requireLogin, (req, res)=>{
+    console.log(req.params.name);
     User.findUsers3(req.params.name, (ret)=> {
         User.GetDB((db)=> {
             User.updateReported(ret, db);
