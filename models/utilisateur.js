@@ -14,19 +14,6 @@ class Utilisateur {
 		})
 	}
 
-	static		findUsers(db, username, callback) {
-
-		let assert = require('assert')
-		var cursor = db.collection('users').find({name: username})
-		cursor.each((err, doc)=> {
-			assert.equal(err, null)
-			if (doc) {
-				callback(doc)
-			} else {
-				callback(undefined)
-			}
-		})
-	}
 
 	static		findUsers3(username, callback) {
 

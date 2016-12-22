@@ -181,9 +181,6 @@ var onError = function(err) {
 
 function find(sort){
     if (!sort) {
-        if (data) {
-            console.log("MYSUPERDUPERTEST !!!!");
-        }
         var ageMin = $('#age-min').val();
         var ageMax = $('#age-max').val();
         var popMin = $('#pop-min').val();
@@ -211,8 +208,6 @@ function find(sort){
         for (var pair of myform.entries()) {
             console.log(pair[0] + ', ' + pair[1]);
         }
-
-
         xhr.open('POST', "/dashboard/filter", true);
         xhr.setRequestHeader('X-Requested-With', 'xmlhttprequest');
         xhr.addEventListener('error', onError, false);

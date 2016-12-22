@@ -44,7 +44,6 @@ router.get('/', requireLogin,  function(req, res, next) {
                                     }}
                                 }
                             }
-
                             res.render('dashboard', {
                                 ret: dist,
                                 user: resu
@@ -101,7 +100,6 @@ router.post('/sort', upload.array(), requireLogin, (req, res)=> {
         User.Create_db((array)=> {
             getProfile.sortReported(array, (array)=>{
             getProfile.SortPrefSexUser(req.session.user, array, (ret)=>{
-                console.log(req.body.mySort + "||||||||||||||||+++++++");
                 if (req.body.mySort == 1) {
                     getProfile.sortAge(ret, (cb)=>{
                         getProfile.GetDistance(req.session.user, cb, (geo)=> {
