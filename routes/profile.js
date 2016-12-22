@@ -64,13 +64,12 @@ router.get('/:userID', requireLogin, (req, res, next)=>{
 });
 
 router.post('/reporte/:name', requireLogin, (req, res)=>{
-    Profile.findUsers4(req.params.name, (ret)=> {
+    User.findUsers3(req.params.name, (ret)=> {
         User.GetDB((db)=> {
-            User.updateReported(db, req.params.name);
+            User.updateReported(ret, db);
             //User.updateReported2(db, req.session.user.name, req.params.name);
-            User.updateVisit(req.params.name, db, req.session.user.name);
-            User.updatePop(ret[0].popularite + 1, ret, db);
             var islike = false;
+            var imlike = false;
             if (ret[0].liker) {
                 for (var i = 0, len = ret[0].liker.length; i < len; i++) {
                     if (ret[0].liker[i] == req.session.user.name) {
@@ -78,16 +77,28 @@ router.post('/reporte/:name', requireLogin, (req, res)=>{
                     }
                 }
             }
+            if (ret[0].like) {
+                for (var i = 0, len = ret[0].like.length; i < len; i++) {
+                    if (ret[0].like[i] == req.session.user.name) {
+                        imlike = true;
+                    }
+                }
+            }
+            User.findUsers3(req.session.user.name, (resu)=> {
+                let time = timeAgo(ret[0].lastCo);
             res.render('profile', {
                 ret: ret,
                 islike: islike,
-                user: req.session.user.name
+                imlike: imlike,
+                time: time,
+                user: resu,
+                autre: req.params.userID
+            })
             });
         });
     });
 });
 
-//next();
 
 router.post('/like/:Namelike', requireLogin, (req, res) =>{
     User.GetDB((db)=> {

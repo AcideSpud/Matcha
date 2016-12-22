@@ -14,19 +14,6 @@ class Utilisateur {
 		})
 	}
 
-	static		findUsers(db, username, callback) {
-
-		let assert = require('assert')
-		var cursor = db.collection('users').find({name: username})
-		cursor.each((err, doc)=> {
-			assert.equal(err, null)
-			if (doc) {
-				callback(doc)
-			} else {
-				callback(undefined)
-			}
-		})
-	}
 
 	static		findUsers3(username, callback) {
 
@@ -101,14 +88,12 @@ class Utilisateur {
 	}
 
 
-	static		updateReported(db , reportedUser) {
-		db.collection("users").updateOne({"name": reportedUser}, {
-			$set: {
-				"reported" : true
-			}
-		}, (err)=> {
-			if (err) throw err;
-		})
+	static		updateReported(userToUp, db) {
+        let nb_report = userToUp[0].reported + 1;
+        db.collection("users").updateOne({"name": userToUp[0].name}, {$set: {"reported": nb_report}}, (err)=> {
+            if (err)
+                throw err;
+        });
 	}
 
 	static		updateBlock(db, me, reportedUser){
@@ -319,9 +304,10 @@ class Utilisateur {
 			var geoo = {};
 
 
-
-			geoo.latitude = JSON.parse(request.body.geo).lat;
-			geoo.longitude =JSON.parse(request.body.geo).lon;			
+            if (request.body.geo) {
+                geoo.latitude = JSON.parse(request.body.geo).lat;
+                geoo.longitude = JSON.parse(request.body.geo).lon;
+            }
 			hobbies = hashtag(cleanHobbies);
 
 			if (request.body.hastag2)
@@ -456,8 +442,8 @@ class Utilisateur {
 					orientation: "Bi",
 					geo: {},
 					visit: [],
-					reported: false,
 					blocked: [],
+					reported: 0,
 					isCo: false,
 					lastCo: Date.now(),
 					matchRoom: [],
@@ -503,11 +489,12 @@ class Utilisateur {
 		let cmp = 0;
 
 		for (let i = 0, len = otherUserArray.length; i < len; i++){
-			if (otherUserArray[i].reported == false){
-				ret[cmp] = otherUserArray[i];
-				cmp++;
-			}
+                if ((otherUserArray[i].reported < 3) ) {
+                    ret[cmp] = otherUserArray[i];
+                    cmp++;
+                }
 		}
+
 		callback(ret);
 	}
 
@@ -839,6 +826,7 @@ class Utilisateur {
         }
 		callback(ret);
     }
+
 }
 
 module.exports= Utilisateur;
