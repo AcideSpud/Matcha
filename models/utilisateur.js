@@ -690,6 +690,7 @@ class Utilisateur {
 
 
 		    let userLatitude = user.geo.latitude.toString();
+			console.log(user.geo.latitude);
 		    userLatitude = userLatitude.substring(0, 8);
 		    let userLongitude = user.geo.longitude.toString();
 		    userLongitude = userLongitude.substring(0, 8);
@@ -770,9 +771,11 @@ class Utilisateur {
             cmp++;
         }
         let tab = new Array;
-        for (let i = 0, len = comTag.length; i < len; i++) {
+		let j = 0;
+        for (let i = 0; i < comTag.length; i++) {
             if (comTag[i][0]) {
-                tab[i] = {name: comTag[i][0].name, size: comTag[i].length};
+                tab[j] = {name: comTag[i][0].name, size: comTag[i].length};
+                j++;
             }
         }
         callback(tab);
@@ -825,14 +828,18 @@ class Utilisateur {
 			if (user.tag)
             	nbTagUser = user.tag.length;
             let tab = new Array;
+			let cpt = 0;
             for (let i = 0, len = comTag.length; i < len; i++) {
                 if (comTag[i][0]) {
-                    tab[i] = {name: comTag[i][0].name, size: comTag[i].length};
+                    tab[cpt] = {name: comTag[i][0].name, size: comTag[i].length};
+                    cpt++;
                 }
             }
+            cpt = 0;
             for (let i = 0, len = tab.length; i < len; i++) {
             	if (tab[i]) {
-					nbTagOther[i] = {name: tab[i].name, percent: tab[i].size * 100 / nbTagUser};
+					nbTagOther[cpt] = {name: tab[i].name, percent: tab[i].size * 100 / nbTagUser};
+					cpt++;
 				}
             }
             let j = 0;

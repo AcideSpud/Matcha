@@ -210,8 +210,8 @@ function find(sort){
         }
         xhr.open('POST', "/dashboard/filter", true);
         xhr.setRequestHeader('X-Requested-With', 'xmlhttprequest');
-        //xhr.addEventListener('error', onError, false);
-        //xhr.addEventListener('progress', onProgress, false);
+        xhr.addEventListener('error', onError, false);
+        xhr.addEventListener('progress', onProgress, false);
         xhr.send(myform);
         xhr.addEventListener('readystatechange', onReady, false);
     }
