@@ -29,7 +29,6 @@ router.get('/:userID', requireLogin, (req, res, next)=>{
             if (ret) {
                 User.GetDB((db)=> {
                     User.updateVisit(req.params.userID, db, req.session.user.name);
-                    User.updatePop(ret[0].popularite + 1, ret, db);
                     var islike = false;
                     var imlike = false;
                     if (ret[0].liker) {
@@ -47,6 +46,11 @@ router.get('/:userID', requireLogin, (req, res, next)=>{
                         }
                     }
                     User.findUsers3(req.session.user.name, (resu)=> {
+                        User.isReported(req.params.userID, resu, (isReport)=>{
+                            if (isReport == false) {
+                                User.updatePop(ret[0].popularite + 1, ret, db);
+                            }
+
                         let time = timeAgo(ret[0].lastCo);
                         res.render('profile', {
                             ret: ret,
@@ -54,7 +58,9 @@ router.get('/:userID', requireLogin, (req, res, next)=>{
                             imlike: imlike,
                             time: time,
                             user: resu,
+                            isRpt: isReport,
                             autre: req.params.userID
+                        });
                         });
                     })
                 });
@@ -64,11 +70,10 @@ router.get('/:userID', requireLogin, (req, res, next)=>{
 });
 
 router.post('/reporte/:name', requireLogin, (req, res)=>{
-    console.log(req.params.name);
     User.findUsers3(req.params.name, (ret)=> {
         User.GetDB((db)=> {
             User.updateReported(ret, db);
-            //User.updateReported2(db, req.session.user.name, req.params.name);
+            User.updateReported2(db, req.session.user.name, req.params.name);
             var islike = false;
             var imlike = false;
             if (ret[0].liker) {
@@ -85,17 +90,7 @@ router.post('/reporte/:name', requireLogin, (req, res)=>{
                     }
                 }
             }
-            User.findUsers3(req.session.user.name, (resu)=> {
-                let time = timeAgo(ret[0].lastCo);
-            res.render('profile', {
-                ret: ret,
-                islike: islike,
-                imlike: imlike,
-                time: time,
-                user: resu,
-                autre: req.params.userID
-            })
-            });
+            res.end();
         });
     });
 });

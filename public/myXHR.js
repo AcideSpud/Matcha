@@ -96,9 +96,10 @@ function    setNotif(notif){
     console.log(notif);
     request.send("notif="+notif);
 }
-function    reportedEv(name){
+function    reportedEv(name) {
     console.log("test ::== > " + name);
     var request = new XMLHttpRequest();
     request.open('POST', '/profile/reporte/' + name, true);
     request.send();
+    $('#reported').text('Alrd Report').prop('onclick',null).off('click').removeClass('btn-warning').addClass('btn-danger');
 }

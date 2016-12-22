@@ -444,6 +444,7 @@ class Utilisateur {
 					visit: [],
 					blocked: [],
 					reported: 0,
+					reported2: [],
 					isCo: false,
 					lastCo: Date.now(),
 					matchRoom: [],
@@ -774,6 +775,18 @@ class Utilisateur {
             }
         }
         callback(tab);
+	}
+
+	static		isReported(otherUser, user, callback)
+	{
+		let isReported = false;
+		for (let i = 0; i < user[0].reported2.length; i++)
+		{
+			if (user[0].reported2[i] == otherUser){
+				isReported = true;
+			}
+		}
+		callback(isReported);
 	}
 
     static      SortTag(user, otherUserArray, val, callback) {

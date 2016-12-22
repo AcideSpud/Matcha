@@ -56,8 +56,8 @@
                 <% } %>
             </p>
             <p>
-            <% if (ret[0].reported < 3 ){ %>
-            <button class="btn btn-warning btn-block" type="button" onclick="reportedEv('<%= ret[0].name %>');" >
+            <% if (ret[0].reported < 3 && isRpt == false){ %>
+            <button id="reported" class="btn btn-warning btn-block" type="button" onclick="reportedEv('<%= ret[0].name %>');" >
                 Report !
             </button>
             <% } else { %>
