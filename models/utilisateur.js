@@ -87,14 +87,20 @@ class Utilisateur {
 		
 	}
 
-	static		updateReported(db , reportedUser) {
-		db.collection("users").updateOne({"name": reportedUser}, {
-			$set: {
-				"reported" : true
-			}
-		}, (err)=> {
+
+	static		updateReported(userToUp, db) {
+        let nb_report = userToUp[0].reported + 1;
+        db.collection("users").updateOne({"name": userToUp[0].name}, {$set: {"reported": nb_report}}, (err)=> {
+            if (err)
+                throw err;
+        });
+	}
+
+	static		updateReported2(db, me, reportedUser){
+		db.collection("users").updateOne({"name": me},{
+			$push: {"reported2": reportedUser}
+		}, (err)=>{
 			if (err) throw err;
-			db.close();
 		})
 	}
 
@@ -294,17 +300,15 @@ class Utilisateur {
 			var cleanBio = sanitizeHtml(request.body.bio)
 			var cleanHobbies = sanitizeHtml(request.body.hashtag);
 			var hobbies = [];
-			var hashtag2 = [];
+			var hashtag2 = request.body.hastag2;
 			var geoo = {};
 
 
-
-			geoo.latitude = JSON.parse(request.body.geo).lat;
-			geoo.longitude =JSON.parse(request.body.geo).lon;			
+            if (request.body.geo) {
+                geoo.latitude = JSON.parse(request.body.geo).lat;
+                geoo.longitude = JSON.parse(request.body.geo).lon;
+            }
 			hobbies = hashtag(cleanHobbies);
-
-			hashtag2.push(request.body.hastag2)
- 			console.log(hashtag2, '---<', hashtag2.length, '-----');
 
 			if (request.body.hastag2)
 				for (var i = 0; i < hashtag2.length; i++)
@@ -401,6 +405,19 @@ class Utilisateur {
 		})
 	}
 
+
+	static 		isCo(username, bool){
+		this.GetDB((db)=>{
+			db.collection("users").updateOne({"name": username}, {$set:{"isCo": bool}}
+				,(err)=>{
+					if (err) throw err
+						console.log("IS COOO  OK:    ", bool)
+				})
+			db.close();
+		})
+	}
+
+
 	static      create(request, response) {
 		let mongo = require('mongodb').MongoClient
 		let bcrypt = require('bcryptjs');
@@ -425,7 +442,11 @@ class Utilisateur {
 					img: [],
 					orientation: "Bi",
 					geo: {},
-					visit: [], reported: false, lastCo: Date.now(),
+					visit: [],
+					reported: 0,
+					reported2: [],
+					isCo: false,
+					lastCo: Date.now(),
 					matchRoom: [],
 					focus: [],
                     notif: []
@@ -469,11 +490,12 @@ class Utilisateur {
 		let cmp = 0;
 
 		for (let i = 0, len = otherUserArray.length; i < len; i++){
-			if (otherUserArray[i].reported == false){
-				ret[cmp] = otherUserArray[i];
-				cmp++;
-			}
+                if ((otherUserArray[i].reported < 3) ) {
+                    ret[cmp] = otherUserArray[i];
+                    cmp++;
+                }
 		}
+
 		callback(ret);
 	}
 

@@ -94,6 +94,8 @@ var chatRoom = require('./models/chat_function')
 
 io.on('connection', function (socket) {
   
+
+
 socket.on('sendchat', function(data){
   var clean = sanitizeHtml(data);
     socket.emit(socket.room).emit('updatechat', socket.username, clean);
@@ -246,6 +248,7 @@ app.use('/header', header);
 app.use('/forgot_mail', forgot_mail);
 app.use('/logout', logout);
 
+/*
 
 app.get('*', function(req, res, next) {
   var err = new Error();
@@ -260,6 +263,6 @@ app.use(function(err, req, res, next) {
   res.status(404);
   res.render('page_error')
 });
-
+*/
 
 module.exports = app;

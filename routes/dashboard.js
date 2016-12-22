@@ -31,10 +31,11 @@ router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get('/', requireLogin,  function(req, res, next) {
 	User.Create_db((ret)=>{
+        getProfile.findUsers3(req.session.user.name, (resu)=>{
         getProfile.sortReported(ret, (ret)=>{
 		    getProfile.SortPrefSexUser(req.session.user, ret, (cb)=> {
                 getProfile.GetDistance(req.session.user, cb, (dist)=> {
-                    getProfile.findUsers3(req.session.user.name, (resu)=>{
+
                         getProfile.nbTag(req.session.user, dist, (cb)=> {
                             if (cb[0] && dist[0]){
                                 for (let i = 0, len = dist.length; i < len; i++) {

@@ -23,6 +23,7 @@ router.post('/form_log', (request, response)=>{
         if (bcrypt.compareSync(request.body.password, result[0].pwd)){
           request.flash('success', "bien Connecte")
           request.session.user = result[0];
+          Utilisateur.isCo(request.session.user.name, true);
         }
         else
           request.flash('error', "mauvais mdp")
