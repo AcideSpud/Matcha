@@ -93,7 +93,7 @@ function showTable(data){
         if (data[i].dist == 0)
             data[i].dist = '<i>~1km</i>';
         else if (data[i].dist != null){
-            data[i].dist = '<i>' + data[i].dist + ' km</i>';
+            data[i].dist = '<i>' + data[i].dist + '</i>';
         }
         else{
             data[i].dist = '<i>undef</i>';
@@ -151,7 +151,7 @@ function showTable(data){
 
         </div>
         </div>'
-            '<p id="b_view" style="display: inline"><a href="/profile/`  + data[i].name + '" class="btn btn-primary" role="button">View profil</a></p>' +
+            '<p id="b_view" style="display: inline"><a href="/profile/`  + data[i].name + '" class="btn btn-danger" role="button">View profil</a></p>' +
                 '</div></div></div>');
 
     }

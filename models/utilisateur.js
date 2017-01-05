@@ -857,8 +857,9 @@ class Utilisateur {
 					}
 				}
 			}
+			callback(ret);
         }
-		callback(ret);
+
     }
 
 }

@@ -24,6 +24,8 @@
 #mybox {
     overflow : auto;
     height: 700px;
+	float: bottom;
+	display: block;
 
 }
 #b_view {
@@ -32,6 +34,16 @@
 	margin-bottom: 35px;
 }
 
+body {
+	/* Margin bottom by footer height */
+
+}
+footer {
+	width: 100%;
+	/* Set the fixed height of the footer here */
+	height: 340px;
+
+}
 .navbar .divider-vertical {
 
 	height: 50px;

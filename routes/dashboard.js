@@ -221,9 +221,9 @@ router.post('/filter', upload.array(),requireLogin, (req, res) =>{
                                             }
                                         }
                                         console.log("test");
-                                        //res.contentType('json');
+                                        res.contentType('json');
                                         console.log("test2");
-                                        res.send(JSON.stringify(geo));
+                                        return res.send(JSON.stringify(geo));
                                     });
                                 });
                             });
