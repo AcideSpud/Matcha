@@ -20,7 +20,6 @@ var sanitizeHtml = require('sanitize-html');
 
 //ALL ROUTES
 let routes = require('./routes/index');
-let users = require('./routes/users');
 let inscription2 = require('./routes/inscription2');
 let compte = require('./routes/compte');
 let dashboard = require('./routes/dashboard');
@@ -31,7 +30,6 @@ let upload_img = require('./routes/upload_img');
 let forgot_mail = require('./routes/forgot_mail');
 let logout = require('./routes/logout');
 let chat = require('./routes/chat');
-let header = require('./routes/header');
 
 
 
@@ -58,7 +56,6 @@ app.use(function(req, res, next){
     let Utilisateur = require('./models/utilisateur')
     Utilisateur.findUsers3(req.session.user.name, (result, err)=>{
       if (err){
-        console.log(err)
       }else{
         if (result[0])
         {
@@ -250,7 +247,6 @@ app.post('/setNotif', (req, res)=>{
 app.use(require('./middlewares/flash'));
 app.use('/', routes);
 app.use('/inscription2', inscription2);
-app.use('/users', users);
 app.use('/login', login);
 app.use('/dashboard', dashboard);
 app.use('/compte', compte);
@@ -258,11 +254,10 @@ app.use('/profile', profile);
 app.use('/myprofile', myprofile);
 app.use('/chat', chat);
 app.use('/upload_img', upload_img);
-app.use('/header', header);
 app.use('/forgot_mail', forgot_mail);
 app.use('/logout', logout);
 
-/*
+
 app.get('*', function(req, res, next) {
   var err = new Error();
   err.status = 404;
@@ -275,7 +270,7 @@ app.use(function(err, req, res, next) {
   }
   res.status(404);
   res.render('page_error')
-});*/
+});
 
 
 module.exports = app;

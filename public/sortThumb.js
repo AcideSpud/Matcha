@@ -1,6 +1,4 @@
-/**
- * Created by Tom on 06/11/2016.
- */
+
 $(function() {
 
 });

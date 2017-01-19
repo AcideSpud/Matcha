@@ -38,7 +38,7 @@
                                     <strong><p>Dist:</p></strong>
                                 </td>
                                 <td>
-                                    <% if(ret[i].dist >= 0) { %>
+                                    <% if(ret[i].dist <= 5) { %>
                                     <i> ~ 1 Km </i>
                                     <% } else if(ret[i].dist != null) { %>
                                    <i> <%= ret[i].dist  %> Km</i>
@@ -136,12 +136,14 @@ var myVar = setInterval(notif, 7000);
         socket.on('notif_newMsg', (res, crn)=>{
             $('#notif_msg').empty();
             for(var i = 0; i < res.length; i++){
-                $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="send_info_chat3(\''+ res[i].chatRoomName +'\', \'<%= user[0].name %>\');"><strong>' + res[i].user + '</strong>: le ' + res[i].date  +'</a></li>');
+                console.log('CHAT ROOM NAME N*', i, 'name: ', res[i].crn)
+                $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="send_info_chat3(\''+ res[i].crn +'\', \'<%= user[0].name %>\');"><strong>' + res[i].user + '</strong>: le ' + res[i].date  +'</a></li>');
             }
         })
         socket.on('notif_all_conv', (res)=>{
             $('#all_conv').empty();
             for(var i = 0; i < res.length; i++){
+                console.log('CHAT ROOM NAME?: ', res[i].chatRoomName)
                 $('#all_conv').prepend('<li><a class="dropdown-item" href="/chat" onclick="send_info_chat3(\''+ res[i].chatRoomName +'\', \'<%= user[0].name %>\');"><strong>' + res[i].other + '-' + res[i].me + '</strong></a></li>');
             }
         })

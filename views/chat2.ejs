@@ -17,6 +17,8 @@
   <script src="socket.io/socket.io.js"></script>
     <script>
         var socket = io.connect('http://localhost:3000');
+
+        console.log('CHAT ROOM NAME: ', '<%= ret[0].focus %>');
       
          socket.on('connect', function(){
             socket.emit('adduser3', '<%= ret[0].name %>', '<%= ret[0].focus %>');
@@ -32,6 +34,7 @@
          })
 
          socket.on('updatechat', function(username, data){
+          console.log("DANS UPDATE CHAT: ", username, 'DATA:', data)
             var request = new XMLHttpRequest();
             request.open('POST', '/chat/chat', true);
             request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');

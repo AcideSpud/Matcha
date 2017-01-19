@@ -215,14 +215,11 @@ router.post('/filter', upload.array(),requireLogin, (req, res) =>{
                                         for (let i = 0, len = geo.length; i < len; i++) {
                                             for (let j = 0, lon = result.length; j < lon; j++) {
                                                 if (geo[i].name == result[j].name) {
-                                                    console.log(result[j].name);
                                                     geo[i].nTag = result[j].size;
                                                 }
                                             }
                                         }
-                                        console.log("test");
                                         res.contentType('json');
-                                        console.log("test2");
                                         return res.send(JSON.stringify(geo));
                                     });
                                 });

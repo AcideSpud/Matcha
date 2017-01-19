@@ -23,8 +23,8 @@ router.get('/', requireLogin,  function(req, res, next) {
 	Utilisateur.findUsers3(req.user.name, (result)=>{
 		if (result[0] && result){
 			chatRoom.findChatRoom(result[0].focus, (r)=>{
-				console.log(r[0]);
-				res.render('chat2', {ret : result, user: result, crn: r[0].other + '-' + r[0].me });
+				if(r[0])
+					res.render('chat2', {ret : result, user: result, crn: r[0].other + '-' + r[0].me });
 			})
 		}
  	})
@@ -34,51 +34,38 @@ router.get('/', requireLogin,  function(req, res, next) {
 router.post('/chat', requireLogin, function(req, res, next){
 
 		if (req.body.name1 &&  req.body.name2){
-		//	console.log('ON ENtre PAR LE PROFILE: SON NOM:', req.body.name1, 'MON NOM:', req.body.name2)
 			Utilisateur.GetDB((db)=>{
 				Utilisateur.updateMainChatRoom(db, req.body.name2,req.body.name1, null)
 			})
 		}
-		console.log('CRN PUtin:', req.body.crn);
-		console.log('test:', req.body.name);
 		if (req.body.crn && req.body.name){
-			console.log('ON ENtre PAR LE FOOTER: CRN:', req.body.crn, 'NAME:', req.body.name)
 			Utilisateur.GetDB((db)=>{
 				Utilisateur.updateMainChatRoom(db, req.body.name, null, req.body.crn)
 			})
 		}
 
-		//console.log('req.body.roomName: ----', req.body.roomName);
 		if (req.body.roomName){
 			chatRoom.findChatRoom(req.body.roomName, (res)=>{
 				if (res){
-					console.log('coucou, ROOM NAME:', req.body.roomName)
 					var clean = sanitizeHtml(req.body.content);
-					console.log('CLLEEAN;', clean)
 						chatRoom.modifContent(req.body.roomName, req.body.userName, clean, req.body.roomName, ()=>{
 					})
+				} else{
 				}
 			})
 		}
 		
 		
 		Utilisateur.findUsers3(req.session.user.name, (result)=>{
-			console.log('PUTINNNNNN______', req.body.crn)
 			if (result[0]){
 				if (req.body.roomName){
-					console.log('PUTIN CA fais quoi')
 					chatRoom.readAllMsg2(req.body.roomName, req.session.user.name, ()=>{
-						console.log('readAllMsg2 by roomName');
 					})
 				} else if (result[0].focus){
-					console.log('PUTIN CA FAIS QUOI')
 					chatRoom.readAllMsg2(result[0].focus, req.session.user.name,  ()=>{
-						console.log('readAllMsg2 by focus');
 					})
 				} else if(req.body.crn){
-					console.log('PUTIN CA fais quoi 333')
 					chatRoom.readAllMsg2(req.body.crn, req.session.user.name, ()=>{
-						console.log('readAllMsg2 by roomName');
 					})
 				}
 			}

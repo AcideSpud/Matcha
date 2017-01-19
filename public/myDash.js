@@ -163,14 +163,11 @@ var onReady = function(e) {
     var status;
     // https://xhr.spec.whatwg.org/#dom-xmlhttprequest-readystate
     if (xhr.readyState == 4) { // `DONE`
-        console.log("test");
         status = xhr.status;
         if (status == 200) {
             data = JSON.parse(xhr.responseText);
             showTable(data);
-            console.log("test4000");
         } else {
-            console.log(status);
         }
     }
 };
@@ -201,12 +198,8 @@ function find(sort){
 
         if (data) {
             myform.append('data', JSON.stringify(data));
-            console.log(myform.data + "HAHHAHAHAHAHHA");
         }
-
-        console.log(myform);
         for (var pair of myform.entries()) {
-            console.log(pair[0] + ', ' + pair[1]);
         }
         xhr.open('POST', "/dashboard/filter", true);
         xhr.setRequestHeader('X-Requested-With', 'xmlhttprequest');
@@ -218,11 +211,9 @@ function find(sort){
     else {
         var sortForm = new FormData();
         var mySort = $('#sel2').val();
-        console.log(mySort);
         sortForm.append("mySort", mySort);
         if (data) {
             sortForm.append('data', JSON.stringify(data));
-            console.log(sortForm.data + "HAHHAHAHAHAHHA");
         }
         $('#table').empty();
         xhr.open('POST', "/dashboard/sort", true);

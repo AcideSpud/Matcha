@@ -19,7 +19,6 @@ router.post('/form_log', (request, response)=>{
       if (result === undefined){
         request.flash('error', "Pseudo inconnu")
       } else{
-        console.log('compare:',bcrypt.compareSync(request.body.password, result[0].pwd))
         if (bcrypt.compareSync(request.body.password, result[0].pwd)){
           request.flash('success', "bien Connecte")
           request.session.user = result[0];

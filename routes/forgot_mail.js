@@ -34,9 +34,7 @@ router.post('/forgot_mail', (req, res)=>{
 		if (err) throw err
 		else if (result){
 			var newpass = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".shuffle();
-			console.log('NNNNN', newpass)
 			var hash = bcrypt.hashSync(newpass);
-			console.log('HASHH', hash)
 
 			Utilisateur.modifPwd(result[0].name, hash, (err, res)=>{
 				if (err) throw err
@@ -61,10 +59,7 @@ router.post('/forgot_mail', (req, res)=>{
 
 				transporter.sendMail(mailOptions, (err, info)=>{
 					if (err){
-						console.log(err);
-	
-					}else{
-						console.log("----MAIL ENVOYE--:", info.response);		
+					}else{		
 					}
 				})
 			})

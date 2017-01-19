@@ -101,7 +101,6 @@ class Utilisateur {
 			$push: {"blocked": reportedUser}
 		}, (err)=>{
 			if (err) throw err;
-			console.log('ME: ', me, 'BLOCKED: ', reportedUser);
 		})
 	}
 
@@ -198,8 +197,8 @@ class Utilisateur {
 
 
 	static		updateMatchUser(user, db, key, chatRoomName) {
-		console.log('moi:', user.name, 'autre', key, 'chatRoomName:', chatRoomName);
 	this.sendNotif(user.name, key, 'Match with', db);
+	this.sendNotif(key, user.name, 'Match with', db);
 
 		db.collection("users").updateOne({"name": user.name}, {$push: {"matchRoom": chatRoomName}}, (err)=> {
 			if (err)
@@ -216,9 +215,8 @@ class Utilisateur {
 
 	static		updateUnMatchUser(user, db, key, chatRoomName) {
 
-		console.log('moi:', user.name, 'autre', key, 'chatRoomName:', chatRoomName);
-
 		this.sendNotif(user.name, key, 'UnMatch with', db);
+		this.sendNotif(key, user.name, 'UnMatch with', db);
 		db.collection("users").updateOne({"name": user.name}, {$pull: {"matchRoom": chatRoomName}}, (err)=> {
 			if (err)
 				throw err;
@@ -361,7 +359,6 @@ class Utilisateur {
 	static		deleteIMG(username, imgpath, callback){
 		let mongo = require('mongodb').MongoClient;
 		
-		console.log('coucou?')
 
 		mongo.connect('mongodb://localhost/matcha', (err, db)=> {
 			db.collection("users").updateOne({"name": username}, {$pull: {"img": imgpath}}, (err, res)=> {
@@ -425,7 +422,6 @@ class Utilisateur {
 		var cleanName = sanitizeHtml(request.body.name);
 		var cleanReponse = sanitizeHtml(request.body.repQuestion);
 
-		console.log('email',sanitizeHtml(request.body.email))
 
 		mongo.connect("mongodb://localhost/matcha", (err, db)=> {
 			if (err) throw err
@@ -690,7 +686,6 @@ class Utilisateur {
 
 
 		    let userLatitude = user.geo.latitude.toString();
-			console.log(user.geo.latitude);
 		    userLatitude = userLatitude.substring(0, 8);
 		    let userLongitude = user.geo.longitude.toString();
 		    userLongitude = userLongitude.substring(0, 8);
@@ -859,9 +854,7 @@ class Utilisateur {
 			}
 			callback(ret);
         }
-
     }
-
 }
 
 module.exports= Utilisateur;

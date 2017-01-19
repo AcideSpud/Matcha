@@ -98,9 +98,7 @@ router.post('/reporte/:name', requireLogin, (req, res)=>{
 
 router.post('/like/:Namelike', requireLogin, (req, res) =>{
     User.GetDB((db)=> {
-
         Profile.findUsers4(req.params.Namelike.substring(1), (ret)=> {
-
             User.updatePop(ret[0].popularite + 3, ret, db);
                 User.updateLikeUser(req.session.user, db, req.params.Namelike.substring(1));
                 User.checkMatch(req.session.user, db, ret[0].name);
@@ -123,7 +121,6 @@ router.post('/unlike/:Nameunlike', requireLogin, (req, res)=>{
 });
 
 router.post('/block', (req, res)=>{
-    console.log(req.body.block,' ',req.body.user);
     User.GetDB((db)=>{
         User.updateBlock(db, req.body.user, req.body.block, ()=>{
             

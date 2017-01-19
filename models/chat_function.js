@@ -82,12 +82,14 @@ class Chat {
 		})
 	}
 
-	static modifContent(name, user, conten, crn){
+	static modifContent(name, user, conten, crn, callback){
 
 		var d = new Date();
     	var n = d.toLocaleDateString("en-GB");
 
     	var message = {user: user, content: conten, date: n, isRead: false, crn: crn};
+
+    	console.log('MODIF CONTENT: ', name, user, conten, crn);
 
 		this.GetDB((db)=>{
 			db.collection("chatRoom").updateOne({"chatRoomName": name}, {
@@ -96,7 +98,7 @@ class Chat {
 					if (err)
 						throw err;
 					else
-						console.log("chatRoom modifContent OOK");
+						callback();
 					db.close();
 				})
 			})
@@ -105,21 +107,17 @@ class Chat {
 
 	static	checkNbNotif(name, user, callback){
 		var nb = 0;
-	//	var Utilisateur = require('../models/utilisateur')
 
-	//	Utilisateur.findUsers3(user, (resu)=>{
 			this.findChatRoom(name, (res)=>{
 				if (res[0]){
 					for (var i = 0; i<res[0].conte.length; i++){
-						if (res[0].conte[i].isRead == false && res[0].conte[i].user != user
-							/* resu[0].blocked.indexOf(res[0].conte[i].user) === -1 */){
+						if (res[0].conte[i].isRead == false && res[0].conte[i].user != user){
 							nb++;
 						}
 					}
 					callback(nb);
 				}
 			})
-		//})
 	}
 
 	static	readAllMsg(name, callback){

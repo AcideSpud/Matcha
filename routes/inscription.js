@@ -16,7 +16,6 @@ router.get('/', (req, res, next) => {
 
 //POST
 router.post('/form_inscription', (req, res, next)=>{
-    console.log('PUTIN')
     if (req.body.name.length <= 4){
         req.flash('error', "Votre pseudo doit comporter au minimum 5 lettres")
         res.redirect('/inscription')
