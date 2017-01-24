@@ -86,6 +86,17 @@ function    block_user(userBlock, user){
     request.open('POST', '/profile/block', true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
     request.send("block="+userBlock+"&user="+user);
+    $('#block').text('UnBlocked !').attr("onclick", "unblck_request('" + userBlock +"','"+ user +"')");
+
+}
+
+function    unblck_request(userBlock, user){
+    console.log("OTHER FUCKING TEST!!!");
+    var request = new XMLHttpRequest();
+    request.open('POST', '/profile/Unblock', true);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    request.send("block="+userBlock);
+    $('#block').text('Bloquer').attr("onclick", "block_user('" + userBlock +"','"+ user +"')");
 
 }
 

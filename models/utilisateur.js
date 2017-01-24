@@ -257,6 +257,13 @@ class Utilisateur {
 
 		})
 	}
+    static		updateUnblockUser(user, db, key) {
+        db.collection("users").updateOne({"name": user.name}, {$pull: {"blocked": key}}, (err)=> {
+            if (err)
+                throw err;
+
+        })
+    }
 
 	static		updateLocalisation(loca, name){
 		let mongo = require('mongodb').MongoClient;
@@ -482,7 +489,7 @@ class Utilisateur {
 		})
 	}
 
-	static		sortReported(otherUserArray, callback){
+	static		sortReported(otherUserArray, user, callback){
 		let ret = [];
 		let cmp = 0;
 
@@ -492,7 +499,17 @@ class Utilisateur {
                     cmp++;
                 }
 		}
+		for (let i = 0, len = ret.length; i < len; i++)
+		{
+			for (let j = 0, lon = user[0].blocked.length; j < lon; j++)
+			{
+				if (ret[i].name == user[0].blocked[j]){
+					ret.splice(i, 1);
+					len--;
+				}
 
+			}
+		}
 		callback(ret);
 	}
 
@@ -775,6 +792,21 @@ class Utilisateur {
         }
         callback(tab);
 	}
+    static		isBlocked(otherUser, user, callback)
+    {
+        let isblck = false;
+        if (user[0]){
+
+            for (let i = 0; i < user[0].blocked.length; i++)
+            {
+                if (user[0].blocked[i] == otherUser){
+                    isblck = true;
+                }
+            }
+        }
+        callback(isblck);
+
+    }
 
 	static		isReported(otherUser, user, callback)
 	{
