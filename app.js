@@ -149,8 +149,12 @@ socket.on('sendchat', function(data){
                 for (var k = 0; k < allroom.length; k++){
                   for (var l = 0; l < res[0].matchRoom.length; l++){
                     if ((allroom[k].chatRoomName === res[0].matchRoom[l]) &&
-                        (res[0].blocked.indexOf(allroom[k].other) === -1))
+                        (res[0].blocked.indexOf(allroom[k].other) === -1)){
+                      console.log(res[0].blocked.indexOf(allroom[k].other))
+                      console.log(res[0].blocked, '----', allroom[k].other)
                       allConv.push(allroom[k]);
+                    }
+                      
                   }
                 }
               }
@@ -187,7 +191,8 @@ socket.on('sendchat', function(data){
           chatRoom.findChatRoom(res[0].matchRoom[i], (chat)=>{
             if (chat && chat[0].conte){
               for(var i =0; i<chat[0].conte.length; i++){
-                if((chat[0].conte[i].user != res[0].name) && (chat[0].conte[i].isRead == false)){
+                if((chat[0].conte[i].user != res[0].name) && (chat[0].conte[i].isRead == false) &&
+                  (res[0].blocked.indexOf(chat[0].conte[i].user) === -1)){
                   allMsg.push(chat[0].conte[i]);
                 } 
               }
