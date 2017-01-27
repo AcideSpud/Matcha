@@ -94,9 +94,9 @@
 </body>
 
 <script src="socket.io/socket.io.js"></script>
-  <script>
+<script>
     notif();    
-var myVar = setInterval(notif, 7000);
+    var myVar = setInterval(notif, 7000);
 
     function notif(){
     var socket = io.connect('http://localhost:3000');
@@ -143,7 +143,6 @@ var myVar = setInterval(notif, 7000);
         socket.on('notif_all_conv', (res)=>{
             $('#all_conv').empty();
             for(var i = 0; i < res.length; i++){
-                console.log('CHAT ROOM NAME?: ', res[i].chatRoomName)
                 $('#all_conv').prepend('<li><a class="dropdown-item" href="/chat" onclick="send_info_chat3(\''+ res[i].chatRoomName +'\', \'<%= user[0].name %>\');"><strong>' + res[i].other + '-' + res[i].me + '</strong></a></li>');
             }
         })

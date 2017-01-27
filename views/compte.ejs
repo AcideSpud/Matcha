@@ -136,13 +136,12 @@
 <script src="socket.io/socket.io.js"></script>
 <script>
     notif();    
-var myVar = setInterval(notif, 7000);
+    var myVar = setInterval(notif, 7000);
 
     function notif(){
     var socket = io.connect('http://localhost:3000');
 
     socket.on('connect', function(){
-        socket.emit('is_co', '<%= user[0].name %>');
         socket.emit('notification_like', '<%= user[0].name %>');
         socket.emit('notification_newMsg', '<%= user[0].name %>');
         socket.emit('notification_newMsg_unread', '<%= user[0].name %>');
@@ -174,9 +173,10 @@ var myVar = setInterval(notif, 7000);
         socket.on('nb_notif_unread', (res)=>{
             $('#notif_nb').text(res);
         }) 
-        socket.on('notif_newMsg', (res)=>{
+        socket.on('notif_newMsg', (res, crn)=>{
             $('#notif_msg').empty();
             for(var i = 0; i < res.length; i++){
+                console.log('CHAT ROOM NAME N*', i, 'name: ', res[i].crn)
                 $('#notif_msg').prepend('<li><a class="dropdown-item" href="/chat" onclick="send_info_chat3(\''+ res[i].crn +'\', \'<%= user[0].name %>\');"><strong>' + res[i].user + '</strong>: le ' + res[i].date  +'</a></li>');
             }
         })
