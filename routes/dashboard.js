@@ -32,11 +32,10 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.get('/', requireLogin,  function(req, res, next) {
 	User.Create_db((ret)=>{
         getProfile.findUsers3(req.session.user.name, (resu)=>{
-        getProfile.sortReported(ret, (ret)=>{
+        getProfile.sortReported(ret, resu, (ret)=>{
 		    getProfile.SortPrefSexUser(req.session.user, ret, (cb)=> {
                 getProfile.GetDistance(req.session.user, cb, (dist)=> {
-
-                        getProfile.nbTag(req.session.user, dist, (cb)=> {
+                     getProfile.nbTag(req.session.user, dist, (cb)=> {
                             if (cb[0] && dist[0]){
                                 for (let i = 0, len = dist.length; i < len; i++) {
                                 for (let j = 0, lon = cb.length; j < lon; j++) {
@@ -99,77 +98,79 @@ router.post('/sort', upload.array(), requireLogin, (req, res)=> {
     }
     else {
         User.Create_db((array)=> {
-            getProfile.sortReported(array, (array)=>{
-            getProfile.SortPrefSexUser(req.session.user, array, (ret)=>{
-                if (req.body.mySort == 1) {
-                    getProfile.sortAge(ret, (cb)=>{
-                        getProfile.GetDistance(req.session.user, cb, (geo)=> {
-                            getProfile.nbTag(req.session.user, geo, (cb)=> {
-                                for (let i = 0, len = geo.length; i < len; i++) {
-                                    for (let j = 0, lon = cb.length; j < lon; j++) {
-                                        if (geo[i].name == cb[j].name) {
-                                            geo[i].nTag = cb[j].size;
+            getProfile.findUsers3(req.session.user.name, (resu)=> {
+                getProfile.sortReported(array, resu, (array) => {
+                    getProfile.SortPrefSexUser(req.session.user, array, (ret) => {
+                        if (req.body.mySort == 1) {
+                            getProfile.sortAge(ret, (cb) => {
+                                getProfile.GetDistance(req.session.user, cb, (geo) => {
+                                    getProfile.nbTag(req.session.user, geo, (cb) => {
+                                        for (let i = 0, len = geo.length; i < len; i++) {
+                                            for (let j = 0, lon = cb.length; j < lon; j++) {
+                                                if (geo[i].name == cb[j].name) {
+                                                    geo[i].nTag = cb[j].size;
+                                                }
+                                            }
                                         }
-                                    }
-                                }
-                                res.contentType('json');
-                                res.send(JSON.stringify(geo));
+                                        res.contentType('json');
+                                        res.send(JSON.stringify(geo));
+                                    });
+                                });
                             });
-                        });
-                        });
-                }
-                else if (req.body.mySort == 2) {
-                    getProfile.sortPop(ret, (cb)=>{
-                        getProfile.GetDistance(req.session.user, cb, (geo)=> {
-                            getProfile.nbTag(req.session.user, geo, (cb)=> {
-                                for (let i = 0, len = geo.length; i < len; i++) {
-                                    for (let j = 0, lon = cb.length; j < lon; j++) {
-                                        if (geo[i].name == cb[j].name) {
-                                            geo[i].nTag = cb[j].size;
+                        }
+                        else if (req.body.mySort == 2) {
+                            getProfile.sortPop(ret, (cb) => {
+                                getProfile.GetDistance(req.session.user, cb, (geo) => {
+                                    getProfile.nbTag(req.session.user, geo, (cb) => {
+                                        for (let i = 0, len = geo.length; i < len; i++) {
+                                            for (let j = 0, lon = cb.length; j < lon; j++) {
+                                                if (geo[i].name == cb[j].name) {
+                                                    geo[i].nTag = cb[j].size;
+                                                }
+                                            }
                                         }
-                                    }
-                                }
-                                res.contentType('json');
-                                res.send(JSON.stringify(geo));
+                                        res.contentType('json');
+                                        res.send(JSON.stringify(geo));
+                                    });
+                                });
                             });
-                        });
-                    });
-                }
-                else if (req.body.mySort == 3) {
-                    getProfile.GetDistance(req.session.user, ret, (cb)=>{
-                        getProfile.sortDist(cb , (ret)=> {
-                            getProfile.nbTag(req.session.user, ret, (cb)=> {
-                                for (let i = 0, len = ret.length; i < len; i++) {
-                                    for (let j = 0, lon = cb.length; j < lon; j++) {
-                                        if (ret[i].name == cb[j].name) {
-                                            ret[i].nTag = cb[j].size;
+                        }
+                        else if (req.body.mySort == 3) {
+                            getProfile.GetDistance(req.session.user, ret, (cb) => {
+                                getProfile.sortDist(cb, (ret) => {
+                                    getProfile.nbTag(req.session.user, ret, (cb) => {
+                                        for (let i = 0, len = ret.length; i < len; i++) {
+                                            for (let j = 0, lon = cb.length; j < lon; j++) {
+                                                if (ret[i].name == cb[j].name) {
+                                                    ret[i].nTag = cb[j].size;
+                                                }
+                                            }
+                                        }
+                                        res.contentType('json');
+                                        res.send(JSON.stringify(ret));
+                                    })
+                                })
+                            })
+                        }
+                        else if (req.body.mySort == 4) {
+                            getProfile.GetDistance(req.session.user, ret, (ret) => {
+                                getProfile.nbTag(req.session.user, ret, (cb) => {
+                                    for (let i = 0, len = ret.length; i < len; i++) {
+                                        for (let j = 0, lon = cb.length; j < lon; j++) {
+                                            if (ret[i].name == cb[j].name) {
+                                                ret[i].nTag = cb[j].size;
+                                            }
                                         }
                                     }
-                                }
-                                res.contentType('json');
-                                res.send(JSON.stringify(ret));
-                            })
-                        })
-                    })
-                }
-                else if (req.body.mySort == 4) {
-                    getProfile.GetDistance(req.session.user, ret, (ret)=> {
-                        getProfile.nbTag(req.session.user, ret, (cb)=> {
-                            for (let i = 0, len = ret.length; i < len; i++) {
-                                for (let j = 0, lon = cb.length; j < lon; j++) {
-                                    if (ret[i].name == cb[j].name) {
-                                        ret[i].nTag = cb[j].size;
-                                    }
-                                }
-                            }
-                            getProfile.sortByTag(ret, (mcb)=> {
-                                res.contentType('json');
-                                res.send(JSON.stringify(mcb));
-                            })
-                        })
+                                    getProfile.sortByTag(ret, (mcb) => {
+                                        res.contentType('json');
+                                        res.send(JSON.stringify(mcb));
+                                    })
+                                })
 
-                    })
-                }
+                            })
+                        }
+                    });
                 });
             });
         });
@@ -204,31 +205,33 @@ router.post('/filter', upload.array(),requireLogin, (req, res) =>{
 	}
 	else {
 		User.Create_db((ret)=> {
-            getProfile.sortReported(ret, (ret)=>{
-			getProfile.SortPrefSexUser(req.session.user, ret, (cb)=> {
-				getProfile.sortByAge(ageMin, ageMax, cb, (callB)=> {
-                    getProfile.sortByPop(popMin, popMax, callB, (m_cb)=> {
-                        getProfile.SortDistance(req.session.user, m_cb, dist, (my_cb)=> {
-                            getProfile.SortTag(req.session.user, my_cb, tag, (mylastcb)=> {
-                                getProfile.GetDistance(req.session.user, mylastcb, (geo)=> {
-                                    getProfile.nbTag(req.session.user, geo, (result)=> {
-                                        for (let i = 0, len = geo.length; i < len; i++) {
-                                            for (let j = 0, lon = result.length; j < lon; j++) {
-                                                if (geo[i].name == result[j].name) {
-                                                    geo[i].nTag = result[j].size;
+            getProfile.findUsers3(req.session.user.name, (resu)=> {
+                getProfile.sortReported(ret, resu, (ret) => {
+                    getProfile.SortPrefSexUser(req.session.user, ret, (cb) => {
+                        getProfile.sortByAge(ageMin, ageMax, cb, (callB) => {
+                            getProfile.sortByPop(popMin, popMax, callB, (m_cb) => {
+                                getProfile.SortDistance(req.session.user, m_cb, dist, (my_cb) => {
+                                    getProfile.SortTag(req.session.user, my_cb, tag, (mylastcb) => {
+                                        getProfile.GetDistance(req.session.user, mylastcb, (geo) => {
+                                            getProfile.nbTag(req.session.user, geo, (result) => {
+                                                for (let i = 0, len = geo.length; i < len; i++) {
+                                                    for (let j = 0, lon = result.length; j < lon; j++) {
+                                                        if (geo[i].name == result[j].name) {
+                                                            geo[i].nTag = result[j].size;
+                                                        }
+                                                    }
                                                 }
-                                            }
-                                        }
-                                        res.contentType('json');
-                                        return res.send(JSON.stringify(geo));
+                                                res.contentType('json');
+                                                return res.send(JSON.stringify(geo));
+                                            });
+                                        });
                                     });
                                 });
                             });
                         });
                     });
                 });
-					});
-				});
+            });
 			});
 	}
 });

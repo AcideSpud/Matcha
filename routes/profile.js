@@ -21,8 +21,7 @@ function requireLogin (req, res, next) {
 
 router.get('/:userID', requireLogin, (req, res, next)=>{
     if (req.params.userID === req.session.user.name){
-        res.status(404);
-        res.redirect('page_error');
+        res.redirect('/compte');
     }
     else {
         Profile.findUsers4(req.params.userID, (ret)=> {
@@ -45,24 +44,27 @@ router.get('/:userID', requireLogin, (req, res, next)=>{
                             }
                         }
                     }
-                    User.findUsers3(req.session.user.name, (resu)=> {
-                        User.isReported(req.params.userID, resu, (isReport)=>{
-                            if (isReport == false) {
-                                User.updatePop(ret[0].popularite + 1, ret, db);
-                            }
+                    User.findUsers3(req.session.user.name, (resu) => {
+                        User.isReported(req.params.userID, resu, (isReport) => {
+                            User.isBlocked(req.params.userID, resu, (isblck) => {
+                                if (isReport == false) {
+                                    User.updatePop(ret[0].popularite + 1, ret, db);
+                                }
 
-                        let time = timeAgo(ret[0].lastCo);
-                        res.render('profile', {
-                            ret: ret,
-                            islike: islike,
-                            imlike: imlike,
-                            time: time,
-                            user: resu,
-                            isRpt: isReport,
-                            autre: req.params.userID
-                        });
-                        });
-                    })
+                                let time = timeAgo(ret[0].lastCo);
+                                res.render('profile', {
+                                    ret: ret,
+                                    islike: islike,
+                                    imlike: imlike,
+                                    time: time,
+                                    user: resu,
+                                    isRpt: isReport,
+                                    isBlck: isblck,
+                                    autre: req.params.userID
+                                });
+                            });
+                        })
+                    });
                 });
             }
         });
@@ -124,6 +126,13 @@ router.post('/block', (req, res)=>{
     User.GetDB((db)=>{
         User.updateBlock(db, req.body.user, req.body.block, ()=>{
             
+        })
+    })
+})
+router.post('/Unblock', (req, res)=>{
+    User.GetDB((db)=>{
+        User.updateUnblockUser(req.session.user, db,  req.body.block, ()=>{
+
         })
     })
 })

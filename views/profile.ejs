@@ -30,7 +30,7 @@
             <div class="row">
         <div class="col-md-2 column">
             <p>
-            <% if (islike == false && ret[0].img[0]){ %>
+            <% if (islike == false && (ret[0].img[0])){ %>
             <button id="mylikebutton" class="btn btn-primary btn-block" onclick="like_request('<%= ret[0].name %>');" type="button">
                 Like
             </button>
@@ -66,7 +66,13 @@
             </button>
             <% } %>
             </p>
-            <button class="btn btn-danger btn-block" onclick="block_user('<%= ret[0].name %>','<%= user[0].name %>')">Bloquer</button>
+            <% if (isBlck == false){ %>
+            <button id="block" class="btn btn-danger btn-outline btn-block" onclick="block_user('<%= ret[0].name %>','<%= user[0].name %>')">Bloquer</button>
+            <% } else { %>
+            <button id="block" class="btn btn-danger btn-outline btn-block" onclick="unblck_request('<%= ret[0].name %>', '<%= user[0].name %>')" type="button">
+                UnBlocked !
+            </button>
+            <% } %>
         </div>
             </div>
 
