@@ -102,7 +102,7 @@ function showTable(data){
 
         $('#table').append('<div class="col-sm-6 col-md-3" id="thebox">' +
        '<div class="thumbnail" style="background-image:linear-gradient(180deg,rgb(127, 18, 47), rgb(200, 255, 255));box-shadow: 5px 5px 12px #555;border-radius: 70px;border-style:solid;border-color:black;"" id="mybox">' +
-         '<div style="text-align: center"><img style="border-style:solid;border-color:black;border-radius: 10%;box-shadow: 10px 10px 22px #555;" class="'+ imgclass +'" src="'+ img+ '"  alt=""></div>' +
+         '<div style="text-align: center"><img style="width: 200px;height: 200px;object-fit: cover;border-style:solid;border-color:black;border-radius: 50%;box-shadow: 10px 10px 22px #555;" class="'+ imgclass +'" src="'+ img+ '"  alt=""></div>' +
             '<div class="caption">' +
             '<h3><strong>' +  data[i].nom + '&nbsp;' + data[i].prenom + '</strong></h3>' +
             `<div class="col-md-4 column">
